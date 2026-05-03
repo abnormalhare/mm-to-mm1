@@ -1,0 +1,107 @@
+import "1_2_16.mm1";
+
+-- 1_2_17 - Half Adder and Full Adder --
+
+-- 1. Full Adder: Sum
+
+def whad(p s c: wff): wff = $ (p ⊻ s ⊻ c) $;
+notation whad(p s c) = ($hadd[$:max) p s c ($]$:0);
+theorem df_had(p s c: wff): $ hadd[p s c] <-> (p ⊻ s ⊻ c) $ = 'biid;
+
+theorem hadbi123d(p s c h t e z: wff) (hadbid_1: $ p -> (s <-> c) $) (hadbid_2: $ p -> (h <-> t) $) (hadbid_3: $ p -> (e <-> z) $): $ p -> (hadd[s h e] <-> hadd[c t z]) $
+    = '(_3bitr4g (xorbi12d (xorbi12d hadbid_1 hadbid_2) hadbid_3) df_had df_had);
+
+theorem hadbi123i(p s c h t e: wff) (hadbii_1: $ p <-> s $) (hadbii_2: $ c <-> h $) (hadbii_3: $ t <-> e $): $ hadd[p c t] <-> hadd[s h e] $
+    = '(mptru (hadbi123d (a1i hadbii_1) (a1i hadbii_2) (a1i hadbii_3)));
+
+theorem hadass(p s c: wff): $ hadd[p s c] <-> (p ⊻ (s ⊻ c)) $
+    = '(bitri df_had xorass);
+
+theorem hadbi(p s c: wff): $ hadd[p s c] <-> (p <-> s <-> c) $
+    = '(_3bitr4i df_xor df_had (bitri (bibi1i xnor) nbbn));
+
+theorem hadcoma(p s c: wff): $ hadd[p s c] <-> hadd[s p c] $
+    = '(_3bitr4i (bibi1i bicom) hadbi hadbi);
+
+theorem hadcomb(p s c: wff): $ hadd[p s c] <-> hadd[p c s] $
+    = '(_3bitr4i (xorbi12i biid xorcom) hadass hadass);
+
+theorem hadrot(p s c: wff): $ hadd[p s c] <-> hadd[s c p] $
+    = '(bitri hadcoma hadcomb);
+
+theorem hadnot(p s c: wff): $ ~hadd[p s c] <-> hadd[(~p) (~s) (~c)] $
+    = '(_3bitr4i (bibi1i notbi) (xchnxbir xor3 hadbi) hadbi);
+
+theorem had1(p s c: wff): $ p -> (hadd[p s c] <-> (s <-> c)) $
+    = '(biimpri (mpbir (bitri hadrot hadbi) biass));
+
+theorem had0(p s c: wff): $ ~p -> (hadd[p s c] <-> (s ⊻ c)) $
+    = '(con4bid (_3bitr4g had1 hadnot (bitr3i xnor notbi)));
+
+theorem hadifp(p s c: wff): $ hadd[p s c] <-> if-[p (s <-> c) (s ⊻ c)] $
+    = '(casesifp had1 had0);
+
+-- 2. Full adder: carry
+
+def wcad(p s c: wff): wff = $ p ^ s \/ c ^ (p ⊻ s) $;
+notation wcad(p s c) = ($cadd[$:max) p s c ($]$:0);
+theorem df_cad(p s c: wff): $ cadd[p s c] <-> p ^ s \/ c ^ (p ⊻ s) $ = 'biid;
+
+theorem cador(p s c: wff): $ cadd[p s c] <-> ((p ^ s) \/ (p ^ c) \/ (s ^ c)) $
+    = '(_3bitr4i
+        (_3bitr4i
+            (pm5_74i (_3bitr3g (anbi1d (rbaib xor2)) ancom andir))
+            df_or df_or
+        )
+        df_cad orass
+    );
+
+theorem cadan(p s c: wff): $ cadd[p s c] <-> ((p \/ s) ^ (p \/ c) ^ (s \/ c)) $
+    = '(bitr4i
+        (_3bitri
+            (_3bitr4i biid cador (orbi1i andi))
+            ordir
+            (anbi12i ordi (bitr4i orcom (mpbi animorl pm4_72)))
+        )
+        biid
+    );
+
+theorem cadbi123d(p s c h t e z: wff) (cadbid_1: $ p -> (s <-> c) $) (cadbid_2: $ p -> (h <-> t) $) (cadbid_3: $ p -> (e <-> z) $): $ p -> (cadd[s h e] <-> cadd[c t z]) $
+    = '(_3bitr4g
+        (orbi12d
+            (anbi12d cadbid_1 cadbid_2)
+            (anbi12d cadbid_3 (xorbi12d cadbid_1 cadbid_2))
+        )
+        df_cad
+        df_cad
+    );
+
+theorem cadbi123i(p s c h t e: wff) (cadbii_1: $ p <-> s $) (cadbii_2: $ c <-> h $) (cadbii_3: $ t <-> e $): $ cadd[p c t] <-> cadd[s h e] $
+    = '(mptru (cadbi123d (a1i cadbii_1) (a1i cadbii_2) (a1i cadbii_3)));
+
+theorem cadcoma(p s c: wff): $ cadd[p s c] <-> cadd[s p c] $
+    = '(_3bitr4i (orbi12i ancom (anbi2i xorcom)) df_cad df_cad);
+
+theorem cadcomb(p s c: wff): $ cadd[p s c] <-> cadd[p c s] $
+    = '(bitr4i (_3bitri cadan _3ancoma (_3anbi3i orcom)) cadan);
+
+theorem cadrot(p s c: wff): $ cadd[p s c] <-> cadd[s c p] $
+    = '(bitri cadcoma cadcomb);
+
+theorem cadnot(p s c: wff): $ ~cadd[p s c] <-> cadd[(~p) (~s) (~c)] $
+    = '(_3bitr4i (_3anbi123i ianor ianor ianor) (xchnxbir _3ioran cador) cadan);
+
+theorem cad11(p s c: wff): $ (p ^ s) -> cadd[p s c] $
+    = '(sylibr orc df_cad);
+
+theorem cad1(p s c: wff): $ c -> (cadd[p s c] <-> (p \/ s)) $
+    = '(bitr4id (bitri cadan anass) (biantrud (jca olc olc)));
+
+theorem cad0(p s c: wff): $ ~c -> (cadd[p s c] <-> (p ^ s)) $
+    = '(impbid1 (biimtrid df_cad (jaod idd (adantrd pm2_21))) cad11);
+
+theorem cadifp(p s c: wff): $ cadd[p s c] <-> if-[c (p \/ s) (p ^ s)] $
+    = '(casesifp cad1 cad0);
+
+theorem cadtru(p: wff): $ cadd[T. T. p] $
+    = '(mp2an tru tru cad11);

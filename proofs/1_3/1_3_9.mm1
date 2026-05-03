@@ -1,0 +1,105 @@
+import "1_3_8.mm1";
+
+-- 1_3_9 - Derive the Tarski-Bernays-Wajsberg axioms from Meredith's First CO Axiom --
+
+theorem merco1(p s c h t: wff): $ ((((p -> s) -> (c -> F.)) -> h) -> t) -> (t -> p) -> (c -> p) $
+    = '(syl (imim1i (imim1i (imim2i (ja ax_1 falim)))) meredith);
+
+theorem merco1lem1(p c: wff): $ p -> F. -> c $
+    = '(ax_mp
+        (ax_mp
+            (ax_mp (ax_mp (! merco1 _ p) (! merco1 _ _ p)) (! merco1 _ _ p))
+            (ax_mp (ax_mp (! merco1 _ p) merco1) (! merco1 _ _ p))
+        )
+        (ax_mp
+            (ax_mp (ax_mp (! merco1 _ p) (! merco1 _ _ p)) merco1)
+            (ax_mp (ax_mp merco1 merco1) merco1)
+        )
+    );
+
+theorem retbwax4(p: wff): $ F. -> p $
+    = '(ax_mp (! merco1lem1 p p) merco1lem1);
+
+theorem retbwax2(p s: wff): $ p -> s -> p $
+    = '(ax_mp
+        (ax_mp (ax_mp merco1lem1 (! merco1 _ p _ p)) (ax_mp (! merco1 p $ p -> p $) (! merco1 _ _ p)))
+        (ax_mp (ax_mp merco1lem1 (! merco1 _ p _ p)) (ax_mp merco1 merco1))
+    );
+
+theorem merco1lem2(p s c t: wff): $ ((p -> s) -> c) -> ((s -> t) -> (p -> F.)) -> c $
+    = '(ax_mp (ax_mp retbwax2 merco1) (! merco1 _ p));
+
+theorem merco1lem3(p s c: wff): $ ((p -> s) -> c -> F.) -> c -> p $
+    = '(ax_mp
+        (ax_mp (! merco1lem2 p p _ p) (ax_mp (! retbwax2 _ $ p -> (((p -> p) -> (p -> F.)) -> (p -> p)) $) merco1lem2))
+        (ax_mp merco1lem2 (ax_mp retbwax2 merco1lem2))
+    );
+
+theorem merco1lem4(p s c: wff): $ ((p -> s) -> c) -> (s -> c) $
+    = '(ax_mp (ax_mp merco1lem3 merco1) (! merco1 _ p));
+
+theorem merco1lem5(p c t: wff): $ (((p -> F.) -> c) -> t) -> p -> t $
+    = '(ax_mp merco1lem4 (! merco1 _ p));
+
+theorem merco1lem6(p s c: wff): $ (p -> p -> s) -> (c -> p -> s) $
+    = '(ax_mp (ax_mp (ax_mp (ax_mp merco1lem5 merco1lem3) merco1lem5) merco1lem3) merco1);
+
+theorem merco1lem7(p s c: wff): $ p -> ((s -> c) -> s) -> s $
+    = '(ax_mp (ax_mp merco1lem5 merco1) merco1lem6);
+
+theorem retbwax3(p s: wff): $ ((p -> s) -> p) -> p $
+    = '(ax_mp (! retbwax2 p p) merco1lem7);
+
+theorem merco1lem8(p s c: wff): $ p -> (s -> s -> c) -> (s -> c) $
+    = '(ax_mp merco1lem6 merco1lem6);
+
+theorem merco1lem9(p s: wff): $ (p -> p -> s) -> (p -> s) $
+    = '(ax_mp (! merco1lem8 $ (F. -> p) -> (p -> p -> s) -> (p -> s) $ $ p $ $ s $) merco1lem8);
+
+theorem merco1lem10(p s c h t: wff): $ ((((p -> s) -> c) -> t -> c) -> p) -> h -> p $
+    = '(ax_mp (ax_mp (! merco1 _ p _ p) merco1lem2) merco1);
+
+theorem merco1lem11(p s t: wff): $ (p -> s) -> ((c -> p -> t) -> F.) -> s $
+    = '(ax_mp (ax_mp (ax_mp (ax_mp (ax_mp merco1lem5 merco1lem3) merco1lem4) merco1lem5) merco1lem4) (ax_mp (! merco1 _ p) merco1lem2));
+
+theorem merco1lem12(p s c t: wff): $ (p -> s) -> ((c -> p -> t) -> p) -> s $
+    = '(ax_mp (ax_mp (ax_mp (ax_mp merco1lem3 merco1) merco1lem9) merco1lem11) (! merco1 _ p));
+
+theorem merco1lem13(p s c t: wff): $ (((p -> s) -> c -> s) -> t) -> p -> t $
+    = '(ax_mp (ax_mp (ax_mp (! merco1 _ p _ p) merco1lem4) merco1lem12) (! merco1 _ p));
+
+theorem merco1lem14(p s c: wff): $ (((p -> s) -> s) -> c) -> p -> c $
+    = '(ax_mp (ax_mp (ax_mp merco1lem13 (ax_mp (ax_mp merco1lem8 (! merco1 _ p _ p)) merco1lem9)) merco1lem12) (! merco1 _ p));
+
+theorem merco1lem15(p s c: wff): $ (p -> s) -> p -> c -> s $
+    = '(ax_mp merco1lem14 merco1lem13);
+
+theorem merco1lem16(p s c t: wff): $ ((p -> s -> c) -> t) -> (p -> c) -> t $
+    = '(ax_mp (ax_mp merco1lem15 merco1lem11) (! merco1 _ p));
+
+theorem merco1lem17(p s c t: wff): $ ((((p -> s) -> p) -> c) -> t) -> (p -> c) -> t $
+    = '(ax_mp (ax_mp
+        (ax_mp (ax_mp
+            (ax_mp (ax_mp merco1lem11 (ax_mp (ax_mp merco1lem7 (! merco1 _ p _ p)) merco1lem9)) (! merco1 _ p))
+            (ax_mp (ax_mp merco1lem11 (ax_mp (ax_mp merco1lem7 (! merco1 _ p _ p)) merco1lem9)) (! merco1 _ p))
+        ) merco1lem16)
+        (ax_mp (ax_mp merco1lem4 merco1lem11) (! merco1 _ p))
+    ) (! merco1 _ p));
+
+theorem merco1lem18(p s c: wff): $ (p -> s -> c) -> (s -> p) -> (s -> c) $
+    = '(ax_mp
+        (ax_mp (ax_mp merco1 merco1lem17) merco1lem17)
+        (ax_mp (ax_mp (ax_mp (ax_mp (ax_mp merco1lem5 merco1lem3) merco1lem5) merco1lem4) (ax_mp merco1 merco1lem2)) merco1lem9)
+    );
+
+theorem retbwax1(p s c: wff): $ (p -> s) -> (s -> c) -> (p -> c) $
+    = '(ax_mp
+        (ax_mp merco1lem18 merco1lem16)
+        (ax_mp
+            (ax_mp (ax_mp (ax_mp merco1lem15 merco1lem15) merco1lem18) merco1lem14)
+            (ax_mp
+                (ax_mp (ax_mp merco1lem14 (ax_mp (ax_mp (ax_mp merco1lem10 merco1) (! merco1 _ p)) (! merco1 _ p))) merco1lem15)
+                (ax_mp (ax_mp merco1lem10 merco1lem9) merco1lem13)
+            )
+        )
+    );

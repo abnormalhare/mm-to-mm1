@@ -1,0 +1,47 @@
+import "1_3_7.mm1";
+
+-- 1_3_8 - Derive the Lukasiewicz Axioms from the Tarski-Bernays-Wajsberg Axioms --
+
+theorem tbw_bijust(p s: wff): $ (p <-> s) <-> (((p -> s) -> ((s -> p) -> F.)) -> F.) $
+    = '(_3bitri
+        dfbi1
+        (notbii (impbii (imim2i pm2_21) (imim2i (ja id falim))))
+        (impbii pm2_21 (pm2_43i (ja ax_1 falim)))
+    );
+
+theorem tbw_negdf(p: wff): $ ((~p -> p -> F.) -> (((p -> F.) -> ~p) -> F.)) -> F. $
+    = '(mpbi (impbii pm2_21 (pm2_43i (ja ax_1 falim))) tbw_bijust);
+
+theorem tbw_ax1(p s c: wff): $ (p -> s) -> (s -> c) -> (p -> c) $ = 'imim1;
+theorem tbw_ax2(p s: wff): $ p -> s -> p $ = 'ax_1;
+theorem tbw_ax3(p s: wff): $ ((p -> s) -> p) -> p $ = 'peirce;
+
+theorem tbw_ax4(p: wff): $ F. -> p $
+    = 'falim;
+
+theorem tbwsyl(p s c: wff)  (tbwsyl_1: $ p -> s $) (tbwsyl_2: $ s -> c $): $ p -> c $
+    = '(ax_mp tbwsyl_2 (ax_mp tbwsyl_1 tbw_ax1));
+
+theorem tbwlem1(p s c: wff): $ (p -> s -> c) -> (s -> p -> c) $
+    = '(tbwsyl tbw_ax1 (ax_mp (tbwsyl (tbwsyl tbw_ax2 tbw_ax1) (tbwsyl tbw_ax1 tbw_ax3)) tbw_ax1));
+
+theorem tbwlem2(p s c h: wff): $ (p -> s -> F.) -> ((p -> c) -> h) -> (s -> h) $
+    = '(tbwsyl (tbwsyl tbw_ax1 (ax_mp (ax_mp (ax_mp tbw_ax4 (ax_mp tbw_ax1 tbwlem1)) tbwlem1) tbw_ax1)) tbw_ax1);
+
+theorem tbwlem3(p s: wff): $ ((((p -> F.) -> p) -> p) -> s) -> s $
+    = '(ax_mp (ax_mp tbw_ax3 (tbwsyl tbw_ax2 tbw_ax1)) (tbwsyl tbw_ax1 tbw_ax3));
+
+theorem tbwlem4(p s: wff): $ ((p -> F.) -> s) -> (s -> F.) -> p $
+    = '(tbwsyl (ax_mp (ax_mp (ax_mp tbw_ax4 (ax_mp tbw_ax1 tbwlem1)) tbwlem1) (ax_mp tbw_ax1 tbwlem1)) (tbwsyl tbwlem2 tbwlem3));
+
+theorem tbwlem5(p s: wff): $ ((p -> s -> F.) -> F.) -> p $
+    = '(ax_mp (ax_mp (tbwsyl tbw_ax2 tbw_ax1) tbwlem1) tbwlem4);
+
+theorem re1luk1(p s c: wff): $ (p -> s) -> (s -> c) -> (p -> c) $
+    = 'tbw_ax1;
+
+theorem re1luk2(p: wff): $ (~p -> p) -> p $
+    = '(tbwsyl (ax_mp (ax_mp tbw_negdf (ax_mp tbw_ax2 tbwlem4)) tbw_ax1) tbw_ax3);
+
+theorem re1luk3(p s: wff): $ p -> ~p -> s $
+    = '(tbwsyl (ax_mp (ax_mp tbw_ax4 (ax_mp tbw_ax1 tbwlem1)) tbwlem1) (ax_mp (ax_mp tbw_negdf tbwlem5) tbw_ax1));

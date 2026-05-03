@@ -1,0 +1,8 @@
+import "../_init.mm1";
+
+-------- PRE LOGIC --------
+
+-- 1.1.1 Inferences for assisting proof development --
+
+theorem idi(p: wff) (idi_1: $ p $): $ p $ = 'idi_1;
+theorem a1ii(p s: wff) (a1ii_1: $ p $) (_a1ii_2: $ s $): $ p $ = 'a1ii_1;

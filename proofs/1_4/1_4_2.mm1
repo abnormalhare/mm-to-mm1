@@ -1,0 +1,44 @@
+import "1_4_1.mm1";
+
+-- 1_4_2 - Rule scheme ax-gen (Generalization) --
+
+axiom ax_gen{x: setvar} (p: wff x) (ax_gen_1: $ p $): $ A{x p} $;
+
+theorem gen2{x y: setvar} (p: wff x y) (gen2_1: $ p $): $ A{x A{y p}} $
+    = '(ax_gen (ax_gen gen2_1));
+
+theorem mpg{x: setvar} (p s: wff x) (mpg_1: $ A{x p} -> s $) (mpg_2: $ p $): $ s $
+    = '(ax_mp (ax_gen mpg_2) mpg_1);
+
+theorem mpgbi{x: setvar} (p s: wff x) (mpgbi_1: $ A{x p} <-> s $) (mpgbi_2: $ p $): $ s $
+    = '(mpbi (ax_gen mpgbi_2) mpgbi_1);
+
+theorem mpgbir{x: setvar} (p s: wff x) (mpgbir_1: $ p <-> A{x s} $) (mpgbir_2: $ s $): $ p $
+    = '(mpbir (ax_gen mpgbir_2) mpgbir_1);
+
+theorem nex{x: setvar} (p: wff x) (nex_1: $ ~p $): $ ~E{x p} $
+    = '(mpgbi alnex nex_1);
+
+theorem nfth{x: setvar} (p: wff x) (nfth_1: $ p $): $ F{x p} $
+    = '(mpg nftht nfth_1);
+
+theorem nfnth{x: setvar} (p: wff x) (nfnth_1: $ ~p $): $ F{x p} $
+    = '(mpg nfntht2 nfnth_1);
+
+theorem hbth{x: setvar} (p: wff x) (hbth_1: $ p $): $ p -> A{x p} $
+    = '(a1i (ax_gen hbth_1));
+
+theorem nftru{x: setvar}: $ F{x T.} $
+    = '(nfth tru);
+
+theorem nffal{x: setvar}: $ F{x F.} $
+    = '(nfnth fal);
+
+theorem sptruw{x: setvar} (p: wff x) (sptruw_1: $ p $): $ A{x p} -> p $
+    = '(a1i sptruw_1);
+
+theorem altru{x: setvar}: $ A{x T.} $
+    = '(ax_gen tru);
+
+theorem alfal{x: setvar}: $ A{x ~F.} $
+    = '(ax_gen fal);

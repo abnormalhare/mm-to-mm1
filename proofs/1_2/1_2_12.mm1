@@ -1,0 +1,70 @@
+import "1_2_11.mm1";
+
+-- 1_2_12 - Logical "nand" --
+
+def wnan(p s: wff): wff = $ ~(p ^ s) $;
+infixl wnan: $⊼$ prec 74;
+theorem df_nan(p s: wff): $ (p ⊼ s) <-> ~(p ^ s) $ = 'biid;
+
+theorem nanan(p s: wff): $ (p ^ s) <-> ~(p ⊼ s) $
+    = '(con2bii df_nan);
+
+theorem dfnan2(p s: wff): $ (p ⊼ s) <-> (p -> ~s) $
+    = '(bitr4i df_nan imnan);
+
+theorem nanor(p s: wff): $ (p ⊼ s) <-> (~p \/ ~s) $
+    = '(bitri df_nan ianor);
+
+theorem nancom(p s: wff): $ (p ⊼ s) <-> (s ⊼ p) $
+    = '(_3bitr4i con2b dfnan2 dfnan2);
+
+theorem nannan(p s c: wff): $ (p ⊼ (s ⊼ c)) <-> (p -> (s ^ c)) $
+    = '(bitr4i dfnan2 (imbi2i nanan));
+
+theorem nanim(p s: wff): $ (p -> s) <-> (p ⊼ (s ⊼ s)) $
+    = '(bitr2i nannan anidmdbi);
+
+theorem nannot(p: wff): $ ~p <-> (p ⊼ p) $
+    = '(bitr2i dfnan2 pm4_8);
+
+theorem nanbi(p s: wff): $ (p <-> s) <-> ((p ⊼ s) ⊼ ((p ⊼ p) ⊼ (s ⊼ s))) $
+    = '(bitr4i (_3bitri dfbi3 df_or (imbi12i (bicomi df_nan) (anbi12i nannot nannot))) nannan);
+
+theorem nanbi1(p s c: wff): $ (p <-> s) -> ((p ⊼ c) <-> (s ⊼ c)) $
+    = '(_3bitr4g imbi1 dfnan2 dfnan2);
+
+theorem nanbi2(p s c: wff): $ (p <-> s) -> ((c ⊼ p) <-> (c ⊼ s)) $
+    = '(_3bitr4g nanbi1 nancom nancom);
+
+theorem nanbi12(p s c h: wff): $ ((p <-> s) ^ (c <-> h)) -> ((p ⊼ c) <-> (s ⊼ h)) $
+    = '(sylan9bb nanbi1 nanbi2);
+
+theorem nanbi1i(p s c: wff) (nanbi1i_1: $ p <-> s $): $ (p ⊼ c) <-> (s ⊼ c) $
+    = '(ax_mp nanbi1i_1 nanbi1);
+
+theorem nanbi2i(p s c: wff) (nanbi2i_1: $ p <-> s $): $ (c ⊼ p) <-> (c ⊼ s) $
+    = '(ax_mp nanbi2i_1 nanbi2);
+
+theorem nanbi12i(p s c h: wff) (nanbii_1: $ p <-> s $) (nanbi12i_2: $ c <-> h $): $ (p ⊼ c) <-> (s ⊼ h) $
+    = '(mp2an nanbii_1 nanbi12i_2 nanbi12);
+
+theorem nanbi1d(p s c h: wff) (nanbid_1: $ p -> (s <-> c) $): $ p -> ((s ⊼ h) <-> (c ⊼ h)) $
+    = '(syl nanbid_1 nanbi1);
+
+theorem nanbi2d(p s c h: wff) (nanbid_1: $ p -> (s <-> c) $): $ p -> ((h ⊼ s) <-> (h ⊼ c)) $
+    = '(syl nanbid_1 nanbi2);
+
+theorem nanbi12d(p s c h t: wff) (nanbid_1: $ p -> (s <-> c) $) (nanbi12d_2: $ p -> (h <-> t) $): $ p -> ((s ⊼ h) <-> (c ⊼ t)) $
+    = '(syl2anc nanbid_1 nanbi12d_2 nanbi12);
+
+theorem nanass(p s c: wff): $ (p <-> c) <-> ((p ⊼ s ⊼ c) <-> (p ⊼ (s ⊼ c))) $
+    = '(bitri
+        (impbii
+            (nanbi12d bicom1 nanbi2)
+            (bija
+                (impbid21d (sylbi nannan (imim2i simpr)) (sylbi nannan (imim2i simpr)))
+                (syl2imc (sylbir nanan simpl) (sylbir nanan simpl) (pm5_1im))
+            )
+        )
+        (bibi1i (bitri (nanbi2i nancom) nancom))
+    );

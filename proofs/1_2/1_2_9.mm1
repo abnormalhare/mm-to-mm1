@@ -1,0 +1,61 @@
+import "1_2_8.mm1";
+
+-- 1_2_9 - The conditional operator --
+
+def wif(p s c: wff): wff = $ ((p ^ s) \/ (~p ^ c)) $;
+notation wif(p s c) = ($if-[$:max) p s c ($]$:0);
+theorem df_ifp(p s c: wff): $ if-[p s c] <-> ((p ^ s) \/ (~p ^ c)) $ = 'biid;
+
+theorem dfifp2(p s c: wff): $ if-[p s c] <-> ((p -> s) ^ (~p -> c)) $
+    = '(bitri df_ifp cases2);
+
+theorem dfifp3(p s c: wff): $ if-[p s c] <-> ((p -> s) ^ (p \/ c)) $
+    = '(bitri dfifp2 (anbi2i pm4_64));
+
+theorem dfifp4(p s c: wff): $ if-[p s c] <-> ((~p \/ s) ^ (p \/ c)) $
+    = '(bianbi dfifp3 imor);
+
+theorem dfifp5(p s c: wff): $ if-[p s c] <-> ((~p \/ s) ^ (~p -> c)) $
+    = '(bianbi dfifp2 imor);
+
+theorem dfifp6(p s c: wff): $ if-[p s c] <-> ((p ^ s) \/ ~(c -> p)) $
+    = '(bitri df_ifp (orbi2i (bitri ancom annim)));
+
+theorem dfifp7(p s c: wff): $ if-[p s c] <-> ((c -> p) -> (p ^ s)) $
+    = '(_3bitr4i orcom dfifp6 imor);
+
+theorem ifpdfbi(p s: wff): $ (p <-> s) <-> if-[p s ~s] $
+    = '(_3bitr4i (anbi2i con34b) dfbi2 dfifp2);
+
+theorem anifp(p s c: wff): $ (s ^ c) -> if-[p s c] $
+    = '(sylibr (anim12i olc olc) dfifp4);
+
+theorem ifpor(p s c: wff): $ if-[p s c] -> (s \/ c) $
+    = '(sylbi df_ifp (orim12i simpr simpr));
+
+theorem ifpn(p s c: wff): $ if-[p s c] <-> if-[(~p) c s] $
+    = '(_3bitr4i ancom dfifp5 dfifp3);
+
+theorem ifptru(p s c: wff): $ p -> (if-[p s c] <-> s) $
+    = '(bitr2d biimt (bitr4di (biantrud orc) dfifp3));
+
+theorem ifpfal(p s c: wff): $ ~p -> (if-[p s c] <-> c) $
+    = '(bitrid ifpn ifptru);
+
+theorem ifpid(p s: wff): $ if-[p s s] <-> s $
+    = '(pm2_61i ifptru ifpfal);
+
+theorem casesifp(p s c h: wff) (casesifp_1: $ p -> (s <-> c) $) (casesifp_2: $ ~p -> (s <-> h) $): $ s <-> if-[p c h] $
+    = '(bitr4i (cases casesifp_1 casesifp_2) df_ifp);
+
+theorem ifpbi123d(p s c h t e z: wff) (ifpbi123d_1: $ p -> (s <-> t) $) (ifpbi123d_2: $ p -> (c <-> e) $) (ifpbi123d_3: $ p -> (h <-> z) $): $ p -> (if-[s c h] <-> if-[t e z]) $
+    = '(_3bitr4g (anbi12d (imbi12d ifpbi123d_1 ifpbi123d_2) (orbi12d ifpbi123d_1 ifpbi123d_3)) dfifp3 dfifp3);
+
+theorem ifpbi23d(p s c h e z: wff) (ifpbi23d_1: $ p -> (c <-> e) $) (ifpbi23d_2: $ p -> (h <-> z) $): $ p -> (if-[s c h] <-> if-[s e z]) $
+    = '(ifpbi123d biidd ifpbi23d_1 ifpbi23d_2);
+
+theorem ifpimpda(p s c h: wff) (ifpimpda_1: $ (p ^ s) -> c $) (ifpimpda_2: $ (p ^ ~s) -> h $): $ p -> if-[s c h] $
+    = '(sylanbrc (ex ifpimpda_1) (ex ifpimpda_2) dfifp2);
+
+theorem _1fpid3(p s c: wff) (_1fpid3_1: $ (p ^ s) -> c $): $ if-[p s c] -> c $
+    = '(sylbi df_ifp (jaoi _1fpid3_1 simpr));

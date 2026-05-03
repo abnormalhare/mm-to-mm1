@@ -1,0 +1,38 @@
+import "1_3_11.mm1";
+
+-------- NEW CATEGORY --------
+
+-- 1_3_12 - Stoic logic non-modal portion (Chrysippus of Soli) --
+
+theorem mptnan(p s: wff) (mptnan_min: $ p $) (mptnan_maj: $ ~(p ^ s) $): $ ~s $
+    = '(ax_mp mptnan_min (imnani mptnan_maj));
+
+theorem mptxor(p s: wff) (mptxor_min: $ p $) (mptxor_maj: $ p ⊻ s $): $ ~s $
+    = '(mptnan mptxor_min (ax_mp mptxor_maj xornan));
+
+theorem mtpor(p s: wff) (mtpor_min: $ ~p $) (mtpor_max: $ p \/ s $): $ s $
+    = '(ax_mp mtpor_min (ori mtpor_max));
+
+theorem mtpxor(p s: wff) (mtpxor_min: $ ~p $) (mtpxor_max: $ p ⊻ s $): $ s $
+    = '(mtpor mtpxor_min (ax_mp mtpxor_max xoror));
+
+theorem stoic1a(p s h: wff) (stoic1_1: $ (p ^ s) -> h $): $ (p ^ ~h) -> ~s $
+    = '(con3dimp (ex stoic1_1));
+
+theorem stoic1b(p s h: wff) (stoic1_1: $ (p ^ s) -> h $): $ (s ^ ~h) -> ~p $
+    = '(stoic1a (ancoms stoic1_1));
+
+theorem stoic2a(p s c: wff) (stoic2a_1: $ (p ^ s) -> c $) (stoic2a_2: $ (p ^ c) -> h $): $ (p ^ s) -> h $
+    = '(syldan stoic2a_1 stoic2a_2);
+
+theorem stoic2b(p s c h: wff) (stoic2b_1: $ (p ^ s) -> c $) (stoic2b_2: $ (p ^ s ^ c) -> h $): $ (p ^ s) -> h $
+    = '(mpdan stoic2b_1 stoic2b_2);
+
+theorem stoic3(p s c h t: wff) (stoic3_1: $ (p ^ s) -> c $) (stoic3_2: $ (c ^ h) -> t $): $ (p ^ s ^ h) -> t $
+    = '(sylbi df_an (sylan stoic3_1 stoic3_2));
+
+theorem stoic4a(p s c h t: wff) (stoic4a_1: $ (p ^ s) -> c $) (stoic4a_2: $ (c ^ p ^ h) -> t $): $ (p ^ s ^ h) -> t $
+    = '(syl3anc (_3adant3 stoic4a_1) simpll simp3 stoic4a_2);
+
+theorem stoic4b(p s c h t: wff) (stoic4b_1: $ (p ^ s) -> c $) (stoic4b_2: $ (c ^ p ^ s ^ h) -> t $): $ (p ^ s ^ h) -> t $
+    = '(syl31anc (_3adant3 stoic4b_1) simpll simplr simp3 stoic4b_2);

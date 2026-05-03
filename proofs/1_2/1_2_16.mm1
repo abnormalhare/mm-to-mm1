@@ -1,0 +1,109 @@
+import "1_2_15.mm1";
+
+-- 1_2_16 - Truth Tables --
+
+-- 1. Implication
+
+theorem truimtru: $ (T. -> T.) <-> T. $
+    = '(bitru id);
+
+theorem truimfal: $ (T. -> F.) <-> F. $
+    = '(bicomi trut);
+
+theorem falimtru: $ (F. -> T.) <-> T. $
+    = '(bitru trud);
+
+theorem falimfal: $ (F. -> F.) <-> T. $
+    = '(bitru id);
+
+-- 2. Negation
+
+theorem nottru: $ ~T. <-> F. $
+    = '(bicomi df_fal);
+
+theorem notfal: $ ~F. <-> T. $
+    = '(bitru fal);
+
+-- 3. Equivalence
+
+theorem trubitru: $ (T. <-> T.) <-> T. $
+    = '(bitru biid);
+
+theorem falbitru: $ (F. <-> T.) <-> F. $
+    = '(bicomi tbtru);
+
+theorem trubifal: $ (T. <-> F.) <-> F. $
+    = '(bitri bicom falbitru);
+
+theorem falbifal: $ (F. <-> F.) <-> T. $
+    = '(bitru biid);
+
+-- 4. Conjunction
+
+theorem truantru: $ (T. ^ T.) <-> T. $
+    = 'anidm;
+
+theorem truanfal: $ (T. ^ F.) <-> F. $
+    = 'truan;
+
+theorem falantru: $ (F. ^ T.) <-> F. $
+    = '(bifal (intnanr fal));
+
+theorem falanfal: $ (F. ^ F.) <-> F. $
+    = 'anidm;
+
+-- 5. Disjunction
+
+theorem truortru: $ (T. \/ T.) <-> T. $
+    = 'oridm;
+
+theorem truorfal: $ (T. \/ F.) <-> T. $
+    = '(bitru (orci tru));
+
+theorem falortru: $ (F. \/ T.) <-> T. $
+    = '(bitru (olci tru));
+
+theorem falorfal: $ (F. \/ F.) <-> F. $
+    = 'oridm;
+
+-- 5. Alternative Denial
+
+theorem trunantru: $ (T. ⊼ T.) <-> F. $
+    = '(bitr3i nannot nottru);
+
+theorem trunanfal: $ (T. ⊼ F.) <-> T. $
+    = '(bitri (xchbinx df_nan truanfal) notfal);
+
+theorem falnantru: $ (F. ⊼ T.) <-> T. $
+    = '(bitri nancom trunanfal);
+
+theorem falnanfal: $ (F. ⊼ F.) <-> T. $
+    = '(bitr3i nannot notfal);
+
+-- 6. Exclusive Disjunction
+
+theorem truxortru: $ (T. ⊻ T.) <-> F. $
+    = '(bitri (xchbinx df_xor trubitru) nottru);
+
+theorem truxorfal: $ (T. ⊻ F.) <-> T. $
+    = '(bitri (xchbinx df_xor trubifal) notfal);
+
+theorem falxortru: $ (F. ⊻ T.) <-> T. $
+    = '(bitri xorcom truxorfal);
+
+theorem falxorfal: $ (F. ⊻ F.) <-> F. $
+    = '(bitri (xchbinx df_xor falbifal) nottru);
+
+-- 7. Joint Denial
+
+theorem trunortru: $ (T. ⊽ T.) <-> F. $
+    = '(bitr4i (xchbinx df_nor truortru) df_fal);
+
+theorem trunorfal: $ (T. ⊽ F.) <-> F. $
+    = '(bitr4i (xchbinx df_nor truorfal) df_fal);
+
+theorem falnortru: $ (F. ⊽ T.) <-> F. $
+    = '(bitr4i (xchbinx df_nor falortru) df_fal);
+
+theorem falnorfal: $ (F. ⊽ F.) <-> T. $
+    = '(bitri (xchbinx df_nor falorfal) notfal);

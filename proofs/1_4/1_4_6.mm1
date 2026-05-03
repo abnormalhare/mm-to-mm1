@@ -1,0 +1,44 @@
+import "1_4_5.mm1";
+
+-- 1_4_6 - Axiom scheme ax-6 (Existence) --
+
+axiom ax_6{x: setvar} (y: setvar x): $ ~A{x ~(x =s y)} $;
+
+theorem ax6v{x: setvar} (y: setvar): $ ~A{x ~(x =s y)} $ = 'ax_6;
+
+theorem ax6ev{x: setvar} (y: setvar): $ E{x x =s y} $
+    = '(mpbir ax6v df_ex);
+
+theorem spimw{x: setvar} (y: setvar) (p s: wff x) (spimw_1: $ ~s -> A{x ~s} $) (spimw_2: $ x =s y -> p -> s $): $ A{x p} -> s $
+    = '(ax_mp ax6v (spimfw spimw_1 spimw_2));
+
+theorem spimew{x: setvar} (y: setvar) (p s: wff x) (spimew_1: $ p -> A{x p} $) (spimew_2: $ x =s y -> p -> s $): $ p -> E{x s} $
+    = '(mpsyl ax6v spimew_1 (speimfw spimew_2));
+
+theorem speiv{x: setvar} (y: setvar) (p s: wff x) (speiv_1: $ x =s y -> s -> p $) (speiv_2: $ s $): $ E{x p} $
+    = '(ax_mp speiv_2 (spimew (hbth speiv_2) speiv_1));
+
+theorem speivw{x: setvar} (y: setvar) (p s: wff x) (speivw_1: $ x =s y -> (p <-> s) $) (speivw_2: $ s $): $ E{x p} $
+    = '(speiv (biimprd speivw_1) speivw_2);
+
+theorem exgen{x: setvar} (p: wff x) (exgen_1: $ p $): $ E{x p} $
+    = '(speiv (! idd $ x =s _y $) exgen_1);
+
+theorem extru{x: setvar}: $ E{x T.} $
+    = '(exgen tru);
+
+theorem _19_2{x: setvar} (p: wff x): $ A{x p} -> E{x p} $
+    = '(_19_35i (exgen id));
+
+theorem _19_2d{x: setvar} (p s: wff x) (_19_2d_1: $ p -> A{x s} $): $ p -> E{x s} $
+    = '(syl _19_2d_1 _19_2);
+
+theorem _19_8w{x: setvar} (p: wff x) (_19_8w_1: $ p -> A{x p} $): $ p -> E{x p} $
+    = '(_19_2d _19_8w_1);
+
+theorem spnfw{x: setvar} (p: wff x) (spnfw_1: $ ~p -> A{x ~p} $): $ A{x p} -> p $
+    = '(spimw spnfw_1 (! idd $ x =s _y $));
+
+theorem spfalw{x: setvar} (p: wff x) (spfalw_1: $ ~p $): $ A{x p} -> p $
+    = '(spnfw (hbth spfalw_1));
+

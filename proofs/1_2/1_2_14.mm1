@@ -1,0 +1,42 @@
+import "1_2_13.mm1";
+
+-- 1_2_14 - Logical "nor" --
+
+def wnor(p s: wff): wff = $ ~(p \/ s) $;
+infixl wnor: $⊽$ prec 72;
+theorem df_nor(p s: wff): $ (p ⊽ s) <-> ~(p \/ s) $ = 'biid;
+
+theorem norcom(p s: wff): $ (p ⊽ s) <-> (s ⊽ p) $
+    = '(bitr4i (xchbinx df_nor orcom) df_nor);
+
+theorem nornot(p: wff): $ ~p <-> (p ⊽ p) $
+    = '(bicomi (xchbinx df_nor oridm));
+
+theorem noran(p s: wff): $ (p ^ s) <-> ((p ⊽ p) ⊽ (s ⊽ s)) $
+    = '(bitr4i (xchbinx anor (orbi12i nornot nornot)) df_nor);
+
+theorem noror(p s: wff): $ (p \/ s) <-> ((p ⊽ s) ⊽ (p ⊽ s)) $
+    = '(bitri (con2bii df_nor) nornot);
+
+theorem norasslem1(p s c: wff): $ ((p \/ s) -> c) <-> ((p ⊽ s) \/ c) $
+    = '(bitr4i imor (orbi1i df_nor));
+
+theorem norasslem2(p s c: wff): $ p -> (s <-> ((p \/ c) -> s)) $
+    = '(orcs biimt);
+
+theorem norasslem3(p s c: wff): $ ~p -> ((s -> c) <-> ((p \/ s) -> c)) $
+    = '(imbi1d biorf);
+
+theorem norass(p s c: wff): $ (p <-> c) <-> ((p ⊽ s ⊽ c) <-> (p ⊽ (s ⊽ c))) $
+    = '(_3bitr4i
+        notbi
+        (_3bitr4i
+            (bibi12i norasslem1 norasslem1)
+            (pm2_61i
+                (bitrid bicom (bibi12d norasslem2 norasslem2))
+                (bitrid impimprbi (bibi12d norasslem3 norasslem3))
+            )
+            (bibi12i (orbi1i norcom) orcom)
+        )
+        (bibi12i df_nor df_nor)
+    );

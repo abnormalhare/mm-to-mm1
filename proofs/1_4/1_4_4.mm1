@@ -1,0 +1,158 @@
+import "1_4_3.mm1";
+
+-- 1_4_4 - Axiom scheme ax-5 (Distinctness) --
+
+axiom ax_5{x: setvar} (p: wff): $ p -> A{x p} $;
+
+theorem ax5d{x: setvar} (p: wff x) (s: wff): $ p -> s -> A{x s} $
+    = '(a1i ax_5);
+
+theorem ax5e{x: setvar} (p: wff): $ E{x p} -> p $
+    = '(mpbir ax_5 eximal);
+
+theorem ax5ea{x: setvar} (p: wff): $ E{x p} -> A{x p} $
+    = '(syl ax5e ax_5);
+
+theorem nfv{x: setvar} (p: wff): $ F{x p} $
+    = '(nfi ax5ea);
+
+theorem nfvd{x: setvar} (p: wff x) (s: wff): $ p -> F{x s} $
+    = '(a1i nfv);
+
+theorem alimdv{x: setvar} (p: wff) (s c: wff x) (alimdv_1: $ p -> s -> c $): $ p -> (A{x s} -> A{x c}) $
+    = '(alimdh ax_5 alimdv_1);
+
+theorem eximdv{x: setvar} (p: wff) (s c: wff x) (alimdv_1: $ p -> s -> c $): $ p -> (E{x s} -> E{x c}) $
+    = '(eximdh ax_5 alimdv_1);
+
+theorem _2alimdv{x: setvar} (p: wff) (s c: wff x y) (_2alimdv_1: $ p -> s -> c $): $ p -> (A{x A{y s}} -> A{x A{y c}}) $
+    = '(alimdv (alimdv _2alimdv_1));
+
+theorem _2eximdv{x: setvar} (p: wff) (s c: wff x y) (_2alimdv_1: $ p -> s -> c $): $ p -> (E{x E{y s}} -> E{x E{y c}}) $
+    = '(eximdv (eximdv _2alimdv_1));
+
+theorem albidv{x: setvar} (p: wff) (s c: wff x) (albidv_1: $ p -> (s <-> c) $): $ p -> (A{x s} <-> A{x c}) $
+    = '(albidh ax_5 albidv_1);
+
+theorem exbidv{x: setvar} (p: wff) (s c: wff x) (albidv_1: $ p -> (s <-> c) $): $ p -> (E{x s} <-> E{x c}) $
+    = '(exbidh ax_5 albidv_1);
+
+theorem nfbidv{x: setvar} (p: wff) (s c: wff x) (albidv_1: $ p -> (s <-> c) $): $ p -> (F{x s} <-> F{x c}) $
+    = '(_3bitr4g (imbi12d (exbidv albidv_1) (albidv albidv_1)) df_nf df_nf);
+
+theorem _2albidv{x y: setvar} (p: wff) (s c: wff x y) (_2albidv_1: $ p -> (s <-> c) $): $ p -> (A{x A{y s}} <-> A{x A{y c}}) $
+    = '(albidv (albidv _2albidv_1));
+
+theorem _2exbidv{x y: setvar} (p: wff) (s c: wff x y) (_2albidv_1: $ p -> (s <-> c) $): $ p -> (E{x E{y s}} <-> E{x E{y c}}) $
+    = '(exbidv (exbidv _2albidv_1));
+
+theorem _3exbidv{x y z: setvar} (p: wff) (s c: wff x y z) (_3exbidv_1: $ p -> (s <-> c) $): $ p -> (E{x E{y E{z s}}} <-> E{x E{y E{z c}}}) $
+    = '(_2exbidv (exbidv _3exbidv_1));
+
+theorem _4exbidv{x y z w: setvar} (p: wff) (s c: wff x y z w) (_4exbidv_1: $ p -> (s <-> c) $): $ p -> (E{x E{y E{z E{w s}}}} <-> E{x E{y E{z E{w c}}}}) $
+    = '(_2exbidv (_2exbidv _4exbidv_1));
+
+theorem alrimiv{x: setvar} (p: wff) (s: wff x) (alrimiv_1: $ p -> s $): $ p -> A{x s} $
+    = '(alrimih ax_5 alrimiv_1);
+
+theorem alrimivv{x y: setvar} (p: wff) (s: wff x y) (alrimivv_1: $ p -> s $): $ p -> A{x A{y s}} $
+    = '(alrimiv (alrimiv alrimivv_1));
+
+theorem alrimdv{x: setvar} (p s: wff) (c: wff x) (alrimdv_1: $ p -> s -> c $): $ p -> s -> A{x c} $
+    = '(alrimdh ax_5 ax_5 alrimdv_1);
+
+theorem exlimiv{x: setvar} (p: wff x) (s: wff) (exlimiv_1: $ p -> s $): $ E{x p} -> s $
+    = '(syl (eximi exlimiv_1) ax5e);
+
+theorem exlimiiv{x: setvar} (p: wff x) (s: wff) (exlimiv_1: $ p -> s $) (exlimiiv_2: $ E{x p} $): $ s $
+    = '(ax_mp exlimiiv_2 (exlimiv exlimiv_1));
+
+theorem exlimivv{x y: setvar} (p: wff x y) (s: wff) (exlimivv_1: $ p -> s $): $ E{x E{y p}} -> s $
+    = '(exlimiv (exlimiv exlimivv_1));
+
+theorem exlimdv{x: setvar} (s: wff x) (p c: wff) (exlimdv_1: $ p -> s -> c $): $ p -> E{x s} -> c $
+    = '(syl6 (eximdv exlimdv_1) ax5e);
+
+theorem exlimdvv{x y: setvar} (s: wff x y) (p c: wff) (exlimdvv_1: $ p -> s -> c $): $ p -> E{x E{y s}} -> c $
+    = '(exlimdv (exlimdv exlimdvv_1));
+
+theorem exlimddv{x: setvar} (s: wff x) (p c: wff) (exlimddv_1: $ p -> E{x s} $) (exlimddv_2: $ (p ^ s) -> c $): $ p -> c $
+    = '(mpd exlimddv_1 (exlimdv (ex exlimddv_2)));
+
+theorem nexdv{x: setvar} (p: wff) (s: wff x) (nexdv_1: $ p -> ~s $): $ p -> ~E{x s} $
+    = '(nexdh ax_5 nexdv_1);
+
+theorem _2ax5{x y: setvar} (p: wff): $ p -> A{x A{y p}} $
+    = '(alrimivv id);
+
+theorem stdpc5v{x: setvar} (p: wff) (s: wff x): $ A{x p -> s} -> (p -> A{x s}) $
+    = '(syl5 ax_5 alim);
+
+theorem _19_21v{x: setvar} (p: wff) (s: wff x): $ A{x p -> s} <-> (p -> A{x s}) $
+    = '(impbii stdpc5v (syl (imim1i ax5e) _19_38));
+
+theorem _19_32v{x: setvar} (p: wff) (s: wff x): $ A{x p \/ s} <-> (p \/ A{x s}) $
+    = '(_3bitr4i _19_21v (albii df_or) df_or);
+
+theorem _19_31v{x: setvar} (p: wff x) (s: wff): $ A{x p \/ s} <-> (A{x p} \/ s) $
+    = '(_3bitr4i _19_32v (albii orcom) orcom);
+
+theorem _19_23v{x: setvar} (p: wff x) (s: wff): $ A{x p -> s} <-> (E{x p} -> s) $
+    = '(impbii (syl6 exim ax5e) (syl (imim2i ax_5) _19_38));
+
+theorem _19_23vv{x y: setvar} (p: wff x y) (s: wff): $ A{x A{y p -> s}} <-> (E{x E{y p}} -> s) $
+    = '(bitri (albii _19_23v) _19_23v);
+
+theorem pm11_53v{x: setvar} {y: setvar} (p: wff x) (s: wff y): $ A{x A{y p -> s}} <-> (E{x p} -> A{y s}) $
+    = '(bitri (albii _19_21v) _19_23v);
+
+theorem _19_36imv{x: setvar} (p: wff x) (s: wff): $ E{x p -> s} -> (A{x p} -> s) $
+    = '(syl6com (aleximi pm2_27) ax5e);
+
+theorem _19_36iv{x: setvar} (p: wff x) (s: wff) (_19_36iv_1: $ E{x p -> s} $): $ A{x p} -> s $
+    = '(ax_mp _19_36iv_1 _19_36imv);
+
+theorem _19_37imv{x: setvar} (p: wff) (s: wff x): $ E{x p -> s} -> (p -> E{x s}) $
+    = '(syl5 ax_5 (biimpi _19_35));
+
+theorem _19_37iv{x: setvar} (p: wff) (s: wff x) (_19_37iv_1: $ E{x p -> s} $): $ p -> E{x s} $
+    = '(ax_mp _19_37iv_1 _19_37imv);
+
+theorem _19_41v{x: setvar} (p: wff x) (s: wff): $ E{x p ^ s} <-> (E{x p} ^ s) $
+    = '(impbii (syl _19_40 (anim2i ax5e)) (impcom (eximdv pm3_21)));
+
+theorem _19_41vv{x y: setvar} (p: wff x y) (s: wff): $ E{x E{y p ^ s}} <-> (E{x E{y p}} ^ s) $
+    = '(bitri (exbii _19_41v) _19_41v);
+
+theorem _19_41vvv{x y z: setvar} (p: wff x y z) (s: wff): $ E{x E{y E{z p ^ s}}} <-> (E{x E{y E{z p}}} ^ s) $
+    = '(bitri (exbii _19_41vv) _19_41v);
+
+theorem _19_41vvvv{x y z w: setvar} (p: wff x y z w) (s: wff): $ E{w E{x E{y E{z p ^ s}}}} <-> (E{w E{x E{y E{z p}}}} ^ s) $
+    = '(bitri (exbii _19_41vvv) _19_41v);
+
+theorem _19_42v{x: setvar} (p: wff) (s: wff x): $ E{x p ^ s} <-> (p ^ E{x s}) $
+    = '(_3bitr4i _19_41v exancom ancom);
+
+theorem exdistr{x y: setvar} (p: wff x) (s: wff x y): $ E{x E{y p ^ s}} <-> E{x p ^ E{y s}} $
+    = '(exbii _19_42v);
+
+theorem exdistrv{x: setvar} {y: setvar} (p: wff x) (s: wff y): $ E{x E{y p ^ s}} <-> E{x p} ^ E{y s} $
+    = '(bitri exdistr _19_41v);
+
+theorem _4exdistrv{x y: setvar} {z w: setvar} (p: wff x y) (s: wff z w): $ E{x E{ z E{ y E{w p ^ s}}}} <-> (E{x E{y p}} ^ E{z E{w s}}) $
+    = '(bitri (_2exbii exdistrv) exdistrv);
+
+theorem _19_42vv{x y: setvar} (p: wff) (s: wff x y): $ E{x E{y p ^ s}} <-> (p ^ E{x E{y s}}) $
+    = '(bitri exdistr _19_42v);
+
+theorem exdistr2{x y z: setvar} (p: wff x) (s: wff x y z): $ E{x E{y E{z p ^ s}}} <-> E{x p ^ E{y E{z s}}} $
+    = '(exbii _19_42vv);
+
+theorem _19_42vvv{x y z: setvar} (p: wff) (s: wff x y z): $ E{x E{y E{z p ^ s}}} <-> (p ^ E{x E{y E{z s}}}) $
+    = '(bitri exdistr2 _19_42v);
+
+theorem _3exdistr{x y z: setvar} (p: wff x) (s: wff x y) (c: wff x y z): $ E{x E{y E{z p ^ s ^ c}}} <-> E{x p ^ E{y s ^ E{z c}}} $
+    = '(exbii (_3bitri (_2exbii anass) _19_42vv (anbi2i exdistr)));
+
+theorem _4exdistr{x y z w: setvar} (p: wff x) (s: wff x y) (c: wff x y z) (h: wff x y z w): $ E{x E{y E{z E{w (p ^ s) ^ (c ^ h)}}}} <-> E{x p ^ E{y s ^ E{z c ^ E{w h}}}} $
+    = '(bitri (_3exbii (_3bitr4i (anbi2i _19_42v) _19_42v biid)) _3exdistr);

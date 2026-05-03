@@ -1,0 +1,37 @@
+import "1_3_1.mm1";
+
+-- 1_3_2 - Implicational Calculus --
+
+theorem impsingle(p s c h: wff): $ ((p -> s) -> c) -> (c -> p) -> (h -> p) $
+    = '(syl6 imim1 (a1d peirce));
+
+theorem impsingle_step4(p s c _h _t _e _z _g: wff): $ ((p -> s) -> p) -> (c -> p) $
+    = '(ax_mp (! impsingle _t _e _z _g) (ax_mp (! impsingle p _h) (ax_mp (ax_mp impsingle impsingle) impsingle)));
+
+theorem impsingle_step8(p s c _h _t _e _z _g: wff): $ ((p -> s) -> c) -> (s -> c) $
+    = '(ax_mp (! impsingle _t _e _h _g) (ax_mp (! impsingle c _h)
+        (ax_mp
+            (ax_mp (ax_mp (ax_mp (! impsingle _t _e _h _g) (ax_mp (! impsingle s _h) (ax_mp (ax_mp impsingle impsingle) impsingle))) impsingle) impsingle)
+            impsingle
+        ))
+    );
+
+theorem impsingle_ax1(p s _c _h _t _e _z _g: wff): $ p -> s -> p $
+    = '(ax_mp (! impsingle_step8 _c s p _h _t _e _z _g) (! impsingle_step8 $ _c -> s $ p $ s -> p $ _h _t _e _z _g));
+
+theorem impsingle_step15(p s c h _t _e _z _g _r _m _l: wff): $ ((p -> s) -> (c -> h)) -> ((p -> h) -> (c -> h)) $
+    = '(ax_mp
+        (! impsingle h _l p c)
+        (ax_mp
+            (! impsingle _t _g _r _m)
+            (ax_mp
+                (! impsingle $ (p -> h) -> (c -> h) $ _e $ (h -> _l) -> p $ $ (p -> s) -> (c -> h) $)
+                (ax_mp (ax_mp (ax_mp (ax_mp (ax_mp (! impsingle $ c -> h $ _z) (! impsingle_step8 $ (c -> h) -> _z $ $ p -> s $ $ ((p -> s) -> (c -> h)) -> ((p -> h) -> (c -> h)) $ _t _e _g _r _m)) impsingle) impsingle) impsingle) impsingle)
+            )
+        )
+    );
+
+-- i dont wanna
+
+-- theorem impsingle_step18(p s c h t e _r: wff): $ (((p -> s) -> (c -> s)) -> (((s -> h) -> p) -> t)) -> (e -> (((s -> h) -> p) -> t)) $
+--     = '(ax_mp (ax_mp impsingle (ax_mp (ax_mp (! impsingle $ c -> s $ _r) (! impsingle_step8 $ (c -> s) -> _r $ $ ((s -> h) -> p) -> t $ $ ((((s -> h) -> p) -> t) -> (c -> s)) -> ((p -> s) -> (c -> s)) $ _r _r _r _r _r)) impsingle_step15)) impsingle);

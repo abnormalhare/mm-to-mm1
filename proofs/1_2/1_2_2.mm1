@@ -1,0 +1,9 @@
+import "1_2_1.mm1";
+
+-- 1.2.2 - The Axioms of Propositional Calculus --
+
+axiom ax_mp(p s: wff) (min: $ p $) (maj: $ p -> s $): $ s $;
+
+axiom ax_1(p s: wff): $ p -> s -> p $;
+axiom ax_2(p s c: wff): $ (p -> s -> c) -> (p -> s) -> (p -> c) $;
+axiom ax_3(p s: wff): $ (~p -> ~s) -> (s -> p) $;

@@ -1,0 +1,60 @@
+import "1_2_12.mm1";
+
+-- 1_2_13 - Logical "xor" --
+
+def wxo(p s: wff): wff = $ ~(p <-> s) $;
+infixl wxo: $⊻$ prec 73;
+theorem df_xor(p s: wff): $ (p ⊻ s) <-> ~(p <-> s) $ = 'biid;
+
+theorem xnor(p s: wff): $ (p <-> s) <-> ~(p ⊻ s) $
+    = '(con2bii df_xor);
+
+theorem xorcom(p s: wff): $ (p ⊻ s) <-> (s ⊻ p) $
+    = '(bitr4i (xchbinx df_xor bicom) df_xor);
+
+theorem xorass(p s c: wff): $ (p ⊻ s ⊻ c) <-> (p ⊻ (s ⊻ c)) $
+    = '(_3bitr4i
+        (_3bitr2ri
+            xor3
+            (_3bitr3i biass (bibi1i xnor) (bibi2i xnor))
+            nbbn
+        )
+        df_xor
+        df_xor
+    );
+
+theorem excxor(p s: wff): $ (p ⊻ s) <-> ((p ^ ~s) \/ (~p ^ s)) $
+    = '(_3bitri df_xor xor (orbi2i ancom));
+
+theorem xor2(p s: wff): $ (p ⊻ s) <-> ((p \/ s) ^ ~(p ^ s)) $
+    = '(bitri df_xor nbi2);
+
+theorem xoror(p s: wff): $ (p ⊻ s) -> (p \/ s) $
+    = '(simplbi xor2);
+
+theorem xornan(p s: wff): $ (p ⊻ s) -> ~(p ^ s) $
+    = '(simprbi xor2);
+
+theorem xornan2(p s: wff): $ (p ⊻ s) -> (p ⊼ s) $
+    = '(sylibr xornan df_nan);
+
+theorem xorneg2(p s: wff): $ (p ⊻ ~s) <-> ~(p ⊻ s) $
+    = '(_3bitr2i df_xor pm5_18 xnor);
+
+theorem xorneg1(p s: wff): $ (~p ⊻ s) <-> ~(p ⊻ s) $
+    = '(bitri xorcom (xchbinx xorneg2 xorcom));
+
+theorem xorneg(p s: wff): $ (~p ⊻ ~s) <-> (p ⊻ s) $
+    = '(bitr4i xorneg1 (con2bii xorneg2));
+
+theorem xorbi12i(p s c h: wff) (xorbi12_1: $ p <-> s $) (xorbi12_2: $ c <-> h $): $ (p ⊻ c) <-> (s ⊻ h) $
+    = '(bitr4i (xchbinx df_xor (bibi12i xorbi12_1 xorbi12_2)) df_xor);
+
+theorem xorbi12d(p s c h t: wff) (xor12d_1: $ p -> (s <-> c) $) (xor12d_2: $ p -> (h <-> t) $): $ p -> ((s ⊻ h) <-> (c ⊻ t)) $
+    = '(_3bitr4g (notbid (bibi12d xor12d_1 xor12d_2)) df_xor df_xor);
+
+theorem anxordi(p s c: wff): $ (p ^ (s ⊻ c)) <-> ((p ^ s) ⊻ (p ^ c)) $
+    = '(_3bitr4i xordi (anbi2i df_xor) df_xor);
+
+theorem xorexmid(p: wff): $ p ⊻ ~p $
+    = '(mpbir pm5_19 df_xor);

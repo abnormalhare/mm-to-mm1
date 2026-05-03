@@ -1,0 +1,15 @@
+import "1_4_4.mm1";
+
+-- 1_4_5 - Equality predicate (continued) --
+
+term weq(x y: setvar): wff;
+infixl weq: $=s$ prec 200;
+
+theorem speimfw{x: setvar} (y: setvar x) (p s: wff x) (speimfw_1: $ x =s y -> (p -> s) $): $ ~A{x ~(x =s y)} -> (A{x p} -> E{x s}) $
+    = '(syl5com (biimpri df_ex) (aleximi (com12 speimfw_1)));
+
+theorem spimfw{x: setvar} (y: setvar x) (p s: wff x) (spimfw_1: $ ~s -> A{x ~s} $) (spimfw_2: $ (x =s y) -> (p -> s) $): $ ~A{x ~(x =s y)} -> (A{x p} -> s) $
+    = '(syl6 (speimfw spimfw_2) (sylbi df_ex (con1i spimfw_1)));
+
+theorem ax12i{x: setvar} (y: setvar x) (p s: wff x) (ax12i_1: $ x =s y -> (p <-> s) $) (ax12i_2: $ s -> A{x s} $): $ x =s y -> p -> A{x x =s y -> p} $
+    = '(biimtrdi ax12i_1 (alrimih ax12i_2 (biimprcd ax12i_1)));

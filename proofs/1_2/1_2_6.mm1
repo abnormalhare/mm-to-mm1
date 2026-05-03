@@ -1,0 +1,1310 @@
+import "1_2_5.mm1";
+
+-- 1.2.6 - Logical conjunction --
+
+def wa(p s: wff): wff = $ ~(p -> ~s) $;
+infixl wa: $^$ prec 76;
+theorem df_an(p s: wff): $ p ^ s <-> ~(p -> ~s) $ = 'biid;
+
+theorem pm4_63(p s: wff): $ ~(p -> ~s) <-> p ^ s $ = '(bicomi df_an);
+
+theorem pm4_67(p s: wff): $ ~(~p -> ~s) <-> ~p ^ s $ = 'pm4_63;
+
+theorem imnan(p s: wff): $ p -> ~s <-> ~(p ^ s) $ = '(con2bii df_an);
+
+theorem imnani(p s: wff) (imnani_1: $ ~(p ^ s) $): $ p -> ~s $
+    = '(mpbir imnani_1 imnan);
+
+theorem iman(p s: wff): $ p -> s <-> ~(p ^ ~s) $
+    = '(bitri (imbi2i notnotb) imnan);
+
+theorem pm3_24(p: wff): $ ~(p ^ ~p) $
+    = '(mpbi id iman);
+
+theorem annim(p s: wff): $ p ^ ~s <-> ~(p -> s) $
+    = '(con2bii iman);
+
+theorem pm4_61(p s: wff): $ ~(p -> s) <-> p ^ ~s $
+    = '(bicomi annim);
+
+theorem pm4_65(p s: wff): $ ~(~p -> s) <-> ~p ^ ~s $ = 'pm4_61;
+
+theorem imp(p s c: wff) (imp_1: $ p -> s -> c $): $ (p ^ s) -> c $
+    = '(sylbi df_an (impi imp_1));
+
+theorem impcom(p s c: wff) (imp_1: $ p -> s -> c $): $ (s ^ p) -> c $
+    = '(imp (com12 imp_1));
+
+theorem con3dimp(p s c: wff) (con3dimp_1: $ p -> s -> c $): $ (p ^ ~c) -> ~s $
+    = '(imp (con3d con3dimp_1));
+
+theorem mpnanrd(p s c: wff) (mpnanrd_1: $ p -> s $) (mpnanrd_2: $ p -> ~(s ^ c) $): $ p -> ~c $
+    = '(mpd mpnanrd_1 (sylibr mpnanrd_2 imnan));
+
+theorem impd(p s c h: wff) (impd_1: $ p -> s -> c -> h $): $ p -> (s ^ c) -> h $
+    = '(com12 (imp (com3l impd_1)));
+
+theorem impcomd(p s c h: wff) (impd_1: $ p -> s -> c -> h $): $ p -> (c ^ s) -> h $
+    = '(impd (com23 impd_1));
+
+theorem ex(p s c: wff) (ex_1: $ (p ^ s) -> c $): $ p -> s -> c $
+    = '(expi (sylbir df_an ex_1));
+
+theorem expcom(p s c: wff) (ex_1: $ (p ^ s) -> c $): $ s -> p -> c $
+    = '(com12 (ex ex_1));
+
+theorem expdcom(p s c h: wff) (expd_1: $ p -> (s ^ c) -> h $): $ s -> c -> p -> h $
+    = '(ex (com12 expd_1));
+
+theorem expd(p s c h: wff) (expd_1: $ p -> (s ^ c) -> h $): $ p -> s -> c -> h $
+    = '(com3r (expdcom expd_1));
+
+theorem expcomd(p s c h: wff) (expcomd_1: $ p -> (s ^ c) -> h $): $ p -> c -> s -> h $
+    = '(com23 (expd expcomd_1));
+
+theorem imp31(p s c h: wff) (imp31_1: $ p -> s -> c -> h $): $ (p ^ s ^ c) -> h $
+    = '(imp (imp imp31_1));
+
+theorem imp32(p s c h: wff) (imp31_1: $ p -> s -> c -> h $): $ (p ^ (s ^ c)) -> h $
+    = '(imp (impd imp31_1));
+
+theorem exp31(p s c h: wff) (exp31_1: $ (p ^ s ^ c) -> h $): $ p -> s -> c -> h $
+    = '(ex (ex exp31_1));
+
+theorem exp32(p s c h: wff) (exp32_1: $ (p ^ (s ^ c)) -> h $): $ p -> s -> c -> h $
+    = '(expd (ex exp32_1));
+
+theorem imp4b(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ (p ^ s) -> (c ^ h) -> t $
+    = '(impd (imp imp4_1));
+
+theorem imp4a(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ p -> s -> (c ^ h) -> t $
+    = '(ex (imp4b imp4_1));
+
+theorem imp4c(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ p -> (s ^ c ^ h) -> t $
+    = '(impd (impd imp4_1));
+
+theorem imp4d(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ p -> (s ^ (c ^ h)) -> t $
+    = '(impd (imp4a imp4_1));
+
+theorem imp41(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ (p ^ s ^ c ^ h) -> t $
+    = '(imp31 (imp imp4_1));
+
+theorem imp42(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ (p ^ (s ^ c) ^ h) -> t $
+    = '(imp (imp32 imp4_1));
+
+theorem imp43(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ (p ^ s ^ (c ^ h)) -> t $
+    = '(imp (imp4b imp4_1));
+
+theorem imp44(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ (p ^ (s ^ c ^ h)) -> t $
+    = '(imp (imp4c imp4_1));
+
+theorem imp45(p s c h t: wff) (imp4_1: $ p -> s -> c -> h -> t $): $ (p ^ (s ^ (c ^ h))) -> t $
+    = '(imp (imp4d imp4_1));
+
+theorem exp4b(p s c h t: wff) (exp4b_1: $ (p ^ s) -> (c ^ h) -> t $): $ p -> s -> c -> h -> t $
+    = '(ex (expd exp4b_1));
+
+theorem exp4a(p s c h t: wff) (exp4a_1: $ p -> s -> (c ^ h) -> t $): $ p -> s -> c -> h -> t $
+    = '(exp4b (imp exp4a_1));
+
+theorem exp4c(p s c h t: wff) (exp4c_1: $ p -> (s ^ c ^ h) -> t $): $ p -> s -> c -> h -> t $
+    = '(expd (expd exp4c_1));
+
+theorem exp4d(p s c h t: wff) (exp4d_1: $ p -> (s ^ (c ^ h)) -> t $): $ p -> s -> c -> h -> t $
+    = '(exp4a (expd exp4d_1));
+
+theorem exp41(p s c h t: wff) (exp41_1: $ (p ^ s ^ c ^ h) -> t $): $ p -> s -> c -> h -> t $
+    = '(exp31 (ex exp41_1));
+
+theorem exp42(p s c h t: wff) (exp42_1: $ (p ^ (s ^ c) ^ h) -> t $): $ p -> s -> c -> h -> t $
+    = '(expd (exp31 exp42_1));
+
+theorem exp43(p s c h t: wff) (exp43_1: $ (p ^ s ^ (c ^ h)) -> t $): $ p -> s -> c -> h -> t $
+    = '(exp4b (ex exp43_1));
+
+theorem exp44(p s c h t: wff) (exp44_1: $ (p ^ (s ^ c ^ h)) -> t $): $ p -> s -> c -> h -> t $
+    = '(expd (exp32 exp44_1));
+
+theorem exp45(p s c h t: wff) (exp45_1: $ (p ^ (s ^ (c ^ h))) -> t $): $ p -> s -> c -> h -> t $
+    = '(exp4a (exp32 exp45_1));
+
+theorem imp5d(p s c h t e: wff) (imp5_1: $ p -> s -> c -> h -> t -> e $): $ (p ^ s ^ c) -> (h ^ t) -> e $
+    = '(impd (imp31 imp5_1));
+
+theorem imp5a(p s c h t e: wff) (imp5_1: $ p -> s -> c -> h -> t -> e $): $ p -> s -> c -> (h ^ t) -> e $
+    = '(exp31 (imp5d imp5_1));
+
+theorem imp5g(p s c h t e: wff) (imp5_1: $ p -> s -> c -> h -> t -> e $): $ (p ^ s) -> (c ^ h ^ t) -> e $
+    = '(impd (imp4b imp5_1));
+
+theorem imp55(p s c h t e: wff) (imp5_1: $ p -> s -> c -> h -> t -> e $): $ (p ^ (s ^ (c ^ h)) ^ t) -> e $
+    = '(imp42 (imp4a imp5_1));
+
+theorem imp511(p s c h t e: wff) (imp5_1: $ p -> s -> c -> h -> t -> e $): $ (p ^ (s ^ (c ^ h) ^ t)) -> e $
+    = '(imp44 (imp4a imp5_1));
+
+theorem exp5c(p s c h t e: wff) (exp5c_1: $ p -> (s ^ c) -> (h ^ t) -> e $): $ p -> s -> c -> h -> t -> e $
+    = '(expd (exp4a exp5c_1));
+
+theorem exp5j(p s c h t e: wff) (exp5j_1: $ p -> (s ^ c ^ h ^ t) -> e $): $ p -> s -> c -> h -> t -> e $
+    = '(exp4c (expd exp5j_1));
+
+theorem exp5l(p s c h t e: wff) (exp5l_1: $ p -> ((s ^ c) ^ (h ^ t)) -> e $): $ p -> s -> c -> h -> t -> e $
+    = '(exp5c (expd exp5l_1));
+
+theorem exp53(p s c h t e: wff) (exp53_1: $ ((p ^ s) ^ (c ^ h) ^ t) -> e $): $ p -> s -> c -> h -> t -> e $
+    = '(exp43 (ex exp53_1));
+
+theorem pm3_3(p s c: wff): $ ((p ^ s) -> c) -> (p -> s -> c) $
+    = '(expd id);
+
+theorem pm3_31(p s c: wff): $ (p -> s -> c) -> ((p ^ s) -> c) $
+    = '(impd id);
+
+theorem impexp(p s c: wff): $ ((p ^ s) -> c) <-> (p -> s -> c) $
+    = '(impbii pm3_3 pm3_31);
+
+theorem impancom(p s c h: wff) (impancom_1: $ (p ^ s) -> (c -> h) $): $ (p ^ c) -> (s -> h) $
+    = '(imp (com23 (ex impancom_1)));
+
+theorem expdimp(p s c h: wff) (expdimp_1: $ p -> (s ^ c) -> h $): $ (p ^ s) -> (c -> h) $
+    = '(imp (expd expdimp_1));
+
+theorem expimpd(p s c h: wff) (expimpd_1: $ (p ^ s) -> (c -> h) $): $ p -> (s ^ c) -> h $
+    = '(impd (ex expimpd_1));
+
+theorem impr(p s c h: wff) (impr_1: $ (p ^ s) -> (c -> h) $): $ (p ^ (s ^ c)) -> h $
+    = '(imp32 (ex impr_1));
+
+theorem impl(p s c h: wff) (impl_1: $ p -> (s ^ c) -> h $): $ (p ^ s ^ c) -> h $
+    = '(imp31 (expd impl_1));
+
+theorem expr(p s c h: wff) (expr_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ s) -> (c -> h) $
+    = '(imp (exp32 expr_1));
+
+theorem expl(p s c h: wff) (expl_1: $ (p ^ s ^ c) -> h $): $ p -> (s ^ c) -> h $
+    = '(impd (exp31 expl_1));
+
+theorem ancoms(p s c: wff) (ancoms_1: $ (p ^ s) -> c $): $ (s ^ p) -> c $
+    = '(imp (expcom ancoms_1));
+
+theorem pm3_22(p s: wff): $ (p ^ s) -> (s ^ p) $
+    = '(ancoms id);
+
+theorem ancom(p s: wff): $ (p ^ s) <-> (s ^ p) $
+    = '(impbii pm3_22 pm3_22);
+
+theorem ancomd(p s c: wff) (ancomd_1: $ p -> (s ^ c) $): $ p -> (c ^ s) $
+    = '(sylib ancomd_1 ancom);
+
+theorem biancomi(p s c: wff) (biancomi_1: $ p <-> (c ^ s) $): $ p <-> (s ^ c) $
+    = '(bitr4i biancomi_1 ancom);
+
+theorem biancomd(p s c h: wff) (biancomd_1: $ p -> (s <-> (h ^ c)) $): $ p -> (s <-> (c ^ h)) $
+    = '(bitrdi biancomd_1 ancom);
+
+theorem ancomst(p s c: wff): $ ((p ^ s) -> c) <-> ((s ^ p) -> c) $
+    = '(imbi1i ancom);
+
+theorem ancomsd(p s c h: wff) (ancomsd_1: $ p -> (s ^ c) -> h $): $ p -> (c ^ s) -> h $
+    = '(impd (expcomd ancomsd_1));
+
+theorem anasss(p s c h: wff) (anasss_1: $ (p ^ s ^ c) -> h $): $ (p ^ (s ^ c)) -> h $
+    = '(imp32 (exp31 anasss_1));
+
+theorem anassrs(p s c h: wff) (anassrs_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ s ^ c) -> h $
+    = '(imp31 (exp32 anassrs_1));
+
+theorem anass(p s c: wff): $ (p ^ s ^ c) <-> (p ^ (s ^ c)) $
+    = '(impbii (anassrs id) (anasss id));
+
+theorem pm3_2(p s: wff): $ p -> s -> (p ^ s) $
+    = '(ex id);
+
+theorem pm3_2i(p s: wff) (pm3_2i_1: $ p $) (pm3_2i_2: $ s $): $ p ^ s $
+    = '(mp2 pm3_2i_1 pm3_2i_2 pm3_2);
+
+theorem pm3_21(p s: wff): $ p -> s -> (s ^ p) $
+    = '(expcom id);
+
+theorem pm3_43i(p s c: wff): $ (p -> s) -> (p -> c) -> p -> (s ^ c) $
+    = '(imim3i pm3_2);
+
+theorem pm3_43(p s c: wff): $ ((p -> s) ^ (p -> c)) -> p -> (s ^ c) $
+    = '(imp pm3_43i);
+
+theorem dfbi2(p s: wff): $ (p <-> s) <-> ((p -> s) ^ (s -> p)) $
+    = '(bitr4i dfbi1 df_an);
+
+theorem dfbi(p s: wff): $ ((p <-> s) -> (p -> s ^ s -> p)) ^ ((p -> s ^ s -> p) -> (p <-> s)) $
+    = '(mpbi dfbi2 dfbi2);
+
+theorem biimpa(p s c: wff) (biimpa_1: $ p -> (s <-> c) $): $ (p ^ s) -> c $
+    = '(imp (biimpd biimpa_1));
+
+theorem biimpar(p s c: wff) (biimpa_1: $ p -> (s <-> c) $): $ (p ^ c) -> s $
+    = '(imp (biimprd biimpa_1));
+
+theorem biimpac(p s c: wff) (biimpa_1: $ p -> (s <-> c) $): $ (s ^ p) -> c $
+    = '(imp (biimpcd biimpa_1));
+
+theorem biimparc(p s c: wff) (biimpa_1: $ p -> (s <-> c) $): $ (c ^ p) -> s $
+    = '(imp (biimprcd biimpa_1));
+
+theorem adantr(p s c: wff) (adantr_1: $ p -> s $): $ (p ^ c) -> s $
+    = '(imp (a1d adantr_1));
+
+theorem adantl(p s c: wff) (adantl_1: $ p -> s $): $ (c ^ p) -> s $
+    = '(ancoms (adantr adantl_1));
+
+theorem simpl(p s: wff): $ (p ^ s) -> p $
+    = '(adantr id);
+
+theorem simpli(p s: wff) (simpli_1: $ p ^ s $): $ p $
+    = '(ax_mp simpli_1 simpl);
+
+theorem simpr(p s: wff): $ (p ^ s) -> s $
+    = '(adantl id);
+
+theorem simpri(p s: wff) (simpri_1: $ s ^ p $): $ p $
+    = '(ax_mp simpri_1 simpr);
+
+theorem intnan(p s: wff) (intnan_1: $ ~p $): $ ~(s ^ p) $
+    = '(mto intnan_1 simpr);
+
+theorem intnanr(p s: wff) (intnan_1: $ ~p $): $ ~(p ^ s) $
+    = '(mto intnan_1 simpl);
+
+theorem intnand(p s c: wff) (intnand_1: $ p -> ~s $): $ p -> ~(c ^ s) $
+    = '(nsyl intnand_1 simpr);
+
+theorem intnanrd(p s c: wff) (intnand_1: $ p -> ~s $): $ p -> ~(s ^ c) $
+    = '(nsyl intnand_1 simpl);
+
+theorem adantld(p s c h: wff) (adantld_1: $ p -> s -> c $): $ p -> (h ^ s) -> c $
+    = '(syl5 simpr adantld_1);
+
+theorem adantrd(p s c h: wff) (adantrd_1: $ p -> s -> c $): $ p -> (s ^ h) -> c $
+    = '(syl5 simpl adantrd_1);
+
+theorem pm3_41(p s c: wff): $ (p -> c) -> (p ^ s) -> c $
+    = '(imim1i simpl);
+
+theorem pm3_42(p s c: wff): $ (s -> c) -> (p ^ s) -> c $
+    = '(imim1i simpr);
+
+theorem simpld(p s c: wff) (simpld_1: $ p -> (s ^ c) $): $ p -> s $
+    = '(syl simpld_1 simpl);
+
+theorem simprd(p s c: wff) (simprd_1: $ p -> (s ^ c) $): $ p -> c $
+    = '(simpld (ancomd simprd_1));
+
+theorem simplbi(p s c: wff) (simplbi_1: $ p <-> (s ^ c) $): $ p -> s $
+    = '(simpld (biimpi simplbi_1));
+
+theorem simprbi(p s c: wff) (simprbi_1: $ p <-> (s ^ c) $): $ p -> c $
+    = '(simprd (biimpi simprbi_1));
+
+theorem simprbda(p s c h: wff) (simplbda_1: $ p -> (s <-> (c ^ h)) $): $ (p ^ s) -> c $
+    = '(simpld (biimpa simplbda_1));
+
+theorem simplbda(p s c h: wff) (simplbda_1: $ p -> (s <-> (c ^ h)) $): $ (p ^ s) -> h $
+    = '(simprd (biimpa simplbda_1));
+
+theorem simplbi2(p s c: wff) (simplbi2_1: $ p <-> (s ^ c) $): $ s -> c -> p $
+    = '(ex (biimpri simplbi2_1));
+
+theorem simplbi2comt(p s c: wff): $ (p <-> (s ^ c)) -> (c -> s -> p) $
+    = '(expcomd biimpr);
+
+theorem simplbi2com(p s c: wff) (simplbi2com_1: $ p <-> (s ^ c) $): $ c -> s -> p $
+    = '(com12 (simplbi2 simplbi2com_1));
+
+theorem simpl2im(p s c h: wff) (simpl2im_1: $ p -> (s ^ c) $) (simpl2im_2: $ c -> h $): $ p -> h $
+    = '(syl (simprd simpl2im_1) simpl2im_2);
+
+theorem simplbiim(p s c h: wff) (simplbiim_1: $ p <-> (s ^ c) $) (simplbiim_2: $ c -> h $): $ p -> h $
+    = '(syl (simprbi simplbiim_1) simplbiim_2);
+
+theorem impel(p s c h: wff) (impel_1: $ p -> s -> c $) (impel_2: $ h -> s $): $ (p ^ h) -> c $
+    = '(imp (syl5 impel_2 impel_1));
+
+theorem mpan9(p s c h: wff) (mpan9_1: $ p -> s $) (mpan9_2: $ c -> s -> h $): $ (p ^ c) -> h $
+    = '(impcom (syl5 mpan9_1 mpan9_2));
+
+theorem sylan9(p s c h t: wff) (sylan9_1: $ p -> s -> c $) (sylan9_2: $ h -> c -> t $): $ (p ^ h) -> (s -> t) $
+    = '(imp (syl9 sylan9_1 sylan9_2));
+
+theorem sylan9r(p s c h t: wff) (sylan9r_1: $ p -> s -> c $) (sylan9r_2: $ h -> c -> t $): $ (h ^ p) -> (s -> t) $
+    = '(imp (syl9r sylan9r_1 sylan9r_2));
+
+theorem sylan9bb(p s c h t: wff) (sylan9bb_1: $ p -> (s <-> c) $) (sylan9bb_2: $ h -> (c <-> t) $): $ (p ^ h) -> (s <-> t) $
+    = '(bitrd (adantr sylan9bb_1) (adantl sylan9bb_2));
+
+theorem sylan9bbr(p s c h t: wff) (sylan9bbr_1: $ p -> (s <-> c) $) (sylan9bbr_2: $ h -> (c <-> t) $): $ (h ^ p) -> (s <-> t) $
+    = '(ancoms (sylan9bb sylan9bbr_1 sylan9bbr_2));
+
+theorem jca(p s c: wff) (jca_1: $ p -> s $) (jca_2: $ p -> c $): $ p -> (s ^ c) $
+    = '(sylc jca_1 jca_2 pm3_2);
+
+theorem jcad(p s c h: wff) (jcad_1: $ p -> s -> c $) (jcad_2: $ p -> s -> h $): $ p -> s -> (c ^ h) $
+    = '(syl6c jcad_1 jcad_2 pm3_2);
+
+theorem jca2(p s c h: wff) (jca2_1: $ p -> s -> c $) (jca2_2: $ s -> h $): $ p -> s -> (c ^ h) $
+    = '(jcad jca2_1 (a1i jca2_2));
+
+theorem jca31(p s c h: wff) (jca31_1: $ p -> s $) (jca31_2: $ p -> c $) (jca31_3: $ p -> h $): $ p -> (s ^ c ^ h) $
+    = '(jca (jca jca31_1 jca31_2) jca31_3);
+
+theorem jca32(p s c h: wff) (jca31_1: $ p -> s $) (jca31_2: $ p -> c $) (jca31_3: $ p -> h $): $ p -> (s ^ (c ^ h)) $
+    = '(jca jca31_1 (jca jca31_2 jca31_3));
+
+theorem jcai(p s c: wff) (jcai_1: $ p -> s $) (jcai_2: $ p -> s -> c $): $ p -> (s ^ c) $
+    = '(jca jcai_1 (mpd jcai_1 jcai_2));
+
+theorem jcab(p s c: wff): $ (p -> (s ^ c)) <-> (p -> s ^ p -> c) $
+    = '(impbii (jca (imim2i simpl) (imim2i simpr)) pm3_43);
+
+theorem pm4_76(p s c: wff): $ (p -> s ^ p -> c) <-> (p -> (s ^ c)) $
+    = '(bicomi jcab);
+
+theorem jctil(p s c: wff) (jctil_1: $ p -> s $) (jctil_2: $ c $): $ p -> (c ^ s) $
+    = '(jca (a1i jctil_2) jctil_1);
+
+theorem jctir(p s c: wff) (jctil_1: $ p -> s $) (jctil_2: $ c $): $ p -> (s ^ c) $
+    = '(jca jctil_1 (a1i jctil_2));
+
+theorem jccir(p s c: wff) (jccir_1: $ p -> s $) (jccir_2: $ s -> c $): $ p -> (s ^ c) $
+    = '(jca jccir_1 (syl jccir_1 jccir_2));
+
+theorem jccil(p s c: wff) (jccir_1: $ p -> s $) (jccir_2: $ s -> c $): $ p -> (c ^ s) $
+    = '(ancomd (jccir jccir_1 jccir_2));
+
+theorem jctl(p s: wff) (jctl_1: $ s $): $ p -> (s ^ p) $
+    = '(jctil id jctl_1);
+
+theorem jctr(p s: wff) (jctl_1: $ s $): $ p -> (p ^ s) $
+    = '(jctir id jctl_1);
+
+theorem jctild(p s c h: wff) (jctild_1: $ p -> s -> c $) (jctild_2: $ p -> h $): $ p -> s -> (h ^ c) $
+    = '(jcad (a1d jctild_2) jctild_1);
+
+theorem jctird(p s c h: wff) (jctird_1: $ p -> s -> c $) (jctird_2: $ p -> h $): $ p -> s -> (c ^ h) $
+    = '(jcad jctird_1 (a1d jctird_2));
+
+theorem iba(p s: wff): $ p -> (s <-> (s ^ p)) $
+    = '(impbid1 pm3_21 simpl);
+
+theorem ibar(p s: wff): $ p -> (s <-> (p ^ s)) $
+    = '(biancomd iba);
+
+theorem biantru(p s: wff) (biantru_1: $ p $): $ s <-> (s ^ p) $
+    = '(ax_mp biantru_1 iba);
+
+theorem biantrur(p s: wff) (biantrur_1: $ p $): $ s <-> (p ^ s) $
+    = '(biancomi (biantru biantrur_1));
+
+theorem biantrud(p s c: wff) (biantrud_1: $ p -> s $): $ p -> (c <-> (c ^ s)) $
+    = '(syl biantrud_1 iba);
+
+theorem biantrurd(p s c: wff) (biantrud_1: $ p -> s $): $ p -> (c <-> (s ^ c)) $
+    = '(syl biantrud_1 ibar);
+
+theorem bianfi(p s: wff) (bianfi_1: $ ~p $): $ p <-> (s ^ p) $
+    = '(_2false bianfi_1 (intnan bianfi_1));
+
+theorem bianfd(p s c: wff) (bianfd_1: $ p -> ~s $): $ p -> (s <-> (s ^ c)) $
+    = '(_2falsed bianfd_1 (intnanrd bianfd_1));
+
+theorem baib(p s c: wff) (baib_1: $ p <-> (s ^ c) $): $ s -> (p <-> c) $
+    = '(bitr4id baib_1 (! ibar s c));
+
+theorem baibr(p s c: wff) (baib_1: $ p <-> (s ^ c) $): $ s -> (c <-> p) $
+    = '(bicomd (baib baib_1));
+
+theorem rbaibr(p s c: wff) (baib_1: $ p <-> (s ^ c) $): $ c -> (s <-> p) $
+    = '(baibr (biancomi baib_1));
+
+theorem rbaib(p s c: wff) (baib_1: $ p <-> (s ^ c) $): $ c -> (p <-> s) $
+    = '(bicomd (rbaibr baib_1));
+
+theorem baibd(p s c h: wff) (baibd_1: $ p -> (s <-> (c ^ h)) $): $ (p ^ c) -> (s <-> h) $
+    = '(sylan9bb baibd_1 (bicomd ibar));
+
+theorem rbaibd(p s c h: wff) (baibd_1: $ p -> (s <-> (c ^ h)) $): $ (p ^ h) -> (s <-> c) $
+    = '(baibd (biancomd baibd_1));
+
+theorem bianabs(p s c: wff) (bianabs_1: $ p -> (s <-> (p ^ c)) $): $ p -> (s <-> c) $
+    = '(bitr4d bianabs_1 ibar);
+
+theorem pm5_44(p s c: wff): $ (p -> s) -> ((p -> c) <-> (p -> (s ^ c))) $
+    = '(baibr jcab);
+
+theorem pm5_42(p s c: wff): $ (p -> s -> c) <-> (p -> s -> (p ^ c)) $
+    = '(pm5_74i (imbi2d ibar));
+
+theorem ancl(p s: wff): $ (p -> s) -> (p -> (p ^ s)) $
+    = '(a2i pm3_2);
+
+theorem anclb(p s: wff): $ (p -> s) <-> (p -> (p ^ s)) $
+    = '(pm5_74i ibar);
+
+theorem ancr(p s: wff): $ (p -> s) -> (p -> (s ^ p)) $
+    = '(a2i pm3_21);
+
+theorem ancrb(p s: wff): $ (p -> s) <-> (p -> (s ^ p)) $
+    = '(pm5_74i iba);
+
+theorem ancli(p s: wff) (ancli_1: $ p -> s $): $ p -> (p ^ s) $
+    = '(jca id ancli_1);
+
+theorem ancri(p s: wff) (ancri_1: $ p -> s $): $ p -> (s ^ p) $
+    = '(jca ancri_1 id);
+
+theorem ancld(p s c: wff) (ancld_1: $ p -> s -> c $): $  p -> s -> (s ^ c) $
+    = '(jcad idd ancld_1);
+
+theorem ancrd(p s c: wff) (ancrd_1: $ p -> s -> c $): $ p -> s -> (c ^ s) $
+    = '(jcad ancrd_1 idd);
+
+theorem impac(p s c: wff) (impac_1: $ p -> s -> c $): $ (p ^ s) -> (c ^ s) $
+    = '(imp (ancrd impac_1));
+
+theorem anc2l(p s c: wff): $ (p -> s -> c) -> (p -> s -> (p ^ c)) $
+    = '(biimpi pm5_42);
+
+theorem anc2r(p s c: wff): $ (p -> s -> c) -> (p -> s -> (c ^ p)) $
+    = '(a2i (imim2d pm3_21));
+
+theorem anc2li(p s c: wff) (anc2li_1: $ p -> s -> c $): $ p -> s -> (p ^ c) $
+    = '(jctild anc2li_1 id);
+
+theorem anc2ri(p s c: wff) (anc2ri_1: $ p -> s -> c $): $ p -> s -> (c ^ p) $
+    = '(jctird anc2ri_1 id);
+
+theorem pm4_71(p s: wff): $ (p -> s) <-> (p <-> (p ^ s)) $
+    = '(_3bitr4i (biantru simpl) anclb dfbi2);
+
+theorem pm4_71r(p s: wff): $ (p -> s) <-> (p <-> (s ^ p)) $
+    = '(bitri pm4_71 (bibi2i ancom));
+
+theorem pm4_71i(p s: wff) (pm4_71i_1: $ p -> s $): $ p <-> (p ^ s) $
+    = '(mpbi pm4_71i_1 pm4_71);
+
+theorem pm4_71ri(p s: wff) (pm4_71ri_1: $ p -> s $): $ p <-> (s ^ p) $
+    = '(biancomi (pm4_71i pm4_71ri_1));
+
+theorem pm4_71d(p s c: wff) (pm4_71rd_1: $ p -> s -> c $): $ p -> (s <-> (s ^ c)) $
+    = '(sylib pm4_71rd_1 pm4_71);
+
+theorem pm4_71rd(p s c: wff) (pm4_71rd_1: $ p -> s -> c $): $ p -> (s <-> (c ^ s)) $
+    = '(biancomd (pm4_71d pm4_71rd_1));
+
+theorem pm4_24(p: wff): $ p <-> (p ^ p) $
+    = '(pm4_71i id);
+
+theorem anidm(p: wff): $ (p ^ p) <-> p $
+    = '(bicomi pm4_24);
+
+theorem anidmdbi(p s: wff): $ p -> (s ^ s) <-> p -> s $
+    = '(imbi2i anidm);
+
+theorem anidms(p s: wff) (anidms_1: $ (p ^ p) -> s $): $ p -> s $
+    = '(pm2_43i (ex anidms_1));
+
+theorem imdistan(p s c: wff): $ (p -> s -> c) <-> (p ^ s) -> (p ^ c) $
+    = '(bitr4i pm5_42 impexp);
+
+theorem imdistani(p s c: wff) (imdistani_1: $ p -> s -> c $): $ (p ^ s) -> (p ^ c) $
+    = '(imp (anc2li imdistani_1));
+
+theorem imdistanri(p s c: wff) (imdistanri_1: $ p -> s -> c $): $ (s ^ p) -> (c ^ p) $
+    = '(impac (com12 imdistanri_1));
+
+theorem imdistand(p s c h: wff) (imdistand_1: $ p -> s -> c -> h $): $ p -> (s ^ c) -> (s ^ h) $
+    = '(sylib imdistand_1 imdistan);
+
+theorem imdistanda(p s c h: wff) (imdistanda_1: $ (p ^ s) -> c -> h $): $ p -> (s ^ c) -> (s ^ h) $
+    = '(imdistand (ex imdistanda_1));
+
+theorem pm5_3(p s c: wff): $ (p ^ s) -> c <-> (p ^ s) -> (p ^ c) $
+    = '(pm5_74i (biantrurd simpl));
+
+theorem pm5_32(p s c: wff): $ (p -> (s <-> c)) <-> ((p ^ s) <-> (p ^ c)) $
+    = '(bitr4i
+        (_3bitri (imbi2i notbi) pm5_74 notbi)
+        (bibi12i df_an df_an)
+    );
+
+theorem pm5_32i(p s c: wff) (pm5_32i_1: $ p -> (s <-> c) $): $ (p ^ s) <-> (p ^ c) $
+    = '(mpbi pm5_32i_1 pm5_32);
+
+theorem pm5_32ri(p s c: wff) (pm5_32i_1: $ p -> (s <-> c) $): $ (s ^ p) <-> (c ^ p) $
+    = '(_3bitr4i (pm5_32i pm5_32i_1) ancom ancom);
+
+theorem bianim(p s c h: wff) (bianim_1: $ p <-> (s ^ c) $) (bianim_2: $ c -> (s <-> h) $): $ p <-> (h ^ c) $
+    = '(bitri bianim_1 (pm5_32ri bianim_2));
+
+theorem pm5_32d(p s c h: wff) (pm5_32d_1: $ p -> s -> (c <-> h) $): $ p -> ((s ^ c) <-> (s ^ h)) $
+    = '(sylib pm5_32d_1 pm5_32);
+
+theorem pm5_32rd(p s c h: wff) (pm5_32d_1: $ p -> s -> (c <-> h) $): $ p -> ((c ^ s) <-> (h ^ s)) $
+    = '(_3bitr4g (pm5_32d pm5_32d_1) ancom ancom);
+
+theorem pm5_32da(p s c h: wff) (pm5_32da_1: $ (p ^ s) -> (c <-> h) $): $ p -> ((s ^ c) <-> (s ^ h)) $
+    = '(pm5_32d (ex pm5_32da_1));
+
+theorem bian1d(p s c h: wff) (bian1d_1: $ p -> (s <-> (c ^ h)) $): $ p -> ((c ^ s) <-> (c ^ h)) $
+    = '(pm5_32da (baibd bian1d_1));
+
+theorem sylan(p s c h: wff) (sylan_1: $ p -> s $) (sylan_2: $ (s ^ c) -> h $): $ (p ^ c) -> h $
+    = '(mpan9 sylan_1 (expcom sylan_2));
+
+theorem sylanb(p s c h: wff) (sylanb_1: $ p <-> s $) (sylanb_2: $ (s ^ c) -> h $): $ (p ^ c) -> h $
+    = '(sylan (biimpi sylanb_1) sylanb_2);
+
+theorem sylanbr(p s c h: wff) (sylanbr_1: $ s <-> p $) (sylanbr_2: $ (s ^ c) -> h $): $ (p ^ c) -> h $
+    = '(sylan (biimpri sylanbr_1) sylanbr_2);
+
+theorem sylanbrc(p s c h: wff) (sylanbrc_1: $ p -> s $) (sylanbrc_2: $ p -> c $) (sylanbrc_3: $ h <-> (s ^ c) $): $ p -> h $
+    = '(sylibr (jca sylanbrc_1 sylanbrc_2) sylanbrc_3);
+
+theorem syl2anc(p s c h: wff) (syl2anc_1: $ p -> s $) (syl2anc_2: $ p -> c $) (syl2anc_3: $ (s ^ c) -> h $): $ p -> h $
+    = '(sylc syl2anc_1 syl2anc_2 (ex syl2anc_3));
+
+theorem syl2anc2(p s c h: wff) (syl2anc2_1: $ p -> s $) (syl2anc2_2: $ s -> c $) (syl2anc2_3: $ (s ^ c) -> h $): $ p -> h $
+    = '(syl2anc syl2anc2_1 (syl syl2anc2_1 syl2anc2_2) syl2anc2_3);
+
+theorem sylancl(p s c h: wff) (sylancl_1: $ p -> s $) (sylancl_2: $ c $) (sylancl_3: $ (s ^ c) -> h $): $ p -> h $
+    = '(syl2anc sylancl_1 (a1i sylancl_2) sylancl_3);
+
+theorem sylancr(p s c h: wff) (sylancr_1: $ s $) (sylancr_2: $ p -> c $) (sylancr_3: $ (s ^ c) -> h $): $ p -> h $
+    = '(syl2anc (a1i sylancr_1) sylancr_2 sylancr_3);
+
+theorem sylancom(p s c h: wff) (sylancom_1: $ (p ^ s) -> c $) (sylancom_2: $ (c ^ s) -> h $): $ (p ^ s) -> h $
+    = '(syl2anc sylancom_1 simpr sylancom_2);
+
+theorem sylanblc(p s c h: wff) (sylanblc_1: $ p -> s $) (sylanblc_2: $ c $) (sylanblc_3: $ (s ^ c) <-> h $): $ p -> h $
+    = '(sylancl sylanblc_1 sylanblc_2 (biimpi sylanblc_3));
+
+theorem sylanblrc(p s c h: wff) (sylanblrc_1: $ p -> s $) (sylanblrc_2: $ c $) (sylanblrc_3: $ h <-> (s ^ c) $): $ p -> h $
+    = '(sylanbrc sylanblrc_1 (a1i sylanblrc_2) sylanblrc_3);
+
+theorem syldan(p s c h: wff) (syldan_1: $ (p ^ s) -> c $) (syldan_2: $ (p ^ c) -> h $): $ (p ^ s) -> h $
+    = '(syl2anc simpl syldan_1 syldan_2);
+
+theorem sylbida(p s c h: wff) (sylbida_1: $ p -> (s <-> c) $) (sylbida_2: $ (p ^ c) -> h $): $ (p ^ s) -> h $
+    = '(syldan (biimpa sylbida_1) sylbida_2);
+
+theorem sylan2(p s c h: wff) (sylan2_1: $ p -> c $) (sylan2_2: $ (s ^ c) -> h $): $ (s ^ p) -> h $
+    = '(syldan (adantl sylan2_1) sylan2_2);
+
+theorem sylan2b(p s c h: wff) (sylan2b_1: $ p <-> c $) (sylan2b_2: $ (s ^ c) -> h $): $ (s ^ p) -> h $
+    = '(sylan2 (biimpi sylan2b_1) sylan2b_2);
+
+theorem sylan2br(p s c h: wff) (sylan2br_1: $ c <-> p $) (sylan2br_2: $ (s ^ c) -> h $): $ (s ^ p) -> h $
+    = '(sylan2 (biimpri sylan2br_1) sylan2br_2);
+
+theorem syl2an(p s c h t: wff) (syl2an_1: $ p -> s $) (syl2an_2: $ t -> c $) (syl2an_3: $ (s ^ c) -> h $): $ (p ^ t) -> h $
+    = '(sylan2 syl2an_2 (sylan syl2an_1 syl2an_3));
+
+theorem syl2anr(p s c h t: wff) (syl2an_1: $ p -> s $) (syl2an_2: $ t -> c $) (syl2an_3: $ (s ^ c) -> h $): $ (t ^ p) -> h $
+    = '(ancoms (syl2an syl2an_1 syl2an_2 syl2an_3));
+
+theorem syl2anb(p s c h t: wff) (syl2anb_1: $ p <-> s $) (syl2anb_2: $ t <-> c $) (syl2anb_3: $ (s ^ c) -> h $): $ (p ^ t) -> h $
+    = '(sylan2b syl2anb_2 (sylanb syl2anb_1 syl2anb_3));
+
+theorem syl2anbr(p s c h t: wff) (syl2anb_1: $ s <-> p $) (syl2anb_2: $ c <-> t $) (syl2anb_3: $ (s ^ c) -> h $): $ (p ^ t) -> h $
+    = '(sylan2br syl2anb_2 (sylanbr syl2anb_1 syl2anb_3));
+
+theorem sylancb(p s c h: wff) (sylancb_1: $ p <-> s $) (sylancb_2: $ p <-> c $) (sylancb_3: $ (s ^ c) -> h $): $ p -> h $
+    = '(anidms (syl2anb sylancb_1 sylancb_2 sylancb_3));
+
+theorem sylancbr(p s c h: wff) (sylancb_1: $ s <-> p $) (sylancb_2: $ c <-> p $) (sylancb_3: $ (s ^ c) -> h $): $ p -> h $
+    = '(anidms (syl2anbr sylancb_1 sylancb_2 sylancb_3));
+
+theorem syldanl(p s c h t: wff) (syldanl_1: $ (p ^ s) -> c $) (syldanl_2: $ (p ^ c ^ h) -> t $): $ (p ^ s ^ h) -> t $
+    = '(sylan (imdistani (ex syldanl_1)) syldanl_2);
+
+theorem syland(p s c h t: wff) (syland_1: $ p -> s -> c $) (syland_2: $ p -> (c ^ h) -> t $): $ p -> (s ^ h) -> t $
+    = '(impd (syld syland_1 (expd syland_2)));
+
+theorem sylani(p s c h t: wff) (sylani_1: $ p -> c $) (sylani_2: $ s -> (c ^ h) -> t $): $ s -> (p ^ h) -> t $
+    = '(syland (a1i sylani_1) sylani_2);
+
+theorem sylan2d(p s c h t: wff) (sylan2d_1: $ p -> s -> c $) (sylan2d_2: $ p -> (h ^ c) -> t $): $ p -> (h ^ s) -> t $
+    = '(ancomsd (syland sylan2d_1 (ancomsd sylan2d_2)));
+
+theorem sylan2i(p s c h t: wff) (sylan2i_1: $ p -> h $) (sylan2i_2: $ s -> (c ^ h) -> t $): $ s -> (c ^ p) -> t $
+    = '(sylan2d (a1i sylan2i_1) sylan2i_2);
+
+theorem syl2ani(p s c h t e: wff) (syl2ani_1: $ p -> c $) (syl2ani_2: $ e -> h $) (syl2ani_3: $ s -> (c ^ h) -> t $): $ s -> (p ^ e) -> t $
+    = '(sylani syl2ani_1 (sylan2i syl2ani_2 syl2ani_3));
+
+theorem syl2and(p s c h t e: wff) (syl2ani_1: $ p -> s -> c $) (syl2ani_2: $ p -> h -> t $) (syl2ani_3: $ p -> (c ^ t) -> e $): $ p -> (s ^ h) -> e $
+    = '(syland syl2ani_1 (sylan2d syl2ani_2 syl2ani_3));
+
+theorem anim12d(p s c h t: wff) (anim12d_1: $ p -> s -> c $) (anim12d_2: $ p -> h -> t $): $ p -> (s ^ h) -> (c ^ t) $
+    = '(syl2and anim12d_1 anim12d_2 idd);
+
+theorem anim12d1(p s c h t: wff) (anim12d1_1: $ p -> s -> c $) (anim12d1_2: $ h -> t $): $ p -> (s ^ h) -> (c ^ t) $
+    = '(anim12d anim12d1_1 (a1i anim12d1_2));
+
+theorem anim1d(p s c h: wff) (anim1d_1: $ p -> s -> c $): $ p -> (s ^ h) -> (c ^ h) $
+    = '(anim12d anim1d_1 idd);
+
+theorem anim2d(p s c h: wff) (anim1d_1: $ p -> s -> c $): $ p -> (h ^ s) -> (h ^ c) $
+    = '(anim12d idd anim1d_1);
+
+theorem anim12i(p s c h: wff) (anim12i_1: $ p -> s $) (anim12i_2: $ c -> h $): $ (p ^ c) -> (s ^ h) $
+    = '(syl2an anim12i_1 anim12i_2 id);
+
+theorem anim12ci(p s c h: wff) (anim12i_1: $ p -> s $) (anim12i_2: $ c -> h $): $ (p ^ c) -> (h ^ s) $
+    = '(ancoms (anim12i anim12i_2 anim12i_1));
+
+theorem anim1i(p s c: wff) (anim1i_1: $ p -> s $): $ (p ^ c) -> (s ^ c) $
+    = '(anim12i anim1i_1 id);
+
+theorem anim1ci(p s c: wff) (anim1i_1: $ p -> s $): $ (p ^ c) -> (c ^ s) $
+    = '(anim12ci anim1i_1 id);
+
+theorem anim2i(p s c: wff) (anim1i_1: $ p -> s $): $ (c ^ p) -> (c ^ s) $
+    = '(anim12i id anim1i_1);
+
+theorem anim12ii(p s c: wff) (anim12ii_1: $ p -> s -> c $) (anim12ii_2: $ h -> s -> t $): $ (p ^ h) -> s -> (c ^ t) $
+    = '(syl2an anim12ii_1 anim12ii_2 pm3_43);
+
+theorem anim12dan(p s c h t: wff) (anim12dan_1: $ (p ^ s) -> c $) (anim12dan_2: $ (p ^ h) -> t $): $ (p ^ (s ^ h)) -> (c ^ t) $
+    = '(imp (anim12d (ex anim12dan_1) (ex anim12dan_2)));
+
+theorem im2anan9(p s c h t e: wff) (im2an9_1: $ p -> s -> c $) (im2an9_2: $ h -> t -> e $): $ (p ^ h) -> (s ^ t) -> (c ^ e) $
+    = '(anim12ii (adantrd im2an9_1) (adantld im2an9_2));
+
+theorem im2anan9r(p s c h t e: wff) (im2an9_1: $ p -> s -> c $) (im2an9_2: $ h -> t -> e $): $ (h ^ p) -> (s ^ t) -> (c ^ e) $
+    = '(ancoms (im2anan9 im2an9_1 im2an9_2));
+
+theorem pm3_45(p s c: wff): $ (p -> s) -> (p ^ c) -> (s ^ c) $
+    = '(anim1d id);
+
+theorem anbi2i(p s c: wff) (anbi_1: $ p <-> s $): $ (c ^ p) <-> (c ^ s) $
+    = '(pm5_32i (a1i anbi_1));
+
+theorem anbi1i(p s c: wff) (anbi_1: $ p <-> s $): $ (p ^ c) <-> (s ^ c) $
+    = '(pm5_32ri (a1i anbi_1));
+
+theorem anbi2ci(p s c: wff) (anbi_1: $ p <-> s $): $ (p ^ c) <-> (c ^ s) $
+    = '(biancomi (anbi1i anbi_1));
+
+theorem anbi1ci(p s c: wff) (anbi_1: $ p <-> s $): $ (c ^ p) <-> (s ^ c) $
+    = '(biancomi (anbi2i anbi_1));
+
+theorem bianbi(p s c h: wff) (bianbi_1: $ p <-> (s ^ c) $) (bianbi_2: $ s <-> h $): $ p <-> (h ^ c) $
+    = '(bitri bianbi_1 (anbi1i bianbi_2));
+
+theorem anbi12i(p s c h: wff) (anbi12_1: $ p <-> s $) (anbi12_2: $ c <-> h $): $ (p ^ c) <-> (s ^ h) $
+    = '(bianbi (anbi2i anbi12_2) anbi12_1);
+
+theorem anbi12ci(p s c h: wff) (anbi12_1: $ p <-> s $) (anbi12_2: $ c <-> h $): $ (p ^ c) <-> (h ^ s) $
+    = '(biancomi (anbi12i anbi12_1 anbi12_2));
+
+theorem anbi2d(p s c h: wff) (anbid_1: $ p -> (s <-> c) $): $ p -> ((h ^ s) <-> (h ^ c)) $
+    = '(pm5_32d (a1d anbid_1));
+
+theorem anbi1d(p s c h: wff) (anbid_1: $ p -> (s <-> c) $): $ p -> ((s ^ h) <-> (c ^ h)) $
+    = '(pm5_32rd (a1d anbid_1));
+
+theorem anbi12d(p s c h: wff) (anbi12d_1: $ p -> (s <-> c) $) (anbi12d_2: $ p -> (h <-> t) $): $ p -> ((s ^ h) <-> (c ^ t)) $
+    = '(bitrd (anbi1d anbi12d_1) (anbi2d anbi12d_2));
+
+theorem anbi1(p s c: wff): $ (p <-> s) -> ((p ^ c) <-> (s ^ c)) $
+    = '(anbi1d id);
+
+theorem anbi1cd(p s c: wff) (anbi1cd_1: $ p -> (s <-> c) $): $ p -> ((h ^ s) <-> (c ^ h)) $
+    = '(biancomd (anbi2d anbi1cd_1));
+
+theorem an2anr(p s c h: wff): $ ((p ^ s) ^ (c ^ h)) <-> ((s ^ p) ^ (h ^ c)) $
+    = '(anbi12i ancom ancom);
+
+theorem pm4_38(p s c h: wff): $ ((p <-> c) ^ (s <-> h)) -> ((p ^ s) <-> (c ^ h)) $
+    = '(anbi12d simpl simpr);
+
+theorem bi2anan9(p s c h t e: wff) (bi2an9_1: $ p -> (s <-> c) $) (bi2an9_2: $ h -> (t <-> e) $): $ (p ^ h) -> (s ^ t <-> c ^ e) $
+    = '(syl2an bi2an9_1 bi2an9_2 pm4_38);
+
+theorem bi2anan9r(p s c h t e: wff) (bi2an9_1: $ p -> (s <-> c) $) (bi2an9_2: $ h -> (t <-> e) $): $ (h ^ p) -> (s ^ t <-> c ^ e) $
+    = '(ancoms (bi2anan9 bi2an9_1 bi2an9_2));
+
+theorem bi2bian9(p s c h t e: wff) (bi2an9_1: $ p -> (s <-> c) $) (bi2an9_2: $ h -> (t <-> e) $): $ (p ^ h) -> ((s <-> t) <-> (c <-> e)) $
+    = '(bibi12d (adantr bi2an9_1) (adantl bi2an9_2));
+
+theorem anbiim(p s c h: wff) (anbiim_1: $ p -> c -> h $) (anbiim_2: $ s -> h -> c $): $ (p ^ s) -> (c <-> h) $
+    = '(impbid (adantr anbiim_1) (adantl anbiim_2));
+
+theorem bianass(p s c e: wff) (bianass_1: $ p <-> (s ^ c) $): $ (e ^ p) <-> (e ^ s ^ c) $
+    = '(bitr4i (anbi2i bianass_1) anass);
+
+theorem bianassc(p s c e: wff) (bianass_1: $ p <-> (s ^ c) $): $ (e ^ p) <-> (s ^ e ^ c) $
+    = '(bianbi (bianass bianass_1) ancom);
+
+theorem an21(p s c: wff): $ (p ^ s ^ c) <-> (s ^ (p ^ c)) $
+    = '(bicomi (bianassc biid));
+
+theorem an12(p s c: wff): $ (p ^ (s ^ c)) <-> (s ^ (p ^ c)) $
+    = '(biancomi (bianass ancom));
+
+theorem an32(p s c: wff): $ (p ^ s ^ c) <-> (p ^ c ^ s) $
+    = '(biancomi an21);
+
+theorem an13(p s c: wff): $ (p ^ (s ^ c)) <-> (c ^ (s ^ p)) $
+    = '(bitr3i an21 ancom);
+
+theorem an31(p s c: wff): $ (p ^ s ^ c) <-> (c ^ s ^ p) $
+    = '(_3bitr4i an13 anass anass);
+
+theorem an12s(p s c h: wff) (an12s_1: $ (p ^ (s ^ c)) -> h $): $ (s ^ (p ^ c)) -> h $
+    = '(sylbi an12 an12s_1);
+
+theorem ancom2s(p s c h: wff) (an12s_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ (c ^ s)) -> h $
+    = '(sylan2 pm3_22 an12s_1);
+
+theorem an13s(p s c h: wff) (an12s_1: $ (p ^ (s ^ c)) -> h $): $ (c ^ (s ^ p)) -> h $
+    = '(imp32 (com13 (exp32 an12s_1)));
+
+theorem an32s(p s c h: wff) (an32s_1: $ (p ^ s ^ c) -> h $): $ (p ^ c ^ s) -> h $
+    = '(sylbi an32 an32s_1);
+
+theorem ancom1s(p s c h: wff) (an32s_1: $ (p ^ s ^ c) -> h $): $ (s ^ p ^ c) -> h $
+    = '(sylan pm3_22 an32s_1);
+
+theorem an31s(p s c h: wff) (an32s_1: $ (p ^ s ^ c) -> h $): $ (c ^ s ^ p) -> h $
+    = '(imp31 (com13 (exp31 an32s_1)));
+
+theorem anass1rs(p s c h: wff) (anass1rs_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ c ^ s) -> h $
+    = '(an32s (anassrs anass1rs_1));
+
+theorem an4(p s c h: wff): $ ((p ^ s) ^ (c ^ h)) <-> ((p ^ c) ^ (s ^ h)) $
+    = '(bitri anass (bianass an12));
+
+theorem an42(p s c h: wff): $ ((p ^ s) ^ (c ^ h)) <-> ((p ^ c) ^ (h ^ s)) $
+    = '(bitri an4 (anbi2i ancom));
+
+theorem an43(p s c h: wff): $ ((p ^ s) ^ (c ^ h)) <-> ((p ^ h) ^ (s ^ c)) $
+    = '(bicomi an42);
+
+theorem an3(p s c h: wff): $ ((p ^ s) ^ (c ^ h)) -> (p ^ h) $
+    = '(simplbi an43);
+
+theorem an4s(p s c h t: wff) (an4s_1: $ ((p ^ s) ^ (c ^ h)) -> t $): $ ((p ^ c) ^ (s ^ h)) -> t $
+    = '(sylbi an4 an4s_1);
+
+theorem an42s(p s c h t: wff) (an41r3s_1: $ ((p ^ s) ^ (c ^ h)) -> t $): $ ((p ^ c) ^ (h ^ s)) -> t $
+    = '(ancom2s (an4s an41r3s_1));
+
+theorem anabs1(p s: wff): $ (p ^ s ^ p) <-> (p ^ s) $
+    = '(bicomi (pm4_71i simpl));
+
+theorem anabs5(p s: wff): $ (p ^ (p ^ s)) <-> (p ^ s) $
+    = '(pm5_32i (bicomd ibar));
+
+theorem anabs7(p s: wff): $ (s ^ (p ^ s)) <-> (p ^ s) $
+    = '(bicomi (pm4_71ri simpr));
+
+theorem anabsan(p s c: wff) (anabsan_1: $ (p ^ p ^ s) -> c $): $ (p ^ s) -> c $
+    = '(sylanb pm4_24 anabsan_1);
+
+theorem anabss1(p s c: wff) (anabss1_1: $ (p ^ s ^ p) -> c $): $ (p ^ s) -> c $
+    = '(anabsan (an32s anabss1_1));
+
+theorem anabss4(p s c: wff) (anabss4_1: $ (s ^ p ^ s) -> c $): $ (p ^ s) -> c $
+    = '(ancoms (anabss1 anabss4_1));
+
+theorem anabss5(p s c: wff) (anabss5_1: $ (p ^ (p ^ s)) -> c $): $ (p ^ s) -> c $
+    = '(anabsan (anassrs anabss5_1));
+
+theorem anabsi5(p s c: wff) (anabsi5_1: $ (p -> (p ^ s) -> c) $): $ (p ^ s) -> c $
+    = '(mpcom simpl anabsi5_1);
+
+theorem anabsi6(p s c: wff) (anabsi6_1: $ (p -> (s ^ p) -> c) $): $ (p ^ s) -> c $
+    = '(anabsi5 (ancomsd anabsi6_1));
+
+theorem anabsi7(p s c: wff) (anabsi7_1: $ s -> (p ^ s) -> c $): $ (p ^ s) -> c $
+    = '(ancoms (anabsi6 anabsi7_1));
+
+theorem anabsi8(p s c: wff) (anabsi8_1: $ s -> (s ^ p) -> c $): $ (p ^ s) -> c $
+    = '(ancoms (anabsi5 anabsi8_1));
+
+theorem anabss7(p s c: wff) (anabss7_1: $ (s ^ (p ^ s)) -> c $): $ (p ^ s) -> c $
+    = '(anabss4 (anassrs anabss7_1));
+
+theorem anabsan2(p s c: wff) (anabsan2_1: $ (p ^ (s ^ s)) -> c $): $ (p ^ s) -> c $
+    = '(anabss7 (an12s anabsan2_1));
+
+theorem anabss3(p s c: wff) (anabss3_1: $ (p ^ s ^ s) -> c $): $ (p ^ s) -> c $
+    = '(anabsan2 (anasss anabss3_1));
+
+theorem anandi(p s c: wff): $ (p ^ (s ^ c)) <-> ((p ^ s) ^ (p ^ c)) $
+    = '(bitr3i (anbi1i anidm) an4);
+
+theorem anandir(p s c: wff): $ (p ^ s ^ c) <-> ((p ^ c) ^ (s ^ c)) $
+    = '(bitr3i (anbi2i anidm) an4);
+
+theorem anandis(p s c t: wff) (anandis_1: $ ((p ^ s) ^ (p ^ c)) -> t $): $ (p ^ (s ^ c)) -> t $
+    = '(anabsan (an4s anandis_1));
+
+theorem anandirs(p s c t: wff) (anandirs_1: $ ((p ^ c) ^ (s ^ c)) -> t $): $ (p ^ s ^ c) -> t $
+    = '(anabsan2 (an4s anandirs_1));
+
+theorem sylanl1(p s c h t: wff) (sylanl1_1: $ p -> s $) (sylanl1_2: $ (s ^ c ^ h) -> t $): $ (p ^ c ^ h) -> t $
+    = '(sylan (anim1i sylanl1_1) sylanl1_2);
+
+theorem sylanl2(p s c h t: wff) (sylanl2_1: $ p -> c $) (sylanl2_2: $ (s ^ c ^ h) -> t $): $ (s ^ p ^ h) -> t $
+    = '(syldanl (adantl sylanl2_1) sylanl2_2);
+
+theorem sylanr1(p s c h t: wff) (sylanr1_1: $ p -> c $) (sylanr1_2: $ (s ^ (c ^ h)) -> t $): $ (s ^ (p ^ h)) -> t $
+    = '(sylan2 (anim1i sylanr1_1) sylanr1_2);
+
+theorem sylanr2(p s c h t: wff) (sylanr2_1: $ p -> h $) (sylanr2_2: $ (s ^ (c ^ h)) -> t $): $ (s ^ (c ^ p)) -> t $
+    = '(sylan2 (anim2i sylanr2_1) sylanr2_2);
+
+theorem syl6an(p s c h t: wff) (syl6an_1: $ p -> s $) (syl6an_2: $ p -> c -> h $) (syl6an_3: $ (s ^ h) -> t $): $ p -> c -> t $
+    = '(sylsyld syl6an_1 syl6an_2 (ex syl6an_3));
+
+theorem syl2an2r(p s c h t: wff) (syl2an2r_1: $ p -> s $) (syl2an2r_2: $ (p ^ c) -> h $) (syl2an2r_3: $ (s ^ h) -> t $): $ (p ^ c) -> t $
+    = '(syldan syl2an2r_2 (sylan syl2an2r_1 syl2an2r_3));
+
+theorem syl2an2(p s c h t: wff) (syl2an2_1: $ p -> s $) (syl2an2_2: $ (c ^ p) -> h $) (syl2an2_3: $ (s ^ h) -> t $): $ (c ^ p) -> t $
+    = '(syl2anc (adantl syl2an2_1) syl2an2_2 syl2an2_3);
+
+theorem mpdan(p s c: wff) (mpdan_1: $ p -> s $) (mpdan_2: $ (p ^ s) -> c $): $ p -> c $
+    = '(syl2anc id mpdan_1 mpdan_2);
+
+theorem mpancom(p s c: wff) (mpancom_1: $ s -> p $) (mpancom_2: $ (p ^ s) -> c $): $ s -> c $
+    = '(syl2anc mpancom_1 id mpancom_2);
+
+theorem mpidan(p s c h: wff) (mpidan_1: $ p -> c $) (mpidan_2: $ (p ^ s ^ c) -> h $): $ (p ^ s) -> h $
+    = '(mpdan (adantr mpidan_1) mpidan_2);
+
+theorem mpan(p s c: wff) (mpan_1: $ p $) (mpan_2: $ (p ^ s) -> c $): $ s -> c $
+    = '(mpancom (a1i mpan_1) mpan_2);
+
+theorem mpan2(p s c: wff) (mpan2_1: $ s $) (mpan2_2: $ (p ^ s) -> c $): $ p -> c $
+    = '(mpdan (a1i mpan2_1) mpan2_2);
+
+theorem mp2an(p s c: wff) (mp2an_1: $ p $) (mp2an_2: $ s $) (mp2an_3: $ (p ^ s) -> c $): $ c $
+    = '(ax_mp mp2an_2 (mpan mp2an_1 mp2an_3));
+
+theorem mp4an(p s c h t: wff) (mp4an_1: $ p $) (mp4an_2: $ s $) (mp4an_3: $ c $) (mp4an_4: $ h $) (mp4an_5: $ ((p ^ s) ^ (c ^ h)) -> t $): $ t $
+    = '(mp2an (pm3_2i mp4an_1 mp4an_2) (pm3_2i mp4an_3 mp4an_4) mp4an_5);
+
+theorem mpan2d(p s c h: wff) (mpan2d_1: $ p -> c $) (mpan2d_2: $ p -> (s ^ c) -> h $): $ p -> s -> h $
+    = '(mpid mpan2d_1 (expd mpan2d_2));
+
+theorem mpand(p s c h: wff) (mpand_1: $ p -> s $) (mpand_2: $ p -> (s ^ c) -> h $): $ p -> c -> h $
+    = '(mpan2d mpand_1 (ancomsd mpand_2));
+
+theorem mpani(p s c h: wff) (mpani_1: $ s $) (mpani_2: $ p -> (s ^ c) -> h $): $ p -> c -> h $
+    = '(mpand (a1i mpani_1) mpani_2);
+
+theorem mpan2i(p s c h: wff) (mpani_1: $ c $) (mpani_2: $ p -> (s ^ c) -> h $): $ p -> s -> h $
+    = '(mpan2d (a1i mpani_1) mpani_2);
+
+theorem mp2ani(p s c h: wff) (mp2ani_1: $ s $) (mp2ani_2: $ c $) (mp2ani_3: $ p -> (s ^ c) -> h $): $ p -> h $
+    = '(mpi mp2ani_2 (mpani mp2ani_1 mp2ani_3));
+
+theorem mp2and(p s c h: wff) (mp2and_1: $ p -> s $) (mp2and_2: $ p -> c $) (mp2and_3: $ p -> (s ^ c) -> h $): $ p -> h $
+    = '(mpd mp2and_2 (mpand mp2and_1 mp2and_3));
+
+theorem mpanl1(p s c h: wff) (mpanl1_1: $ p $) (mpanl1_2: $ (p ^ s ^ c) -> h $): $ (s ^ c) -> h $
+    = '(sylan (jctl mpanl1_1) mpanl1_2);
+
+theorem mpanl2(p s c h: wff) (mpanl2_1: $ s $) (mpanl2_2: $ (p ^ s ^ c) -> h $): $ (p ^ c) -> h $
+    = '(sylan (jctr mpanl2_1) mpanl2_2);
+
+theorem mpanl12(p s c h: wff) (mpanl12_1: $ p $) (mpanl12_2: $ s $) (mpanl12_3: $ (p ^ s ^ c) -> h $): $ c -> h $
+    = '(mpan mpanl12_2 (mpanl1 mpanl12_1 mpanl12_3));
+
+theorem mpanr1(p s c h: wff) (mpanr1_1: $ s $) (mpanr1_2: $ (p ^ (s ^ c)) -> h $): $ (p ^ c) -> h $
+    = '(mpanl2 mpanr1_1 (anassrs mpanr1_2));
+
+theorem mpanr2(p s c h: wff) (mpanr2_1: $ c $) (mpanr2_2: $ (p ^ (s ^ c)) -> h $): $ (p ^ s) -> h $
+    = '(sylan2 (jctr mpanr2_1) mpanr2_2);
+
+theorem mpanr12(p s c h: wff) (mpanr12_1: $ s $) (mpanr12_2: $ c $) (mpanr12_3: $ (p ^ (s ^ c)) -> h $): $ p -> h $
+    = '(mpan2 mpanr12_2 (mpanr1 mpanr12_1 mpanr12_3));
+
+theorem mpanlr1(p s c h t: wff) (mpanlr1_1: $ s $) (mpanlr1_2: $ (p ^ (s ^ c) ^ h) -> t $): $ (p ^ c ^ h) -> t $
+    = '(sylanl2 (jctl mpanlr1_1) mpanlr1_2);
+
+theorem mpbirand(p s c h: wff) (mpbirand_1: $ p -> c $) (mpbirand_2: $ p -> (s <-> (c ^ h)) $): $ p -> (s <-> h) $
+    = '(bitr4d mpbirand_2 (biantrurd mpbirand_1));
+
+theorem mpbiran2d(p s c h: wff) (mpbiran2d_1: $ p -> h $) (mpbiran2d_2: $ p -> (s <-> (c ^ h)) $): $ p -> (s <-> c) $
+    = '(mpbirand mpbiran2d_1 (biancomd mpbiran2d_2));
+
+theorem mpbiran(p s c: wff) (mpbiran_1: $ s $) (mpbiran_2: $ p <-> (s ^ c) $): $ p <-> c $
+    = '(bitr4i mpbiran_2 (biantrur mpbiran_1));
+
+theorem mpbiran2(p s c: wff) (mpbiran2_1: $ c $) (mpbiran2_2: $ p <-> (s ^ c) $): $ p <-> s $
+    = '(mpbiran mpbiran2_1 (biancomi mpbiran2_2));
+
+theorem mpbir2an(p s c: wff) (mpbir2an_1: $ s $) (mpbir2an_2: $ c $) (mpbir2an_maj: $ p <-> (s ^ c) $): $ p $
+    = '(mpbir mpbir2an_2 (mpbiran mpbir2an_1 mpbir2an_maj));
+
+theorem mpbi2and(p s c h: wff) (mpbi2and_1: $ p -> s $) (mpbi2and_2: $ p -> c $) (mpbi2and_3: $ p -> ((s ^ c) <-> h) $): $ p -> h $
+    = '(mpbid (jca mpbi2and_1 mpbi2and_2) mpbi2and_3);
+
+theorem mpbir2and(p s c h: wff) (mpbi2and_1: $ p -> c $) (mpbi2and_2: $ p -> h $) (mpbi2and_3: $ p -> (s <-> (c ^ h)) $): $ p -> s $
+    = '(mpbird (jca mpbi2and_1 mpbi2and_2) mpbi2and_3);
+
+theorem adantll(p s c h: wff) (adant2_1: $ (p ^ s) -> c $): $ (h ^ p ^ s) -> c $
+    = '(sylan simpr adant2_1);
+
+theorem adantlr(p s c h: wff) (adant2_1: $ (p ^ s) -> c $): $ (p ^ h ^ s) -> c $
+    = '(sylan simpl adant2_1);
+
+theorem adantrl(p s c h: wff) (adant2_1: $ (p ^ s) -> c $): $ (p ^ (h ^ s)) -> c $
+    = '(sylan2 simpr adant2_1);
+
+theorem adantrr(p s c h: wff) (adant2_1: $ (p ^ s) -> c $): $ (p ^ (s ^ h)) -> c $
+    = '(sylan2 simpl adant2_1);
+
+theorem adantlll(p s c h: wff) (adantl2_1: $ (p ^ s ^ c) -> h $): $ (t ^ p ^ s ^ c) -> h $
+    = '(sylanl1 simpr adantl2_1);
+
+theorem adantllr(p s c h: wff) (adantl2_1: $ (p ^ s ^ c) -> h $): $ (p ^ t ^ s ^ c) -> h $
+    = '(sylanl1 simpl adantl2_1);
+
+theorem adantlrl(p s c h: wff) (adantl2_1: $ (p ^ s ^ c) -> h $): $ (p ^ (t ^ s) ^ c) -> h $
+    = '(sylanl2 simpr adantl2_1);
+
+theorem adantlrr(p s c h: wff) (adantl2_1: $ (p ^ s ^ c) -> h $): $ (p ^ (s ^ t) ^ c) -> h $
+    = '(sylanl2 simpl adantl2_1);
+
+theorem adantrll(p s c h: wff) (adantr2_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ (t ^ s ^ c)) -> h $
+    = '(sylanr1 simpr adantr2_1);
+
+theorem adantrlr(p s c h: wff) (adantr2_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ (s ^ t ^ c)) -> h $
+    = '(sylanr1 simpl adantr2_1);
+
+theorem adantrrl(p s c h: wff) (adantr2_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ (s ^ (t ^ c))) -> h $
+    = '(sylanr2 simpr adantr2_1);
+
+theorem adantrrr(p s c h: wff) (adantr2_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ (s ^ (c ^ t))) -> h $
+    = '(sylanr2 simpl adantr2_1);
+
+theorem ad2antrr(p s c h: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h) -> s $
+    = '(adantlr (adantr ad2ant_1));
+
+theorem ad2antlr(p s c h: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h) -> s $
+    = '(adantll (adantr ad2ant_1));
+
+theorem ad2antrl(p s c h: wff) (ad2ant_1: $ p -> s $): $ (c ^ (p ^ h)) -> s $
+    = '(adantrr (adantl ad2ant_1));
+
+theorem ad2antll(p s c h: wff) (ad2ant_1: $ p -> s $): $ (c ^ (h ^ p)) -> s $
+    = '(adantl (adantl ad2ant_1));
+
+theorem ad3antrrr(p s c h t: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t) -> s $
+    = '(ad2antrr (adantr ad2ant_1));
+
+theorem ad3antlr(p s c h t: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t) -> s $
+    = '(ad2antrr (adantl ad2ant_1));
+
+theorem ad4antr(p s c h t e: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e) -> s $
+    = '(ad3antrrr (adantr ad2ant_1));
+
+theorem ad4antlr(p s c h t e: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e) -> s $
+    = '(ad3antrrr (adantl ad2ant_1));
+
+theorem ad5antr(p s c h t e z: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e ^ z) -> s $
+    = '(ad4antr (adantr ad2ant_1));
+
+theorem ad5antlr(p s c h t e z: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e ^ z) -> s $
+    = '(ad4antr (adantl ad2ant_1));
+
+theorem ad6antr(p s c h t e z g: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e ^ z ^ g) -> s $
+    = '(ad5antr (adantr ad2ant_1));
+
+theorem ad6antlr(p s c h t e z g: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e ^ z ^ g) -> s $
+    = '(ad5antr (adantl ad2ant_1));
+
+theorem ad7antr(p s c h t e z g r: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e ^ z ^ g ^ r) -> s $
+    = '(ad6antr (adantr ad2ant_1));
+
+theorem ad7antlr(p s c h t e z g r: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e ^ z ^ g ^ r) -> s $
+    = '(ad6antr (adantl ad2ant_1));
+
+theorem ad8antr(p s c h t e z g r m: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m) -> s $
+    = '(ad7antr (adantr ad2ant_1));
+
+theorem ad8antlr(p s c h t e z g r m: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e ^ z ^ g ^ r ^ m) -> s $
+    = '(ad7antr (adantl ad2ant_1));
+
+theorem ad9antr(p s c h t e z g r m l: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l) -> s $
+    = '(ad8antr (adantr ad2ant_1));
+
+theorem ad9antlr(p s c h t e z g r m l: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l) -> s $
+    = '(ad8antr (adantl ad2ant_1));
+
+theorem ad10antr(p s c h t e z g r m l: wff) (ad2ant_1: $ p -> s $): $ (p ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l ^ k) -> s $
+    = '(ad9antr (adantr ad2ant_1));
+
+theorem ad10antlr(p s c h t e z g r m l k: wff) (ad2ant_1: $ p -> s $): $ (c ^ p ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l ^ k) -> s $
+    = '(ad9antr (adantl ad2ant_1));
+
+theorem ad2ant2l(p s c h t: wff) (ad2ant2_1: $ (p ^ s) -> c $): $ ((h ^ p) ^ (t ^ s)) -> c $
+    = '(adantll (adantrl ad2ant2_1));
+
+theorem ad2ant2r(p s c h t: wff) (ad2ant2_1: $ (p ^ s) -> c $): $ ((p ^ h) ^ (s ^ t)) -> c $
+    = '(adantlr (adantrr ad2ant2_1));
+
+theorem ad2ant2lr(p s c h t: wff) (ad2ant2_1: $ (p ^ s) -> c $): $ ((h ^ p) ^ (s ^ t)) -> c $
+    = '(adantll (adantrr ad2ant2_1));
+
+theorem ad2ant2rl(p s c h t: wff) (ad2ant2_1: $ (p ^ s) -> c $): $ ((p ^ h) ^ (t ^ s)) -> c $
+    = '(adantlr (adantrl ad2ant2_1));
+
+theorem adantl3r(p s c h t e: wff) (adantl3r_1: $ (p ^ s ^ c ^ h) -> t $): $ (p ^ e ^ s ^ c ^ h) -> t $
+    = '(sylanl1 (adantlr id) adantl3r_1);
+
+theorem ad4ant13(p s c h t: wff) (ad4ant2_1: $ (p ^ s) -> c $): $ (p ^ h ^ s ^ t) -> c $
+    = '(adantllr (adantr ad4ant2_1));
+
+theorem ad4ant14(p s c h t: wff) (ad4ant2_1: $ (p ^ s) -> c $): $ (p ^ h ^ t ^ s) -> c $
+    = '(adantlr (adantlr ad4ant2_1));
+
+theorem ad4ant23(p s c h t: wff) (ad4ant2_1: $ (p ^ s) -> c $): $ (h ^ p ^ s ^ t) -> c $
+    = '(adantlll (adantr ad4ant2_1));
+
+theorem ad4ant24(p s c h t: wff) (ad4ant2_1: $ (p ^ s) -> c $): $ (h ^ p ^ t ^ s) -> c $
+    = '(adantlll (adantlr ad4ant2_1));
+
+theorem adantl4r(p z g r m l k: wff) (adantl4r_1: $ (p ^ g ^ r ^ m ^ l) -> k $): $ (p ^ z ^ g ^ r ^ m ^ l) -> k $
+    = '(imp (adantl3r (ex adantl4r_1)));
+
+theorem ad5ant13(p s c h t e: wff) (ad5ant2_1: $ (p ^ s) -> c $): $ (p ^ h ^ s ^ t ^ e) -> c $
+    = '(ad2antrr (adantlr ad5ant2_1));
+
+theorem ad5ant14(p s c h t e: wff) (ad5ant2_1: $ (p ^ s) -> c $): $ (p ^ h ^ t ^ s ^ e) -> c $
+    = '(ad4ant13 (adantlr ad5ant2_1));
+
+theorem ad5ant15(p s c h t e: wff) (ad5ant2_1: $ (p ^ s) -> c $): $ (p ^ h ^ t ^ e ^ s) -> c $
+    = '(ad4ant14 (adantlr ad5ant2_1));
+
+theorem ad5ant23(p s c h t e: wff) (ad5ant2_1: $ (p ^ s) -> c $): $ (h ^ p ^ s ^ t ^ e) -> c $
+    = '(ad2antrr (adantll ad5ant2_1));
+
+theorem ad5ant24(p s c h t e: wff) (ad5ant2_1: $ (p ^ s) -> c $): $ (h ^ p ^ t ^ s ^ e) -> c $
+    = '(ad4ant13 (adantll ad5ant2_1));
+
+theorem ad5ant25(p s c h t e: wff) (ad5ant2_1: $ (p ^ s) -> c $): $ (h ^ p ^ t ^ e ^ s) -> c $
+    = '(ad4ant14 (adantll ad5ant2_1));
+
+theorem adantl5r(p e z g r m l k: wff) (adantl4r_1: $ (p ^ z ^ g ^ r ^ m ^ l) -> k $): $ (p ^ e ^ z ^ g ^ r ^ m ^ l) -> k $
+    = '(imp (adantl4r (ex adantl4r_1)));
+
+theorem adantl6r(p t e z g r m l k: wff) (adantl4r_1: $ (p ^ e ^ z ^ g ^ r ^ m ^ l) -> k $): $ (p ^ t ^ e ^ z ^ g ^ r ^ m ^ l) -> k $
+    = '(imp (adantl5r (ex adantl4r_1)));
+
+theorem pm3_33(p s c: wff): $ ((p -> s) ^ (s -> c)) -> (p -> c) $
+    = '(imp imim1);
+
+theorem pm3_34(p s c: wff): $ ((s -> c) ^ (p -> s)) -> (p -> c) $
+    = '(imp imim2);
+
+theorem simpll(p s c: wff): $ (p ^ s ^ c) -> p $
+    = '(ad2antrr id);
+
+theorem simplld(p s c h: wff) (simplld_1: $ p -> (s ^ c ^ h) $): $ p -> s $
+    = '(simpld (simpld simplld_1));
+
+theorem simplr(p s c: wff): $ (p ^ s ^ c) -> s $
+    = '(ad2antlr id);
+
+theorem simplrd(p s c h: wff) (simplrd_1: $ p -> (s ^ c ^ h) $): $ p -> c $
+    = '(simprd (simpld simplrd_1));
+
+theorem simprl(p s c: wff): $ (p ^ (s ^ c)) -> s $
+    = '(ad2antrl id);
+
+theorem simprld(p s c h: wff) (simprld_1: $ p -> (s ^ (c ^ h)) $): $ p -> c $
+    = '(simpld (simprd simprld_1));
+
+theorem simprr(p s c: wff): $ (p ^ (s ^ c)) -> c $
+    = '(ad2antll id);
+
+theorem simprrd(p s c h: wff) (simprrd_1: $ p -> (s ^ (c ^ h)) $): $ p -> h $
+    = '(simprd (simprd simprrd_1));
+
+theorem simplll(p s c h: wff): $ (p ^ s ^ c ^ h) -> p $ = '(ad3antrrr id);
+theorem simpllr(p s c h: wff): $ (p ^ s ^ c ^ h) -> s $ = '(ad3antlr id);
+theorem simplrl(p s c h: wff): $ (p ^ (s ^ c) ^ h) -> s $ = '(ad2antlr simpl);
+theorem simplrr(p s c h: wff): $ (p ^ (s ^ c) ^ h) -> c $ = '(ad2antlr simpr);
+theorem simprll(p s c h: wff): $ (p ^ (s ^ c ^ h)) -> s $ = '(ad2antrl simpl);
+theorem simprlr(p s c h: wff): $ (p ^ (s ^ c ^ h)) -> c $ = '(ad2antrl simpr);
+theorem simprrl(p s c h: wff): $ (p ^ (s ^ (c ^ h))) -> c $ = '(ad2antll simpl);
+theorem simprrr(p s c h: wff): $ (p ^ (s ^ (c ^ h))) -> h $ = '(ad2antll simpr);
+
+theorem simp_4l(p s c h t: wff): $ (p ^ s ^ c ^ h ^ t) -> p $ = '(ad4antr id);
+theorem simp_4r(p s c h t: wff): $ (p ^ s ^ c ^ h ^ t) -> s $ = '(ad4antlr id);
+theorem simp_5l(p s c h t e: wff): $ (p ^ s ^ c ^ h ^ t ^ e) -> p $ = '(ad5antr id);
+theorem simp_5r(p s c h t e: wff): $ (p ^ s ^ c ^ h ^ t ^ e) -> s $ = '(ad5antlr id);
+theorem simp_6l(p s c h t e z: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z) -> p $ = '(ad6antr id);
+theorem simp_6r(p s c h t e z: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z) -> s $ = '(ad6antlr id);
+theorem simp_7l(p s c h t e z g: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g) -> p $ = '(ad7antr id);
+theorem simp_7r(p s c h t e z g: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g) -> s $ = '(ad7antlr id);
+theorem simp_8l(p s c h t e z g r: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r) -> p $ = '(ad8antr id);
+theorem simp_8r(p s c h t e z g r: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r) -> s $ = '(ad8antlr id);
+theorem simp_9l(p s c h t e z g r m: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m) -> p $ = '(ad9antr id);
+theorem simp_9r(p s c h t e z g r m: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m) -> s $ = '(ad9antlr id);
+theorem simp_10l(p s c h t e z g r m l: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l) -> p $ = '(ad10antr id);
+theorem simp_10r(p s c h t e z g r m l: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l) -> s $ = '(ad10antlr id);
+theorem simp_11l(p s c h t e z g r m l k: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l ^ k) -> p $ = '(ad10antr simpl);
+theorem simp_11r(p s c h t e z g r m l k: wff): $ (p ^ s ^ c ^ h ^ t ^ e ^ z ^ g ^ r ^ m ^ l ^ k) -> s $ = '(ad10antr simpr);
+
+theorem pm2_01da(p s: wff) (pm2_01da_1: $ (p ^ s) -> ~s $): $ p -> ~s $
+    = '(pm2_01d (ex pm2_01da_1));
+
+theorem pm2_18da(p s: wff) (pm2_01da_1: $ (p ^ ~s) -> s $): $ p -> s $
+    = '(pm2_18d (ex pm2_01da_1));
+
+theorem impbida(p s c: wff) (impbida_1: $ (p ^ s) -> c $) (impbida_2: $ (p ^ c) -> s $): $ p -> (s <-> c) $
+    = '(impbid (ex impbida_1) (ex impbida_2));
+
+theorem pm5_21nd(p s c h: wff) (pm5_21nd_1: $ (p ^ s) -> h $) (pm5_21nd_2: $ (p ^ c) -> h $) (pm5_21nd_3: $ h -> (s <-> c) $): $ p -> (s <-> c) $
+    = '(pm5_21ndd (ex pm5_21nd_1) (ex pm5_21nd_2) (a1i pm5_21nd_3));
+
+theorem pm3_35(p s: wff): $ (p ^ (p -> s)) -> s $
+    = '(imp pm2_27);
+
+theorem pm5_74da(p s c h: wff) (pm5_74da_1: $ (p ^ s) -> (c <-> h) $): $ p -> (s -> c <-> s -> h) $
+    = '(pm5_74d (ex pm5_74da_1));
+
+theorem bitr(p s c: wff): $ ((p <-> s) ^ (s <-> c)) -> (p <-> c) $
+    = '(biimpar bibi1);
+
+theorem biantr(p s c: wff): $ ((p <-> s) ^ (c <-> s)) -> (p <-> c) $
+    = '(biimparc (bibi2d id));
+
+theorem pm4_14(p s c: wff): $ ((p ^ s) -> c) <-> ((p ^ ~c) -> ~s) $
+    = '(_3bitr4i (imbi2i con34b) impexp impexp);
+
+theorem pm3_37(p s c: wff): $ ((p ^ s) -> c) -> ((p ^ ~c) -> ~s) $
+    = '(biimpi pm4_14);
+
+theorem anim12(p s c h: wff): $ ((p -> s) ^ (c -> h)) -> ((p ^ c) -> (s ^ h)) $
+    = '(im2anan9 id id);
+
+theorem pm3_4(p s: wff): $ (p ^ s) -> (p -> s) $
+    = '(a1d simpr);
+
+theorem exbiri(p s c h: wff) (exbiri_1: $ (p ^ s) -> (c <-> h) $): $ p -> s -> h -> c $
+    = '(exp31 (biimpar exbiri_1));
+
+theorem pm2_61ian(p s c: wff) (pm2_61ian_1: $ (p ^ s) -> c $) (pm2_61ian_2: $ (~p ^ s) -> c $): $ s -> c $
+    = '(pm2_61i (ex pm2_61ian_1) (ex pm2_61ian_2));
+
+theorem pm2_61dan(p s c: wff) (pm2_61dan_1: $ (p ^ s) -> c $) (pm2_61dan_2: $ (p ^ ~s) -> c $): $ p -> c $
+    = '(pm2_61d (ex pm2_61dan_1) (ex pm2_61dan_2));
+
+theorem pm2_61ddan(p s c h: wff) (pm2_61ddan_1: $ (p ^ s) -> h $) (pm2_61ddan_2: $ (p ^ c) -> h $) (pm2_61ddan_3: $ (p ^ (~s ^ ~c)) -> h $): $ p -> h $
+    = '(pm2_61dan pm2_61ddan_1 (pm2_61dan (adantlr pm2_61ddan_2) (anassrs pm2_61ddan_3)));
+
+theorem pm2_61dda(p s c h: wff) (pm2_61dda_1: $ (p ^ ~s) -> h $) (pm2_61dda_2: $ (p ^ ~c) -> h $) (pm2_61dda_3: $ (p ^ (s ^ c)) -> h $): $ p -> h $
+    = '(pm2_61dan (pm2_61dan (anassrs pm2_61dda_3) (adantlr pm2_61dda_2)) pm2_61dda_1);
+
+theorem mtand(p s c: wff) (mtand_1: $ p -> ~c $) (mtand_2: $ (p ^ s) -> c $): $ p -> ~s $
+    = '(mtod mtand_1 (ex mtand_2));
+
+theorem pm2_65da(p s c: wff) (pm2_65da_1: $ (p ^ s) -> c $) (pm2_65da_2: $ (p ^ s) -> ~c $): $ p -> ~s $
+    = '(pm2_65d (ex pm2_65da_1) (ex pm2_65da_2));
+
+theorem condan(p s c: wff) (condan_1: $ (p ^ ~s) -> c $) (condan_2: $ (p ^ ~s) -> ~c $): $ p -> s $
+    = '(notnotrd (pm2_65da condan_1 condan_2));
+
+theorem biadan(p s c: wff): $ (p -> s) <-> ((s -> (p <-> c)) <-> (p <-> (s ^ c))) $
+    = '(_3bitri pm4_71r bicom (_3bitr4ri (bibi12i bicom pm5_32) bicom biluk));
+
+theorem biadani(p s c: wff) (biadani_1: $ p -> s $): $ (s -> (p <-> c)) <-> (p <-> (s ^ c)) $
+    = '(mpbi biadani_1 biadan);
+
+theorem biadaniALT(p s c: wff) (biadani_1: $ p -> s $): $ (s -> (p <-> c)) <-> (p <-> (s ^ c)) $
+    = '(bitr4i pm5_32 (bibi1i (pm4_71ri biadani_1)));
+
+theorem biadanii(p s c: wff) (biadani_1: $ p -> s $) (biadanii_2: $ s -> (p <-> c) $): $ p <-> (s ^ c) $
+    = '(mpbi biadanii_2 (biadani biadani_1));
+
+theorem biadanid(p s c h: wff) (biadanid_1: $ (p ^ s) -> c $) (biadanid_2: $ (p ^ c) -> (s <-> h) $): $ p -> (s <-> (c ^ h)) $
+    = '(impbida (jca biadanid_1 (mpdan biadanid_1 (an32s (biimpa biadanid_2)))) (anasss (biimpar biadanid_2)));
+
+theorem pm5_1(p s: wff): $ (p ^ s) -> (p <-> s) $
+    = '(biimpa pm5_501);
+
+theorem pm5_21(p s: wff): $ (~p ^ ~s) -> (p <-> s) $
+    = '(imp pm5_21im);
+
+theorem pm5_35(p s c: wff): $ ((p -> s) ^ (p -> c)) -> (p -> (s <-> c)) $
+    = '(pm5_74rd pm5_1);
+
+theorem abai(p s: wff): $ (p ^ s) <-> (p ^ (p -> s)) $
+    = '(pm5_32i biimt);
+
+theorem pm4_45im(p s: wff): $ p <-> (p ^ (s -> p)) $
+    = '(pm4_71i ax_1);
+
+theorem impimprbi(p s: wff): $ (p <-> s) <-> ((p -> s) <-> (s -> p)) $
+    = '(impbii (sylbi dfbi2 pm5_1) (bija impbi (pm2_24d pm2_521)));
+
+theorem nan(p s c: wff): $ (p -> ~(s ^ c)) <-> ((p ^ s) -> ~c) $
+    = '(bitr2i impexp (imbi2i imnan));
+
+theorem pm5_31(p s c: wff): $ (c ^ (p -> s)) -> (p -> (s ^ c)) $
+    = '(jctird simpr simpl);
+
+theorem pm5_31r(p s c: wff): $ (c ^ (p -> s)) -> (p -> (c ^ s)) $
+    = '(anim12ii ax_1 id);
+
+theorem pm4_15(p s c: wff): $ ((p ^ s) -> ~c) <-> ((s ^ c) -> ~p) $
+    = '(bitr2i con2b nan);
+
+theorem pm5_36(p s: wff): $ (p ^ (p <-> s)) <-> (s ^ (p <-> s)) $
+    = '(pm5_32ri id);
+
+theorem annotanannot(p s: wff): $ (p ^ ~(p ^ s)) <-> (p ^ ~s) $
+    = '(pm5_32i (notbid (bicomd ibar)));
+
+theorem pm5_33(p s c: wff): $ (p ^ (s -> c)) <-> (p ^ ((p ^ s) -> c)) $
+    = '(pm5_32i (imbi1d ibar));
+
+theorem syl12anc(p s c h t: wff) (syl12anc_1: $ p -> s $) (syl12anc_2: $ p -> c $) (syl12anc_3: $ p -> h $) (syl12anc_4: $ (s ^ (c ^ h)) -> t $): $ p -> t $
+    = '(syl2anc syl12anc_1 (jca syl12anc_2 syl12anc_3) syl12anc_4);
+
+theorem syl21anc(p s c h t: wff) (syl21anc_1: $ p -> s $) (syl21anc_2: $ p -> c $) (syl21anc_3: $ p -> h $) (syl21anc_4: $ (s ^ c ^ h) -> t $): $ p -> t $
+    = '(syl2anc (jca syl21anc_1 syl21anc_2) syl21anc_3 syl21anc_4);
+
+theorem syl22anc(p s c h t e: wff) (syl22anc_1: $ p -> s $) (syl22anc_2: $ p -> c $) (syl22anc_3: $ p -> h $) (syl22anc_4: $ p -> t $) (syl22anc_5: $ ((s ^ c) ^ (h ^ t)) -> e $): $ p -> e $
+    = '(syl12anc (jca syl22anc_1 syl22anc_2) syl22anc_3 syl22anc_4 syl22anc_5);
+
+theorem bibiad(p s c h: wff) (bibiad_1: $ (p ^ s) -> h $) (bibiad_2: $ (p ^ c) -> h $) (bibiad_3: $ (p ^ h) -> (s <-> c) $): $ p -> (s <-> c) $
+    = '(impbida (syl21anc simpl bibiad_1 simpr (biimpa bibiad_3)) (syl21anc simpl bibiad_2 simpr (biimpar bibiad_3)));
+
+theorem syl1111anc(p s c h t e: wff) (syl1111anc_1: $ p -> s $) (syl1111anc_2: $ p -> c $) (syl1111anc_3: $ p -> h $) (syl1111anc_4: $ p -> t $) (syl1111anc_5: $ (s ^ c ^ h ^ t) -> e $): $ p -> e $
+    = '(syl21anc (jca syl1111anc_1 syl1111anc_2) syl1111anc_3 syl1111anc_4 syl1111anc_5);
+
+theorem syldbl2(p s h: wff) (syldbl2_1: $ (p ^ s) -> s -> h $): $ (p ^ s) -> h $
+    = '(anabsi7 (com12 syldbl2_1));
+
+theorem mpsyl4anc(p s c h t e: wff) (mpsyl4anc_1: $ p $) (mpsyl4anc_2: $ s $) (mpsyl4anc_3: $ c $) (mpsyl4anc_4: $ h -> t $) (mpsyl4anc_5: $ (p ^ s ^ c ^ t) -> e $): $ h -> e $
+    = '(syl1111anc (a1i mpsyl4anc_1) (a1i mpsyl4anc_2) (a1i mpsyl4anc_3) mpsyl4anc_4 mpsyl4anc_5);
+
+theorem pm4_87(p s c: wff): $ (((p ^ s) -> c) <-> (p -> s -> c)) ^ ((p -> s -> c) <-> (s -> p -> c)) ^ ((s -> p -> c) <-> ((s ^ p) -> c)) $
+    = '(pm3_2i (pm3_2i impexp bi2_04) (bicomi impexp));
+
+theorem bimsc1(p s c: wff): $ ((p -> s) ^ (c <-> (s ^ p))) -> (c <-> p) $
+    = '(sylan9bbr id (impbid2 simpr ancr));
+
+theorem a2and(p s c h t r: wff) (a2and_1: $ p -> ((s ^ r) -> t -> h) $) (a2and_2: $ p -> (s ^ r) -> c $): $ p -> ((s ^ c) -> t) -> ((s ^ r) -> h) $
+    = '(com23 (syl6c a2and_1 (imdistand (expd a2and_2)) (com3l imim1)));
+
+theorem animpimp2impd(p s c h t e: wff) (animpimp2impd_1: $ (s ^ p) -> (c -> h -> e) $) (animpimp2impd_2: $ (s ^ (p ^ h)) -> e -> t $): $ p -> (s -> c) -> s -> h -> t $
+    = '(a2d (expcom (syld animpimp2impd_1 (a2d (expr animpimp2impd_2)))));

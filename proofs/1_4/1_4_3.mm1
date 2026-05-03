@@ -1,0 +1,306 @@
+import "1_4_2.mm1";
+
+-- 1_4_3 - Axiom scheme ax-4 (Quantified Implication) --
+
+axiom ax_4{x: setvar} (p s: wff x): $ A{x p -> s} -> A{x p} -> A{x s} $;
+
+theorem alim{x: setvar} (p s: wff x): $ A{x p -> s} -> A{x p} -> A{x s} $ = 'ax_4;
+
+theorem alimi{x: setvar} (p s: wff x) (alimi_1: $ p -> s $): $ A{x p} -> A{x s} $
+    = '(mpg alim alimi_1);
+
+theorem _2alimi{x y: setvar} (p s: wff x y) (alimi_1: $ p -> s $): $ A{x A{y p}} -> A{x A{y s}} $
+    = '(alimi (alimi alimi_1));
+
+theorem ala1{x: setvar} (p s: wff x): $ A{x p} -> A{x s -> p} $
+    = '(alimi ax_1);
+
+theorem al2im{x: setvar} (p s c: wff x): $ A{x p -> s -> c} -> (A{x p} -> A{x s} -> A{x c}) $
+    = '(syl6 alim alim);
+
+theorem al2imi{x: setvar} (p s c: wff x) (al2imi_1: $ p -> s -> c $): $ A{x p} -> A{x s} -> A{x c} $
+    = '(mpg al2im al2imi_1);
+
+theorem alanimi{x: setvar} (p s c: wff x) (alanimi_1: $ (p ^ s) -> c $): $ (A{x p} ^ A{x s}) -> A{x c} $
+    = '(imp (al2imi (ex alanimi_1)));
+
+theorem alimdh{x: setvar} (p s c: wff x) (alimdh_1: $ p -> A{x p} $) (alimdh_2: $ p -> s -> c $): $ p -> A{x s} -> A{x c} $
+    = '(syl alimdh_1 (al2imi alimdh_2));
+
+theorem albi{x: setvar} (p s: wff x): $ A{x p <-> s} -> (A{x p} <-> A{x s}) $
+    = '(impbid (al2imi biimp) (al2imi biimpr));
+
+theorem albii{x: setvar} (p s: wff x) (albii_1: $ p <-> s $): $ A{x p} <-> A{x s} $
+    = '(mpg albi albii_1);
+
+theorem _2albii{x y: setvar} (p s: wff x y) (albii_1: $ p <-> s $): $ A{x A{y p}} <-> A{x A{y s}} $
+    = '(albii (albii albii_1));
+
+theorem _3albii{x y z: setvar} (p s: wff x y z) (albii_1: $ p <-> s $): $ A{x A{y A{z p}}} <-> A{x A{y A{z s}}} $
+    = '(albii (_2albii albii_1));
+
+theorem sylgt{x: setvar} (p s c: wff x): $ A{x s -> c} -> (p -> A{x s}) -> (p -> A{x c}) $
+    = '(imim2d alim);
+
+theorem sylg{x: setvar} (p s c: wff x) (sylg_1: $ p -> A{x s} $) (sylg_2: $ s -> c $): $ p -> A{x c}$
+    = '(syl sylg_1 (alimi sylg_2));
+
+theorem alrimih{x: setvar} (p s: wff x) (alrimih_1: $ p -> A{x p} $) (alrimih_2: $ p -> s $): $ p -> A{x s} $
+    = '(sylg alrimih_1 alrimih_2);
+
+theorem hbxfrbi{x: setvar} (p s: wff x) (hbxfrbi_1: $ p <-> s $) (hbxfrbi_2: $ s -> A{x s} $): $ p -> A{x p} $
+    = '(_3imtr4i hbxfrbi_2 hbxfrbi_1 (albii hbxfrbi_1));
+
+theorem alex{x: setvar} (p: wff x): $ A{x p} <-> ~E{x ~p} $
+    = '(bitri (albii notnotb) alnex);
+
+theorem exnal{x: setvar} (p: wff x): $ E{x ~p} <-> ~A{x p} $
+    = '(con2bii alex);
+
+theorem _2nalexn{x y: setvar} (p: wff x y): $ ~A{x A{y p}} <-> E{x E{y ~p}} $
+    = '(bicomi (xchbinxr df_ex (albii alex)));
+
+theorem _2exnaln{x y: setvar} (p: wff x y): $ E{x E{y p}} <-> ~A{x A{y ~p}} $
+    = '(xchbinxr df_ex (albii alnex));
+
+theorem _2nexaln{x y: setvar} (p: wff x y): $ ~E{x E{y p}} <-> A{x A{y ~p}} $
+    = '(con1bii (bicomi _2exnaln));
+
+theorem alimex{x: setvar} (p s: wff x): $ p -> A{x s} <-> E{x ~s} -> ~p $
+    = '(bitri (imbi2i alex) con2b);
+
+theorem aleximi{x: setvar} (p s c: wff x) (aleximi_1: $  p -> s -> c $): $ A{x p} -> E{x s} -> E{x c} $
+    = '(con4d (_3imtr3g (al2imi (con3d aleximi_1)) alnex alnex));
+
+theorem alexbii{x: setvar} (p s c: wff x) (alexbii_1: $ p -> (s <-> c) $): $ A{x p} -> (E{x s} <-> E{x c}) $
+    = '(impbid (aleximi (biimpd alexbii_1)) (aleximi (biimprd alexbii_1)));
+
+theorem exim{x: setvar} (p s: wff x): $ A{x p -> s} -> (E{x p} -> E{x s}) $
+    = '(aleximi id);
+
+theorem eximi{x: setvar} (p s: wff x) (eximi_1: $ p -> s $): $ E{x p} -> E{x s} $
+    = '(mpg exim eximi_1);
+
+theorem _2eximi{x y: setvar} (p s: wff x y) (eximi_1: $ p -> s $): $ E{x E{y p}} -> E{x E{y s}} $
+    = '(eximi (eximi eximi_1));
+
+theorem eximii{x: setvar} (p s: wff x) (eximii_1: $ E{x p} $) (eximii_2: $ p -> s $): $ E{x s} $
+    = '(ax_mp eximii_1 (eximi eximii_2));
+
+theorem exa1{x: setvar} (p s: wff x): $ E{x p} -> E{x s -> p} $
+    = '(eximi ax_1);
+
+theorem _19_38{x: setvar} (p s: wff x): $ (E{x p} -> A{x s}) -> A{x p -> s} $
+    = '(ja (sylbir alnex (alimi pm2_21)) ala1);
+
+theorem _19_38a{x: setvar} (p s: wff x): $ F{x p} -> (E{x p} -> A{x s} <-> A{x p -> s}) $
+    = '(impbid2 _19_38 (syl9 (nfrd id) alim));
+
+theorem _19_38b{x: setvar} (p s: wff x): $ F{x s} -> (E{x p} -> A{x s} <-> A{x p -> s}) $
+    = '(impbid2 _19_38 (syl9r exim (nfrd id)));
+
+theorem imnang{x: setvar} (p s: wff x): $ A{x p -> ~s} <-> A{x ~(p ^ s)} $
+    = '(albii imnan);
+
+theorem alinexa{x: setvar} (p s: wff x): $ A{x p -> ~s} <-> ~E{x p ^ s} $
+    = '(bitri imnang alnex);
+
+theorem exnalimn{x: setvar} (p s: wff x): $ E{x p ^ s} <-> ~A{x p -> ~s} $
+    = '(con2bii alinexa);
+
+theorem alexn{x y: setvar} (p: wff x y): $ A{x E{y ~p}} <-> ~E{x A{y p}} $
+    = '(bitri (albii exnal) alnex);
+
+theorem _2exnexn{x y: setvar} (p: wff x y): $ E{x A{y p}} <-> ~A{x E{y ~p}} $
+    = '(con2bii alexn);
+
+theorem exbi{x: setvar} (p s: wff x): $ A{x p <-> s} -> (E{x p} <-> E{x s}) $
+    = '(alexbii id);
+
+theorem exbii{x: setvar} (p s: wff x) (exbii_1: $ p <-> s $): $ E{x p} <-> E{x s} $
+    = '(mpg exbi exbii_1);
+
+theorem _2exbii{x y: setvar} (p s: wff x y) (_2exbii_1: $ p <-> s $): $ E{x E{y p}} <-> E{x E{y s}} $
+    = '(exbii (exbii _2exbii_1));
+
+theorem _3exbii{x y z: setvar} (p s: wff x y z) (_2exbii_1: $ p <-> s $): $ E{x E{y E{z p}}} <-> E{x E{y E{z s}}} $
+    = '(_2exbii (exbii _2exbii_1));
+
+theorem nfbiit{x: setvar} (p s: wff x): $ A{x p <-> s} -> (F{x p} <-> F{x s}) $
+    = '(_3bitr4g (imbi12d exbi albi) df_nf df_nf);
+
+theorem nfbii{x: setvar} (p s: wff x) (nfbii_1: $ p <-> s $): $ F{x p} <-> F{x s} $
+    = '(mpg nfbiit nfbii_1);
+
+theorem nfxfr{x: setvar} (p s: wff x) (nfbii_1: $ p <-> s $) (nfxfr_2: $ F{x s} $): $ F{x p} $
+    = '(mpbir nfxfr_2 (nfbii nfbii_1));
+
+theorem nfxfrd{x: setvar} (p s c: wff x) (nfbii_1: $ p <-> s $) (nfxfrd_2: $ c -> F{x s} $): $ c -> F{x p} $
+    = '(sylibr nfxfrd_2 (nfbii nfbii_1));
+
+theorem nfnbi{x: setvar} (p: wff x): $ F{x p} <-> F{x ~p} $
+    = '(_3bitr4ri (imbi1i exnal) df_nf nf4);
+
+theorem nfnt{x: setvar} (p: wff x): $ F{x p} -> F{x ~p} $
+    = '(biimpi nfnbi);
+
+theorem nfn{x: setvar} (p: wff x) (nfn_1: $ F{x p} $): $ F{x ~p} $
+    = '(ax_mp nfn_1 nfnt);
+
+theorem nfnd{x: setvar} (p s: wff x) (nfnd_1: $ p -> F{x s} $): $ p -> F{x ~s} $
+    = '(syl nfnd_1 nfnt);
+
+theorem exanali{x: setvar} (p s: wff x): $ E{x p ^ ~s} <-> ~A{x p -> s} $
+    = '(bitri (exbii annim) exnal);
+
+theorem _2exanali{x y: setvar} (p s: wff x): $ ~E{x E{y p ^ ~s}} <-> A{x A{y p -> s}} $
+    = '(xchnxbir (con1bii _2nalexn) (_2exbii annim));
+
+theorem exancom{x: setvar} (p s: wff x): $ E{x p ^ s} <-> E{x s ^ p} $
+    = '(exbii ancom);
+
+theorem exan{x: setvar} (p s: wff x) (exan_1: $ E{x p} $) (exan_2: $ s $): $ E{x p ^ s} $
+    = '(eximii exan_1 (jctr exan_2));
+
+theorem alrimdh{x: setvar} (p s c: wff x) (alrimdh_1: $ p -> A{x p} $) (alrimdh_2: $ s -> A{x s} $) (alrimdh_3: $ p -> s -> c $): $ p -> s -> A{x c} $
+    = '(syl5 alrimdh_2 (alimdh alrimdh_1 alrimdh_3));
+
+theorem eximdh{x: setvar} (p s c: wff x) (eximdh_1: $ p -> A{x p} $) (eximdh_2: $ p -> s -> c $): $ p -> E{x s} -> E{x c} $
+    = '(syl eximdh_1 (aleximi eximdh_2));
+
+theorem nexdh{x: setvar} (p s: wff x) (nexdh_1: $ p -> A{x p} $) (nexdh_2: $ p -> ~s $): $ p -> ~E{x s} $
+    = '(sylib (alrimih nexdh_1 nexdh_2) alnex);
+
+theorem albidh{x: setvar} (p s c: wff x) (albidh_1: $ p -> A{x p} $) (albidh_2: $ p -> (s <-> c) $): $ p -> (A{x s} <-> A{x c}) $
+    = '(syl (alrimih albidh_1 albidh_2) albi);
+
+theorem exbidh{x: setvar} (p s c: wff x) (exbidh_1: $ p -> A{x p} $) (exbidh_2: $ p -> (s <-> c) $): $ p -> (E{x s} <-> E{x c}) $
+    = '(syl exbidh_1 (alexbii exbidh_2));
+
+theorem exsimpl{x: setvar} (p s: wff x): $ E{x p ^ s} -> E{x p} $
+    = '(eximi simpl);
+
+theorem exsimpr{x: setvar} (p s: wff x): $ E{x p ^ s} -> E{x s} $
+    = '(eximi simpr);
+
+theorem _19_26{x: setvar} (p s: wff x): $ A{x p ^ s} <-> (A{x p} ^ A{x s}) $
+    = '(impbii (jca (alimi simpl) (alimi simpr)) (alanimi id));
+
+theorem _19_26_2{x y: setvar} (p s: wff x y): $ A{x A{y p ^ s}} <-> (A{x A{y p}} ^ A{x A{y s}}) $
+    = '(bitri (albii _19_26) _19_26);
+
+theorem _19_26_3an{x: setvar} (p s c: wff x): $ A{x p ^ s ^ c} <-> (A{x p} ^ A{x s} ^ A{x c}) $
+    = '(_3bitr4i (anbi1i _19_26) (bitri (albii biid) _19_26) biid);
+
+theorem _19_29{x: setvar} (p s: wff x): $ (A{x p} ^ E{x s}) -> E{x p ^ s} $
+    = '(imp (aleximi pm3_2));
+
+theorem _19_29r{x: setvar} (p s: wff x): $ (E{x p} ^ A{x s}) -> E{x p ^ s} $
+    = '(impcom (aleximi pm3_21));
+
+theorem _19_29r2{x y: setvar} (p s: wff x y): $ (E{x E{y p}} ^ A{x A{y s}}) -> E{x E{y p ^ s}} $
+    = '(syl _19_29r (eximi _19_29r));
+
+theorem _19_29x{x y: setvar} (p s: wff x y): $ (E{x A{y p}} ^ A{x E{y s}}) -> E{x E{y p ^ s}} $
+    = '(syl _19_29r (eximi _19_29));
+
+theorem _19_35{x: setvar} (p s: wff x): $ E{x p -> s} <-> A{x p} -> E{x s} $
+    = '(impbii (com12 (aleximi pm2_27)) (ja (sylbir exnal (eximi pm2_21)) exa1));
+
+theorem _19_35i{x: setvar} (p s: wff x) (_19_35i_1: $ E{x p -> s} $): $ A{x p} -> E{x s} $
+    = '(mpbi _19_35i_1 _19_35);
+
+theorem _19_35ri{x: setvar} (p s: wff x) (_19_35ri_1: $ A{x p} -> E{x s} $): $ E{x p -> s} $
+    = '(mpbir _19_35ri_1 _19_35);
+
+theorem _19_25{x y: setvar} (p s: wff x y): $ A{y E{x p -> s}} -> E{y A{x p}} -> E{y E{x s}} $
+    = '(aleximi (biimpi _19_35));
+
+theorem _19_30{x: setvar} (p s: wff x): $ A{x p \/ s} -> (A{x p} \/ E{x s}) $
+    = '(orrd (biimtrrid exnal (aleximi pm2_53)));
+
+theorem _19_43{x: setvar} (p s: wff x): $ E{x p \/ s} <-> (E{x p} \/ E{x s}) $
+    = '(bitr4i (_3bitri (exbii df_or) _19_35 (imbi1i alnex)) df_or);
+
+theorem _19_33{x: setvar} (p s: wff x): $ (A{x p} \/ A{x s}) -> A{x p \/ s} $
+    = '(jaoi (alimi orc) (alimi olc));
+
+theorem _19_33b{x: setvar} (p s: wff x): $ ~(E{x p} ^ E{x s}) -> (A{x p \/ s} <-> (A{x p} \/ A{x s})) $
+    = '(impbid1 (sylbi ianor (jaoi
+        (syl6com (biimtrrid alnex (al2imi pm2_53)) olc)
+        (syl6com (ord (orcomd _19_30)) orc)
+    )) _19_33);
+
+theorem _19_40{x: setvar} (p s: wff x): $ E{x p ^ s} -> (E{x p} ^ E{x s}) $
+    = '(jca exsimpl exsimpr);
+
+theorem _19_40_2{x y: setvar} (p s: wff x y): $ E{x E{y p ^ s}} -> (E{x E{y p}} ^ E{x E{y s}}) $
+    = '(syl (eximi _19_40) _19_40);
+
+theorem _19_40b{x: setvar} (p s: wff x): $ (A{x p} \/ A{x s}) -> ((E{x p} ^ E{x s}) <-> E{x p ^ s}) $
+    = '(impbid1 (orcoms (jaoa (aleximi pm3_21) (aleximi pm3_2))) _19_40);
+
+theorem albiim{x: setvar} (p s: wff x): $ A{x p <-> s} <-> (A{x p -> s} ^ A{x s -> p}) $
+    = '(bitri (albii dfbi2) _19_26);
+
+theorem _2albiim{x y: setvar} (p s: wff x y): $ A{x A{y p <-> s}} <-> (A{x A{y p -> s}} ^ A{x A{y s -> p}}) $
+    = '(bitri (albii albiim) _19_26);
+
+theorem exintrbi{x: setvar} (p s: wff x): $ A{x p -> s} -> (E{x p} <-> E{x p ^ s}) $
+    = '(alexbii (rbaibr abai));
+
+theorem exintr{x: setvar} (p s: wff x): $ A{x p -> s} -> (E{x p} -> E{x p ^ s}) $
+    = '(aleximi ancl);
+
+theorem alsyl{x: setvar} (p s c: wff x): $ (A{x p -> s} ^ A{x s -> c}) -> A{x p -> c} $
+    = '(alanimi pm3_33);
+
+theorem nfimd{x: setvar} (p s c: wff x) (nfimd_1: $ p -> F{x s} $) (nfimd_2: $ p -> F{x c} $): $ p -> F{x s -> c} $
+    = '(nfd (syl56 (biimpi _19_35) (imim12d (nfrd nfimd_1) (nfrd nfimd_2)) _19_38));
+
+theorem nfimt{x: setvar} (p s: wff x): $ (F{x p} ^ F{x s}) -> F{x p -> s} $
+    = '(nfimd simpl simpr);
+
+theorem nfim{x: setvar} (p s: wff x) (nfim_1: $ F{x p} $) (nfim_2: $ F{x s} $): $ F{x p -> s} $
+    = '(mp2an nfim_1 nfim_2 nfimt);
+
+theorem nfand{x: setvar} (p s c: wff x) (nfand_1: $ p -> F{x s} $) (nfand_2: $ p -> F{x c} $): $ p -> F{x s ^ c} $
+    = '(nfxfrd df_an (nfnd (nfimd nfand_1 (nfnd nfand_2))));
+
+theorem nf3and{x: setvar} (p s c h: wff x) (nfand_1: $ p -> F{x s} $) (nfand_2: $ p -> F{x c} $) (nfand_3: $ p -> F{x h} $): $ p -> F{x s ^ c ^ h} $
+    = '(nfxfrd biid (nfand (nfand nfand_1 nfand_2) nfand_3));
+
+theorem nfan{x: setvar} (p s: wff x) (nfan_1: $ F{x p} $) (nfan_2: $ F{x s} $): $ F{x p ^ s} $
+    = '(mptru (nfand (a1i nfan_1) (a1i nfan_2)));
+
+theorem nfnan{x: setvar} (p s: wff x) (nfan_1: $ F{x p} $) (nfan_2: $ F{x s} $): $ F{x p ⊼ s} $
+    = '(nfxfr df_nan (nfn (nfan nfan_1 nfan_2)));
+
+theorem nf3an{x: setvar} (p s c: wff x) (nfan_1: $ F{x p} $) (nfan_2: $ F{x s} $) (nfan_3: $ F{x c} $): $ F{x p ^ s ^ c} $
+    = '(nfxfr biid (nfan (nfan nfan_1 nfan_2) nfan_3));
+
+theorem nfbid{x: setvar} (p s c: wff x) (nfbid_1: $ p -> F{x s} $) (nfbid_2: $ p -> F{x c} $): $ p -> F{x s <-> c} $
+    = '(nfxfrd dfbi2 (nfand (nfimd nfbid_1 nfbid_2) (nfimd nfbid_2 nfbid_1)));
+
+theorem nfbi{x: setvar} (p s: wff x) (nf_1: $ F{x p} $) (nf_2: $ F{x s} $): $ F{x p <-> s} $
+    = '(mptru (nfbid (a1i nf_1) (a1i nf_2)));
+
+theorem nfor{x: setvar} (p s: wff x) (nf_1: $ F{x p} $) (nf_2: $ F{x s} $): $ F{x p \/ s} $
+    = '(nfxfr df_or (nfim (nfn nf_1) nf_2));
+
+theorem nf3or{x: setvar} (p s: wff x) (nf_1: $ F{x p} $) (nf_2: $ F{x s} $) (nf_3: $ F{x c} $): $ F{x p \/ s \/ c} $
+    = '(nfxfr biid (nfor (nfor nf_1 nf_2) nf_3));
+
+-- 1. The empty domain of discourse
+
+theorem empty{x: setvar}: $ ~E{x T.} <-> A{x F.} $
+    = '(bitr2i (albii df_fal) alnex);
+
+theorem emptyex{x: setvar} (p: wff x): $ ~E{x T.} -> ~E{x p} $
+    = '(con3i (eximi trud));
+
+theorem emptyal{x: setvar} (p: wff x): $ ~E{x T.} -> A{x p} $
+    = '(sylibr emptyex alex);
+
+theorem emptynf{x: setvar} (p: wff x): $ ~E{x T.} -> F{x p} $
+    = '(syl emptyal nftht);

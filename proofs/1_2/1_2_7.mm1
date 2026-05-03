@@ -1,0 +1,325 @@
+import "1_2_6.mm1";
+
+-- 1_2_7 - Logical Disjunction --
+
+def wo(p s: wff): wff = $ ~p -> s $;
+infixl wo: $\/$ prec 75;
+theorem df_or(p s: wff): $ p \/ s <-> ~p -> s $ = 'biid;
+
+theorem pm4_64(p s: wff): $ (~p -> s) <-> (p \/ s) $
+    = '(bicomi df_or);
+
+theorem pm4_66(p s: wff): $ (~p -> ~s) <-> (p \/ ~s) $
+    = 'pm4_64;
+
+theorem pm2_53(p s: wff): $ (p \/ s) -> (~p -> s) $
+    = '(biimpi df_or);
+
+theorem pm2_54(p s: wff): $ (~p -> s) -> (p \/ s) $
+    = '(biimpri df_or);
+
+theorem imor(p s: wff): $ (p -> s) <-> (~p \/ s) $
+    = '(bitr4i (imbi1i notnotb) df_or);
+
+theorem imori(p s: wff) (imori_1: $ p -> s $): $ ~p \/ s $
+    = '(mpbi imori_1 imor);
+
+theorem imorri(p s: wff) (imorri_1: $ ~p \/ s $): $ p -> s $
+    = '(mpbir imorri_1 imor);
+
+theorem pm4_62(p s: wff): $ (p -> ~s) <-> (~p \/ ~s) $
+    = 'imor;
+
+theorem jaoi(p s c: wff) (jaoi_1: $ p -> s $) (jaoi_2: $ c -> s $): $ (p \/ c) -> s $
+    = '(pm2_61d2 (syl6 pm2_53 jaoi_2) jaoi_1);
+
+theorem jao1i(p s c: wff) (jao1i_1: $ s -> c -> p $): $ (p \/ s) -> c -> p $
+    = '(jaoi ax_1 jao1i_1);
+
+theorem jaod(p s c h: wff) (jaod_1: $ p -> s -> c $) (jaod_2: $ p -> h -> c $): $ p -> (s \/ h) -> c $
+    = '(com12 (jaoi (com12 jaod_1) (com12 jaod_2)));
+
+theorem mpjaod(p s c h: wff) (mpjaod_1: $ p -> s -> c $) (mpjaod_2: $ p -> h -> c $) (mpjaod_3: $ p -> (s \/ h) $): $ p -> c $
+    = '(mpd mpjaod_3 (jaod mpjaod_1 mpjaod_2));
+
+theorem ori(p s: wff) (ori_1: $ p \/ s $): $ ~p -> s $
+    = '(mpbi ori_1 df_or);
+
+theorem orri(p s: wff) (orri_1: $ ~p -> s $): $ p \/ s $
+    = '(mpbir orri_1 df_or);
+
+theorem orrd(p s c: wff) (orrd_1: $ p -> ~s -> c $): $ p -> (s \/ c) $
+    = '(syl orrd_1 pm2_54);
+
+theorem ord(p s c: wff) (ord_1: $ p -> (s \/ c) $): $ p -> ~s -> c $
+    = '(sylib ord_1 df_or);
+
+theorem orci(p s: wff) (orci_1: $ p $): $ p \/ s $
+    = '(orri (pm2_24i orci_1));
+
+theorem olci(p s: wff) (olci_1: $ p $): $ s \/ p $
+    = '(orri (a1i olci_1));
+
+theorem orc(p s: wff): $ p -> (p \/ s) $
+    = '(orrd pm2_24);
+
+theorem olc(p s: wff): $ p -> (s \/ p) $
+    = '(orrd ax_1);
+
+theorem pm1_4(p s: wff): $ (p \/ s) -> (s \/ p) $
+    = '(jaoi olc orc);
+
+theorem orcom(p s: wff): $ (p \/ s) <-> (s \/ p) $
+    = '(impbii pm1_4 pm1_4);
+
+theorem orcomd(p s c: wff) (orcomd_1: $ p -> (s \/ c) $): $ p -> (c \/ s) $
+    = '(sylib orcomd_1 orcom);
+
+theorem orcoms(p s c: wff) (orcoms_1: $ (p \/ s) -> c $): $ (s \/ p) -> c $
+    = '(syl pm1_4 orcoms_1);
+
+theorem orcd(p s c: wff) (orcd_1: $ p -> s $): $ p -> (s \/ c) $
+    = '(syl orcd_1 orc);
+
+theorem olcd(p s c: wff) (olcd_1: $ p -> s $): $ p -> (c \/ s) $
+    = '(orcomd (orcd olcd_1));
+
+theorem orcs(p s c: wff) (orcs_1: $ (p \/ s) -> c $): $ p -> c $
+    = '(syl orc orcs_1);
+
+theorem olcs(p s c: wff) (olcs_1: $ (p \/ s) -> c $): $ s -> c $
+    = '(orcs (orcoms olcs_1));
+
+theorem olcnd(p s c: wff) (olcnd_1: $ p -> (s \/ c) $) (olcnd_2: $ p -> ~c $): $ p -> s $
+    = '(mt3d olcnd_2 (ord olcnd_1));
+
+theorem orcnd(p s c: wff) (orcnd_1: $ p -> (s \/ c) $) (orcnd_2: $ p -> ~s $): $ p -> c $
+    = '(olcnd (orcomd orcnd_1) orcnd_2);
+
+theorem mtord(p s c h: wff) (mtord_1: $ p -> ~c $) (mtord_2: $ p -> ~h $) (mtord_3: $ p -> s -> (c \/ h) $): $ p -> ~s $
+    = '(mtod mtord_2 (syl6ci mtord_3 mtord_1 pm2_53));
+
+theorem pm3_2ni(p s: wff) (pm3_2ni_1: $ ~p $) (pm3_2ni_2: $ ~s $): $ ~(p \/ s) $
+    = '(mto pm3_2ni_1 (jaoi id (pm2_21i pm3_2ni_2)));
+
+theorem pm2_45(p s: wff): $ ~(p \/ s) -> ~p $
+    = '(con3i orc);
+
+theorem pm2_46(p s: wff): $ ~(p \/ s) -> ~s $
+    = '(con3i olc);
+
+theorem pm2_47(p s: wff): $ ~(p \/ s) -> (~p \/ s) $
+    = '(orcd pm2_45);
+
+theorem pm2_48(: wff): $ ~(p \/ s) -> (p \/ ~s) $
+    = '(olcd pm2_46);
+
+theorem pm2_49(: wff): $ ~(p \/ s) -> (~p \/ ~s) $
+    = '(olcd pm2_46);
+
+theorem norbi(p s: wff): $ ~(p \/ s) -> (p <-> s) $
+    = '(pm5_21ni orc olc);
+
+theorem nbior(p s: wff): $ ~(p <-> s) -> (p \/ s) $
+    = '(con1i norbi);
+
+theorem orel1(p s: wff): $ ~p -> (p \/ s) -> s $
+    = '(com12 pm2_53);
+
+theorem pm2_25(p s: wff): $ p \/ ((p \/ s) -> s) $
+    = '(orri orel1);
+
+theorem orel2(p s: wff): $ ~p -> ((s \/ p) -> s) $
+    = '(jaod idd pm2_21);
+
+theorem pm2_67_2(p s c: wff): $ ((p \/ c) -> s) -> (p -> s) $
+    = '(imim1i orc);
+
+theorem pm2_67(p s: wff): $ ((p \/ s) -> s) -> (p -> s) $
+    = 'pm2_67_2;
+
+theorem curryax(p s: wff): $ p \/ (p -> s) $
+    = '(orri pm2_21);
+
+theorem exmid(p: wff): $ p \/ ~p $
+    = '(orri id);
+
+theorem exmidd(p s: wff): $ p -> (s \/ ~s) $
+    = '(a1i exmid);
+
+theorem pm2_1(p: wff): $ ~p \/ p $
+    = '(imori id);
+
+theorem pm2_13(p: wff): $ p \/ ~~~p $
+    = '(orri notnot);
+
+theorem pm2_621(p s: wff): $ (p -> s) -> (p \/ s) -> s $
+    = '(jaod id idd);
+
+theorem pm2_62(p s: wff): $ (p \/ s) -> (p -> s) -> s $
+    = '(com12 pm2_621);
+
+theorem pm2_68(p s: wff): $ ((p -> s) -> s) -> (p \/ s) $
+    = '(orrd jarl);
+
+theorem dfor2(p s: wff): $ (p \/ s) <-> (p -> s) -> s $
+    = '(impbii pm2_62 pm2_68);
+
+theorem pm2_07(p: wff): $ p -> (p \/ p) $
+    = 'olc;
+
+theorem pm1_2(p: wff): $ (p \/ p) -> p $
+    = '(jaoi id id);
+
+theorem oridm(p: wff): $ (p \/ p) <-> p $
+    = '(impbii pm1_2 pm2_07);
+
+theorem pm4_25(p: wff): $ p <-> (p \/ p) $
+    = '(bicomi oridm);
+
+theorem pm2_4(p s: wff): $ (p \/ (p \/ s)) -> (p \/ s) $
+    = '(jaoi orc id);
+
+theorem pm2_41(p s: wff): $ (s \/ (p \/ s)) -> (p \/ s) $
+    = '(jaoi olc id);
+
+theorem orim12i(p s c h: wff) (orim12i_1: $ p -> s $) (orim12i_2: $ c -> h $): $ (p \/ c) -> (s \/ h) $
+    = '(jaoi (orcd orim12i_1) (olcd orim12i_2));
+
+theorem orim1i(p s c: wff) (orim1i_1: $ p -> s $): $ (p \/ c) -> (s \/ c) $
+    = '(orim12i orim1i_1 id);
+
+theorem orim2i(p s c: wff) (orim1i_1: $ p -> s $): $ (c \/ p) -> (c \/ s) $
+    = '(orim12i id orim1i_1);
+
+theorem orim12dALT(p s c h t: wff) (orim12dALT_1: $ p -> s -> c $) (orim12dALT_2: $ p -> h -> t $): $ p -> (s \/ h) -> (c \/ t) $
+    = '(syl56 pm2_53 (imim12d (con3d orim12dALT_1) orim12dALT_2) pm2_54);
+
+theorem orbi2i(p s c: wff) (orbi2i_1: $ p <-> s $): $ (c \/ p) <-> (c \/ s) $
+    = '(impbii (orim2i (biimpi orbi2i_1)) (orim2i (biimpri orbi2i_1)));
+
+theorem orbi1i(p s c: wff) (orbi2i_1: $ p <-> s $): $ (p \/ c) <-> (s \/ c) $
+    = '(_3bitri orcom (orbi2i orbi2i_1) orcom);
+
+theorem orbi12i(p s c h: wff) (orbi12i_1: $ p <-> s $) (orbi12i_2: $ c <-> h $): $ (p \/ c) <-> (s \/ h) $
+    = '(bitri (orbi2i orbi12i_2) (orbi1i orbi12i_1));
+
+theorem orbi2d(p s c h: wff) (bid_1: $ p -> (s <-> c) $): $ p -> ((h \/ s) <-> (h \/ c)) $
+    = '(_3bitr4g (imbi2d bid_1) df_or df_or);
+
+theorem orbi1d(p s c h: wff) (bid_1: $ p -> (s <-> c) $): $ p -> ((s \/ h) <-> (c \/ h)) $
+    = '(_3bitr4g (orbi2d bid_1) orcom orcom);
+
+theorem orbi1(p s c: wff): $ (p <-> s) -> ((p \/ c) <-> (s \/ c)) $
+    = '(orbi1d id);
+
+theorem orbi12d(p s c h t: wff) (bi12d_1: $ p -> (s <-> c) $) (bi12d_2: $ p -> (h <-> t) $): $ p -> ((s \/ h) <-> (c \/ t)) $
+    = '(bitrd (orbi1d bi12d_1) (orbi2d bi12d_2));
+
+theorem pm1_5(p s c: wff): $ (p \/ (s \/ c)) -> (s \/ (p \/ c)) $
+    = '(jaoi (olcd orc) (orim2i olc));
+
+theorem or12(p s c: wff): $ (p \/ (s \/ c)) <-> (s \/ (p \/ c)) $
+    = '(impbii pm1_5 pm1_5);
+
+theorem orass(p s c: wff): $ (p \/ s \/ c) <-> (p \/ (s \/ c)) $
+    = '(_3bitri orcom or12 (orbi2i orcom));
+
+theorem pm2_31(p s c: wff): $ (p \/ (s \/ c)) -> (p \/ s \/ c) $
+    = '(biimpri orass);
+
+theorem pm2_32(p s c: wff): $ (p \/ s \/ c) -> (p \/ (s \/ c)) $
+    = '(biimpi orass);
+
+theorem pm2_3(p s c: wff): $ (p \/ (s \/ c)) -> (p \/ (c \/ s)) $
+    = '(orim2i pm1_4);
+
+theorem or32(p s c: wff): $ (p \/ s \/ c) <-> (p \/ c \/ s) $
+    = '(_3bitri orass or12 orcom);
+
+theorem or4(p s c h: wff): $ ((p \/ s) \/ (c \/ h)) <-> ((p \/ c) \/ (s \/ h)) $
+    = '(_3bitr4i (orbi2i or12) orass orass);
+
+theorem or42(p s c h: wff): $ ((p \/ s) \/ (c \/ h)) <-> ((p \/ c) \/ (h \/ s)) $
+    = '(bitri or4 (orbi2i orcom));
+
+theorem orordi(p s c: wff): $ (p \/ (s \/ c)) <-> ((p \/ s) \/ (p \/ c)) $
+    = '(bitr3i (orbi1i oridm) or4);
+
+theorem orordir(p s c: wff): $ (p \/ s \/ c) <-> ((p \/ c) \/ (s \/ c)) $
+    = '(bitr3i (orbi2i oridm) or4);
+
+theorem orimdi(p s c: wff): $ (p \/ (s -> c)) <-> ((p \/ s) -> (p \/ c)) $
+    = '(_3bitr4i imdi df_or (imbi12i df_or df_or));
+
+theorem pm2_76(p s c: wff): $ (p \/ (s -> c)) -> ((p \/ s) -> (p \/ c)) $
+    = '(biimpi orimdi);
+
+theorem pm2_85(p s c: wff): $ ((p \/ s) -> (p \/ c)) -> (p \/ (s -> c)) $
+    = '(biimpri orimdi);
+
+theorem pm2_75(p s c: wff): $ (p \/ s) -> (p \/ (s -> c)) -> (p \/ c) $
+    = '(com12 pm2_76);
+
+theorem pm4_78(p s c: wff): $ ((p -> s) \/ (p -> c)) <-> (p -> (s \/ c)) $
+    = '(_3bitr4ri orordi imor (orbi12i imor imor));
+
+theorem biort(p s: wff): $ p -> (p <-> (p \/ s)) $
+    = '(_2thd id orc);
+
+theorem biorf(p s: wff): $ ~p -> (s <-> (p \/ s)) $
+    = '(impbid2 olc orel1);
+
+theorem biortn(p s: wff): $ p -> (s <-> (~p \/ s)) $
+    = '(syl notnot biorf);
+
+theorem biorfi(p s: wff) (biorfi_1: $ ~p $): $ s <-> (p \/ s) $
+    = '(ax_mp biorfi_1 biorf);
+
+theorem biorfri(p s: wff) (biorfri_1: $ ~p $): $ s <-> (s \/ p) $
+    = '(bitri (biorfi biorfri_1) orcom);
+
+theorem pm2_26(p s: wff): $ ~p \/ ((p -> s) -> s) $
+    = '(imori pm2_27);
+
+theorem pm2_63(p s: wff): $ (p \/ s) -> (~p \/ s) -> s $
+    = '(jaod pm2_53 idd);
+
+theorem pm2_64(p s: wff): $ (p \/ s) -> (p \/ ~s) -> p $
+    = '(com12 (jao1i orel2));
+
+theorem pm2_42(p s: wff): $ (~p \/ (p -> s)) -> p -> s $
+    = '(jaoi pm2_21 id);
+
+theorem pm5_11g(p s c: wff): $ (p -> s) \/ (~p -> c) $
+    = '(orri pm2_5g);
+
+theorem pm5_11(p s: wff): $ (p -> s) \/ (~p -> s) $
+    = 'pm5_11g;
+
+theorem pm5_12(p s: wff): $ (p -> s) \/ (p -> ~s) $
+    = '(orri pm2_51);
+
+theorem pm5_14(p s c: wff): $ (p -> s) \/ (s -> c) $
+    = '(orri pm2_521g);
+
+theorem pm5_13(p s: wff): $ (p -> s) \/ (s -> p) $
+    = 'pm5_14;
+
+theorem pm5_55(p s: wff): $ ((p \/ s) <-> p) \/ ((p \/ s) <-> s) $
+    = '(orri (nsyl5 (bicomd biort) (bicomd biorf)));
+
+theorem pm4_72(p s: wff): $ (p -> s) <-> (s <-> (p \/ s)) $
+    = '(impbii (impbid2 olc pm2_621) (syl5 orc biimpr));
+
+theorem imimorb(p s c: wff): $ (s -> c) -> (p -> c) <-> p -> (s \/ c) $
+    = '(bitr4i bi2_04 (imbi2i dfor2));
+
+theorem oibabs(p s: wff): $ ((p \/ s) -> (p <-> s)) <-> (p <-> s) $
+    = '(impbii (ja norbi id) ax_1);
+
+theorem orbidi(p s c: wff): $ (p \/ (s <-> c)) <-> ((p \/ s) <-> (p \/ c)) $
+    = '(_3bitr4i pm5_74 df_or (bibi12i df_or df_or));
+
+theorem pm5_7(p s c: wff): $ ((p \/ c) <-> (s \/ c)) <-> (c \/ (p <-> s)) $
+    = '(bitr2i orbidi (bibi12i orcom orcom));

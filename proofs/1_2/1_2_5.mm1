@@ -1,0 +1,589 @@
+import "1_2_4.mm1";
+
+-- 1.2.5 - Logical Equivalence --
+
+def wb(p s: wff): wff = $ ~((p -> s) -> ~(s -> p)) $;
+infixl wb: $<->$ prec 50;
+theorem df_bi(p s: wff): $ ~(((p <-> s) -> ~((p -> s) -> ~(s -> p))) -> ~(~((p -> s) -> ~(s -> p)) -> (p <-> s))) $ = 'bijust;
+
+theorem impbi(p s: wff): $ (p -> s) -> (s -> p) -> (p <-> s) $
+    = '(expi (ax_mp df_bi simprim));
+
+theorem impbii(p s: wff) (impbii_1: $ p -> s $) (impbii_2: $ s -> p $): $ p <-> s $
+    = '(mp2 impbii_1 impbii_2 impbi);
+
+theorem impbidd(p s c h: wff) (impbidd_1: $ p -> s -> c -> h $) (impbidd_2: $ p -> s -> h -> c $): $ p -> s -> (c <-> h) $
+    = '(syl6c impbidd_1 impbidd_2 impbi);
+
+theorem impbid21d(p s c h: wff) (impbid21d_1: $ s -> c -> h $) (impbid21d_2: $ p -> h -> c $): $ p -> s -> (c <-> h) $
+    = '(syl2imc impbid21d_1 impbid21d_2 impbi);
+
+theorem impbid(p s c: wff) (impbid_1: $ p -> s -> c $) (impbid_2: $ p -> c -> s $): $ p -> (s <-> c) $
+    = '(pm2_43i (impbid21d impbid_1 impbid_2));
+
+theorem dfbi1(p s: wff): $ (p <-> s) <-> ~((p -> s) -> ~(s -> p)) $
+    = '(mt3 df_bi (con3rr3 impbi));
+
+theorem dfbi1ALT(p s: wff): $ (p <-> s) <-> ~((p -> s) -> ~(s -> p)) $
+    = '(ax_mp df_bi
+        (ax_mp (! ax_1 p s)
+            (ax_mp
+                (ax_mp ax_1
+                    (ax_mp (ax_mp (ax_mp (ax_mp df_bi ax_1) ax_3) ax_1) ax_2)
+                )
+            ax_3)
+        )
+    );
+
+theorem biimp(p s: wff): $ (p <-> s) -> (p -> s) $
+    = '(syl (ax_mp df_bi simplim) simplim);
+
+theorem biimpi(p s: wff) (biimpi_1: $ p <-> s $): $ p -> s $
+    = '(ax_mp biimpi_1 biimp);
+
+theorem sylbi(p s c: wff) (sylbi_1: $ p <-> s $) (sylbi_2: $ s -> c $): $ p -> c $
+    = '(syl (biimpi sylbi_1) sylbi_2);
+
+theorem sylib(p s c: wff) (sylib_1: $ p -> s $) (sylib_2: $ s <-> c $): $ p -> c $
+    = '(syl sylib_1 (biimpi sylib_2));
+
+theorem sylbb(p s c: wff) (sylbb_1: $ p <-> s $) (sylbb_2: $ s <-> c $): $ p -> c $
+    = '(sylbi sylbb_1 (biimpi sylbb_2));
+
+theorem biimpr(p s: wff): $ (p <-> s) -> (s -> p) $
+    = '(sylbi dfbi1 simprim);
+
+theorem bicom1(p s: wff): $ (p <-> s) -> (s <-> p) $
+    = '(impbid biimpr biimp);
+
+theorem bicom(p s: wff): $ (p <-> s) <-> (s <-> p) $
+    = '(impbii bicom1 bicom1);
+
+theorem bicomd(p s: wff) (bicomd_1: $ p -> (s <-> c) $): $ p -> (c <-> s) $
+    = '(sylib bicomd_1 bicom);
+
+theorem bicomi(p s: wff) (bicomi_1: $ p <-> s $): $ s <-> p $
+    = '(ax_mp bicomi_1 bicom1);
+
+theorem impbid1(p s: wff) (impbid1_1: $ p -> s -> c $) (impbid1_2: $ c -> s $): $ p -> (s <-> c) $
+    = '(impbid impbid1_1 (a1i impbid1_2));
+
+theorem impbid2(p s: wff) (impbid2_1: $ s -> c $) (impbid2_2: $ p -> c -> s $): $ p -> (s <-> c) $
+    = '(bicomd (impbid1 impbid2_2 impbid2_1));
+
+theorem impcon4bid(p s: wff) (impcon4bid_1: $ p -> s -> c $) (impcon4bid_2: $ p -> ~s -> ~c $): $ p -> (s <-> c) $
+    = '(impbid impcon4bid_1 (con4d impcon4bid_2));
+
+theorem biimpri(p s: wff) (biimpri_1: $ p <-> s $): $ s -> p $
+    = '(biimpi (bicomi biimpri_1));
+
+theorem biimpd(p s: wff) (biimpd_1: $ p -> (s <-> c) $): $ p -> s -> c $
+    = '(syl biimpd_1 biimp);
+
+theorem mpbi(p s: wff) (mpbi_min: $ p $) (mpbi_maj: $ p <-> s $): $ s $
+    = '(ax_mp mpbi_min (biimpi mpbi_maj));
+
+theorem mpbir(p s: wff) (mpbir_min: $ s $) (mpbir_maj: $ p <-> s $): $ p $
+    = '(ax_mp mpbir_min (biimpri mpbir_maj));
+
+theorem mpbid(p s c: wff) (mpbid_min: $ p -> s $) (mpbid_maj: $ p -> (s <-> c) $): $ p -> c $
+    = '(mpd mpbid_min (biimpd mpbid_maj));
+
+theorem mpbii(p s c: wff) (mpbii_min: $ s $) (mpbii_maj: $ p -> (s <-> c) $): $ p -> c $
+    = '(mpbid (a1i mpbii_min) mpbii_maj);
+
+theorem sylibr(p s c: wff) (sylibr_1: $ p -> s $) (sylibr_2: $ c <-> s $): $ p -> c $
+    = '(syl sylibr_1 (biimpri sylibr_2));
+
+theorem sylbir(p s c: wff) (sylbir_1: $ s <-> p $) (sylbir_2: $ s -> c $): $ p -> c $
+    = '(syl (biimpri sylbir_1) sylbir_2);
+
+theorem sylbbr(p s c: wff) (sylbbr_1: $ p <-> s $) (sylbbr_2: $ s <-> c $): $ c -> p $
+    = '(sylibr (biimpri sylbbr_2) sylbbr_1);
+
+theorem sylbb1(p s c: wff) (sylbb1_1: $ p <-> s $) (sylbb1_2: $ p <-> c $): $ s -> c $
+    = '(sylib (biimpri sylbb1_1) sylbb1_2);
+
+theorem sylbb2(p s c: wff) (sylbb2_1: $ p <-> s $) (sylbb2_2: $ c <-> s $): $ p -> c $
+    = '(sylbi sylbb2_1 (biimpri sylbb2_2));
+
+theorem sylibd(p s c h: wff) (sylibd_1: $ p -> s -> c $) (sylibd_2: $ p -> (c <-> h) $): $ p -> s -> h $
+    = '(syld sylibd_1 (biimpd sylibd_2));
+
+theorem sylbid(p s c h: wff) (sylbid_1: $ p -> (s <-> c) $) (sylbid_2: $ p -> c -> h $): $ p -> s -> h $
+    = '(syld (biimpd sylbid_1) sylbid_2);
+
+theorem mpbidi(p s c h: wff) (mpbidi_min: $ h -> p -> s $) (mpbidi_maj: $ p -> (s <-> c) $): $ h -> p -> c $
+    = '(sylcom mpbidi_min (biimpd mpbidi_maj));
+
+theorem biimtrid(p s c h: wff) (biimtrid_1: $ p <-> s $) (biimtrid_2: $ c -> s -> h $): $ c -> p -> h $
+    = '(syl5 (biimpi biimtrid_1) biimtrid_2);
+
+theorem biimtrrid(p s c h: wff) (biimtrrid_1: $ s <-> p $) (biimtrrid_2: $ c -> s -> h $): $ c -> p -> h $
+    = '(syl5 (biimpri biimtrrid_1) biimtrrid_2);
+
+theorem imbitrid(p s c h: wff) (imbitrid_1: $ p -> s $) (imbitrid_2: $ c -> (s <-> h) $): $ c -> p -> h $
+    = '(syl5 imbitrid_1 (biimpd imbitrid_2));
+
+theorem syl5ibcom(p s c h: wff) (syl5ibcom_1: $ p -> s $) (syl5ibcom_2: $ c -> (s <-> h) $): $ p -> c -> h $
+    = '(com12 (imbitrid syl5ibcom_1 syl5ibcom_2));
+
+theorem imbitrrid(p s c h: wff) (imbitrrid_1: $ p -> h $) (imbitrrid_2: $ c -> (s <-> h) $): $ c -> p -> s $
+    = '(imbitrid imbitrrid_1 (bicomd imbitrrid_2));
+
+theorem syl5ibrcom(p s c h: wff) (syl5ibrcom_1: $ p -> h $) (syl5ibrcom_2: $ c -> (s <-> h) $): $ p -> c -> s $
+    = '(com12 (imbitrrid syl5ibrcom_1 syl5ibrcom_2));
+
+theorem biimprd(p s c: wff) (biimprd_1: $ p -> (s <-> c) $): $ p -> c -> s $
+    = '(imbitrrid id biimprd_1);
+
+theorem biimpcd(p s c: wff) (biimpcd_1: $ p -> (s <-> c) $): $ s -> p -> c $
+    = '(syl5ibcom id biimpcd_1);
+
+theorem biimprcd(p s c: wff) (biimprcd_1: $ p -> (s <-> c) $): $ c -> p -> s $
+    = '(syl5ibrcom id biimprcd_1);
+
+theorem imbitrdi(p s c h: wff) (imbitrdi_1: $ p -> s -> c $) (imbitrdi_2: $ c <-> h $): $ p -> s -> h $
+    = '(syl6 imbitrdi_1 (biimpi imbitrdi_2));
+
+theorem imbitrrdi(p s c h: wff) (imbitrrdi_1: $ p -> s -> c $) (imbitrrdi_2: $ h <-> c $): $ p -> s -> h $
+    = '(syl6 imbitrrdi_1 (biimpri imbitrrdi_2));
+
+theorem biimtrdi(p s c h: wff) (biimtrdi_1: $ p -> (s <-> c) $) (biimtrdi_2: $ c -> h $): $ p -> s -> h $
+    = '(syl6 (biimpd biimtrdi_1) biimtrdi_2);
+
+theorem biimtrrdi(p s c h: wff) (biimtrdi_1: $ p -> (c <-> s) $) (biimtrdi_2: $ c -> h $): $ p -> s -> h $
+    = '(syl6 (biimprd biimtrdi_1) biimtrdi_2);
+
+theorem syl7bi(p s c h t: wff) (syl7bi_1: $ p <-> s $) (syl7bi_2: $ c -> h -> s -> t $): $ c -> h -> p -> t $
+    = '(syl7 (biimpi syl7bi_1) syl7bi_2);
+
+theorem syl8ib(p s c h t: wff) (syl8ib_1: $ p -> s -> c -> h $) (syl8ib_2: $ h <-> t $): $ p -> s -> c -> t $
+    = '(syl8 syl8ib_1 (biimpi syl8ib_2));
+
+theorem mpbird(p s c: wff) (mpbird_min: $ p -> c $) (mpbird_maj: $ p -> (s <-> c) $): $ p -> s $
+    = '(mpd mpbird_min (biimprd mpbird_maj));
+
+theorem mpbiri(p s c: wff) (mpbiri_min: $ c $) (mpbiri_maj: $ p -> (s <-> c) $): $ p -> s $
+    = '(mpbird (a1i mpbiri_min) mpbiri_maj);
+
+theorem sylibrd(p s c h: wff) (sylibrd_1: $ p -> s -> c $) (sylibrd_2: $ p -> (h <-> c) $): $ p -> s -> h $
+    = '(syld sylibrd_1 (biimprd sylibrd_2));
+
+theorem sylbird(p s c h: wff) (sylbird_1: $ p -> (c <-> s) $) (sylbird_2: $ p -> c -> h $): $ p -> s -> h $
+    = '(syld (biimprd sylbird_1) sylbird_2);
+
+theorem biid(p: wff): $ p <-> p $
+    = '(impbii id id);
+
+theorem biidd(p s: wff): $ p -> (s <-> s) $
+    = '(a1i biid);
+
+theorem pm5_1im(p s: wff): $ p -> s -> (p <-> s) $
+    = '(impbid21d ax_1 ax_1);
+
+theorem _2th(p s: wff) (_2th_1: $ p $) (_2th_2: $ s $): $ p <-> s $
+    = '(impbii (a1i _2th_2) (a1i _2th_1));
+
+theorem _2thd(p s: wff) (_2thd_1: $ p -> s $) (_2thd_2: $ p -> c $): $ p -> (s <-> c) $
+    = '(sylc _2thd_1 _2thd_2 pm5_1im);
+
+theorem monothetic(p s: wff): $ (p -> p) <-> (s -> s) $
+    = '(_2th id id);
+
+theorem ibi(p s: wff) (ibi_1: $ p -> (p <-> s) $): $ p -> s $
+    = '(mpbid id ibi_1);
+
+theorem ibir(p s: wff) (ibir_1: $ p -> (s <-> p) $): $ p -> s $
+    = '(ibi (bicomd ibir_1));
+
+theorem ibd(p s c: wff) (ibd_1: $ p -> s -> (s <-> c) $): $ p -> s -> c $
+    = '(syli ibd_1 biimp);
+
+theorem pm5_74(p s c: wff): $ (p -> (s <-> c)) <-> ((p -> s) <-> (p -> c)) $
+    = '(impbii
+        (impbid  (imim3i  biimp) (imim3i  biimpr))
+        (impbidd (pm2_86d biimp) (pm2_86d biimpr))
+    );
+
+theorem pm5_74i(p s c: wff) (pm5_74i_1: $ p -> (s <-> c) $): $ p -> s <-> p -> c $
+    = '(mpbi pm5_74i_1 pm5_74);
+
+theorem pm5_74ri(p s c: wff) (pm5_74i_1: $ p -> s <-> p -> c $): $ p -> (s <-> c) $
+    = '(mpbir pm5_74i_1 pm5_74);
+
+theorem pm5_74d(p s c h: wff) (pm5_74d_1: $ p -> s -> (c <-> h) $): $ p -> (s -> c <-> s -> h) $
+    = '(sylib pm5_74d_1 pm5_74);
+
+theorem pm5_74rd(p s c h: wff) (pm5_74d_1: $ p -> (s -> c <-> s -> h) $): $ p -> s -> (c <-> h) $
+    = '(sylibr pm5_74d_1 pm5_74);
+
+theorem bitri(p s c: wff) (bitri_1: $ p <-> s $) (bitri_2: $ s <-> c $): $ p <-> c $
+    = '(impbii (sylbb bitri_1 bitri_2) (sylbbr bitri_1 bitri_2));
+
+theorem bitr2i(p s c: wff) (bitr2i_1: $ p <-> s $) (bitr2i_2: $ s <-> c $): $ c <-> p $
+    = '(bicomi (bitri bitr2i_1 bitr2i_2));
+
+theorem bitr3i(p s c: wff) (bitr3i_1: $ s <-> p $) (bitr3i_2: $ s <-> c $): $ p <-> c $
+    = '(bitri (bicomi bitr3i_1) bitr3i_2);
+
+theorem bitr4i(p s c: wff) (bitr4i_1: $ p <-> s $) (bitr4i_2: $ c <-> s $): $ p <-> c $
+    = '(bitri bitr4i_1 (bicomi bitr4i_2));
+
+theorem bitrd(p s c h: wff) (bitrd_1: $ p -> (s <-> c) $) (bitrd_2: $ p -> (c <-> h) $): $ p -> (s <-> h) $
+    = '(pm5_74ri (bitri (pm5_74i bitrd_1) (pm5_74i bitrd_2)));
+
+theorem bitr2d(p s c h: wff) (bitr2d_1: $ p -> (s <-> c) $) (bitr2d_2: $ p -> (c <-> h) $): $ p -> (h <-> s) $
+    = '(bicomd (bitrd bitr2d_1 bitr2d_2));
+
+theorem bitr3d(p s c h: wff) (bitr3d_1: $ p -> (s <-> c) $) (bitr3d_2: $ p -> (s <-> h) $): $ p -> (c <-> h) $
+    = '(bitrd (bicomd bitr3d_1) bitr3d_2);
+
+theorem bitr4d(p s c h: wff) (bitr4d_1: $ p -> (s <-> c) $) (bitr4d_2: $ p -> (h <-> c) $): $ p -> (s <-> h) $
+    = '(bitrd bitr4d_1 (bicomd bitr4d_2));
+
+theorem bitrid(p s c h: wff) (bitrid_1: $ p <-> s $) (bitrid_2: $ c -> (s <-> h) $): $ c -> (p <-> h) $
+    = '(bitrd (a1i bitrid_1) bitrid_2);
+
+theorem bitr2id(p s c h: wff) (bitr2id_1: $ p <-> s $) (bitr2id_2: $ c -> (s <-> h) $): $ c -> (h <-> p) $
+    = '(bicomd (bitrid bitr2id_1 bitr2id_2));
+
+theorem bitr3id(p s c h: wff) (bitr3id_1: $ s <-> p $) (bitr3id_2: $ c -> (s <-> h) $): $ c -> (p <-> h) $
+    = '(bitrid (bicomi bitr3id_1) bitr3id_2);
+
+theorem bitr3di(p s c h: wff) (bitr3di_1: $ p -> (s <-> c) $) (bitr3di_2: $ (s <-> h) $): $ p -> (c <-> h) $
+    = '(bitr2id (bicomi bitr3di_2) bitr3di_1);
+
+theorem bitrdi(p s c h: wff) (bitrdi_1: $ p -> (s <-> c) $) (bitrdi_2: $ c <-> h $): $ p -> (s <-> h) $
+    = '(bitrd bitrdi_1 (a1i bitrdi_2));
+
+theorem bitr2di(p s c h: wff) (bitr2di_1: $ p -> (s <-> c) $) (bitr2di_2: $ c <-> h $): $ p -> (h <-> s) $
+    = '(bicomd (bitrdi bitr2di_1 bitr2di_2));
+
+theorem bitr4di(p s c h: wff) (bitr4di_1: $ p -> (s <-> c) $) (bitr4di_2: $ h <-> c $): $ p -> (s <-> h) $
+    = '(bitrdi bitr4di_1 (bicomi bitr4di_2));
+
+theorem bitr4id(p s c h: wff) (bitr4id_2: $ s <-> c $) (bitr4id_1: $ p -> (h <-> c) $): $ p -> (s <-> h) $
+    = '(bitr2di bitr4id_1 (bicomi bitr4id_2));
+
+theorem _3imtr3i(p s c h: wff) (_3imtr3i_1: $ p -> s $) (_3imtr3i_2: $ p <-> c $) (_3imtr3i_3: $ s <-> h $): $ c -> h $
+    = '(sylib (sylbir _3imtr3i_2 _3imtr3i_1) _3imtr3i_3);
+
+theorem _3imtr4i(p s c h: wff) (_3imtr4i_1: $ p -> s $) (_3imtr4i_2: $ c <-> p $) (_3imtr4i_3: $ h <-> s $): $ c -> h $
+    = '(sylibr (sylbi _3imtr4i_2 _3imtr4i_1) _3imtr4i_3);
+
+theorem _3imtr3d(p s c h t: wff) (_3imtr3d_1: $ p -> s -> c $) (_3imtr3d_2: $ p -> (s <-> h) $) (_3imtr3d_3: $ p -> (c <-> t) $): $ p -> h -> t $
+    = '(sylbird _3imtr3d_2 (sylibd _3imtr3d_1 _3imtr3d_3));
+
+theorem _3imtr4d(p s c h t: wff) (_3imtr3d_1: $ p -> s -> c $) (_3imtr3d_2: $ p -> (h <-> s) $) (_3imtr3d_3: $ p -> (t <-> c) $): $ p -> h -> t $
+    = '(sylbid _3imtr3d_2 (sylibrd _3imtr3d_1 _3imtr3d_3));
+
+theorem _3imtr3g(p s c h t: wff) (_3imtr3g_1: $ p -> s -> c $) (_3imtr3g_2: $ s <-> h $) (_3imtr3g_3: $ c <-> t $): $ p -> h -> t $
+    = '(imbitrdi (biimtrrid _3imtr3g_2 _3imtr3g_1) _3imtr3g_3);
+
+theorem _3imtr4g(p s c h t: wff) (_3imtr4g_1: $ p -> s -> c $) (_3imtr4g_2: $ h <-> s $) (_3imtr4g_3: $ t <-> c $): $ p -> h -> t $
+    = '(imbitrrdi (biimtrid _3imtr4g_2 _3imtr4g_1) _3imtr4g_3);
+
+theorem _3bitri(p s c h: wff) (_3bitri_1: $ p <-> s $) (_3bitri_2: $ s <-> c $) (_3bitri_3: $ c <-> h $): $ p <-> h $
+    = '(bitri (bitri _3bitri_1 _3bitri_2) _3bitri_3);
+
+theorem _3bitrri(p s c h: wff) (_3bitri_1: $ p <-> s $) (_3bitri_2: $ s <-> c $) (_3bitri_3: $ c <-> h $): $ h <-> p $
+    = '(bitr3i _3bitri_3 (bitr2i _3bitri_1 _3bitri_2));
+
+theorem _3bitr2i(p s c h: wff) (_3bitr2i_1: $ p <-> s $) (_3bitr2i_2: $ c <-> s $) (_3bitr2i_3: $ c <-> h $): $ p <-> h $
+    = '(bitri (bitr4i _3bitr2i_1 _3bitr2i_2) _3bitr2i_3);
+
+theorem _3bitr2ri(p s c h: wff) (_3bitr2i_1: $ p <-> s $) (_3bitr2i_2: $ c <-> s $) (_3bitr2i_3: $ c <-> h $): $ h <-> p $
+    = '(bitr2i (bitr4i _3bitr2i_1 _3bitr2i_2) _3bitr2i_3);
+
+theorem _3bitr3i(p s c h: wff) (_3bitr3i_1: $ p <-> s $) (_3bitr3i_2: $ p <-> c $) (_3bitr3i_3: $ s <-> h $): $ c <-> h $
+    = '(bitri (bitr3i _3bitr3i_2 _3bitr3i_1) _3bitr3i_3);
+
+theorem _3bitr3ri(p s c h: wff) (_3bitr3i_1: $ p <-> s $) (_3bitr3i_2: $ p <-> c $) (_3bitr3i_3: $ s <-> h $): $ h <-> c $
+    = '(bitr3i _3bitr3i_3 (bitr3i _3bitr3i_1 _3bitr3i_2));
+
+theorem _3bitr4i(p s c h: wff) (_3bitr4i_1: $ p <-> s $) (_3bitr4i_2: $ c <-> p $) (_3bitr4i_3: $ h <-> s $): $ c <-> h $
+    = '(bitri _3bitr4i_2 (bitr4i _3bitr4i_1 _3bitr4i_3));
+
+theorem _3bitr4ri(p s c h: wff) (_3bitr4i_1: $ p <-> s $) (_3bitr4i_2: $ c <-> p $) (_3bitr4i_3: $ h <-> s $): $ h <-> c $
+    = '(bitr2i _3bitr4i_2 (bitr4i _3bitr4i_1 _3bitr4i_3));
+
+theorem _3bitrd(p s c h t: wff) (_3bitrd_1: $ p -> (s <-> c) $) (_3bitrd_2: $ p -> (c <-> h) $) (_3bitrd_3: $ p -> (h <-> t) $): $ p -> (s <-> t) $
+    = '(bitrd (bitrd _3bitrd_1 _3bitrd_2) _3bitrd_3);
+
+theorem _3bitrrd(p s c h t: wff) (_3bitrd_1: $ p -> (s <-> c) $) (_3bitrd_2: $ p -> (c <-> h) $) (_3bitrd_3: $ p -> (h <-> t) $): $ p -> (t <-> s) $
+    = '(bitr3d _3bitrd_3 (bitr2d _3bitrd_1 _3bitrd_2));
+
+theorem _3bitr2d(p s c h t: wff) (_3bitr2d_1: $ p -> (s <-> c) $) (_3bitr2d_2: $ p -> (h <-> c) $) (_3bitr2d_3: $ p -> (h <-> t) $): $ p -> (s <-> t) $
+    = '(bitrd (bitr4d _3bitr2d_1 _3bitr2d_2) _3bitr2d_3);
+
+theorem _3bitr2rd(p s c h t: wff) (_3bitr2d_1: $ p -> (s <-> c) $) (_3bitr2d_2: $ p -> (h <-> c) $) (_3bitr2d_3: $ p -> (h <-> t) $): $ p -> (t <-> s) $
+    = '(bitr2d (bitr4d _3bitr2d_1 _3bitr2d_2) _3bitr2d_3);
+
+theorem _3bitr3d(p s c h t: wff) (_3bitr3d_1: $ p -> (s <-> c) $) (_3bitr3d_2: $ p -> (s <-> h) $) (_3bitr3d_3: $ p -> (c <-> t) $): $ p -> (h <-> t) $
+    = '(bitrd (bitr3d _3bitr3d_2 _3bitr3d_1) _3bitr3d_3);
+
+theorem _3bitr3rd(p s c h t: wff) (_3bitr3d_1: $ p -> (s <-> c) $) (_3bitr3d_2: $ p -> (s <-> h) $) (_3bitr3d_3: $ p -> (c <-> t) $): $ p -> (t <-> h) $
+    = '(bitr3d _3bitr3d_3 (bitr3d _3bitr3d_1 _3bitr3d_2));
+
+theorem _3bitr4d(p s c h t: wff) (_3bitr4d_1: $ p -> (s <-> c) $) (_3bitr4d_2: $ p -> (h <-> s) $) (_3bitr4d_3: $ p -> (t <-> c) $): $ p -> (h <-> t) $
+    = '(bitrd _3bitr4d_2 (bitr4d _3bitr4d_1 _3bitr4d_3));
+
+theorem _3bitr4rd(p s c h t: wff) (_3bitr4d_1: $ p -> (s <-> c) $) (_3bitr4d_2: $ p -> (h <-> s) $) (_3bitr4d_3: $ p -> (t <-> c) $): $ p -> (t <-> h) $
+    = '(bitr4d (bitr4d _3bitr4d_3 _3bitr4d_1) _3bitr4d_2);
+
+theorem _3bitr3g(p s c h t: wff) (_3bitr3g_1: $ p -> (s <-> c) $) (_3bitr3g_2: $ s <-> h $) (_3bitr3g_3: $ c <-> t $): $ p -> (h <-> t) $
+    = '(bitrdi (bitr3id _3bitr3g_2 _3bitr3g_1) _3bitr3g_3);
+
+theorem _3bitr4g(p s c h t: wff) (_3bitr3g_1: $ p -> (s <-> c) $) (_3bitr3g_2: $ h <-> s $) (_3bitr3g_3: $ t <-> c $): $ p -> (h <-> t) $
+    = '(bitr4di (bitrid _3bitr3g_2 _3bitr3g_1) _3bitr3g_3);
+
+theorem notnotb(p: wff): $ p <-> ~~p $
+    = '(impbii notnot notnotr);
+
+theorem con34b(p s: wff): $ p -> s <-> ~s -> ~p $
+    = '(impbii con3 con4);
+
+theorem con4bid(p s c: wff) (con4bid_1: $ p -> (~s <-> ~c) $): $ p -> (s <-> c) $
+    = '(impcon4bid (con4d (biimprd con4bid_1)) (biimpd con4bid_1));
+
+theorem notbid(p s c: wff) (notbid_1: $ p -> (s <-> c) $): $ p -> (~s <-> ~c) $
+    = '(con4bid (_3bitr3g notbid_1 notnotb notnotb));
+
+theorem notbi(p s: wff): $ (p <-> s) <-> (~p <-> ~s) $
+    = '(impbii (notbid id) (con4bid id));
+
+theorem notbii(p s: wff) (notbii_1: $ p <-> s $): $ ~p <-> ~s $
+    = '(mpbi notbii_1 notbi);
+
+theorem con4bii(p s: wff) (con4bii_1: $ ~p <-> ~s $): $ p <-> s $
+    = '(mpbir con4bii_1 notbi);
+
+theorem mtbi(p s: wff) (mtbi_1: $ ~p $) (mtbi_2: $ p <-> s $): $ ~s $
+    = '(mto mtbi_1 (biimpri mtbi_2));
+
+theorem mtbir(p s: wff) (mtbir_1: $ ~s $) (mtbir_2: $ p <-> s $): $ ~p $
+    = '(mtbi mtbir_1 (bicomi mtbir_2));
+
+theorem mtbid(p s c: wff) (mtbid_min: $ p -> ~s $) (mtbid_maj: $ p -> (s <-> c) $): $ p -> ~c $
+    = '(mtod mtbid_min (biimprd mtbid_maj));
+
+theorem mtbird(p s c: wff) (mtbird_min: $ p -> ~c $) (mtbird_maj: $ p -> (s <-> c) $): $ p -> ~s $
+    = '(mtod mtbird_min (biimpd mtbird_maj));
+
+theorem mtbii(p s c: wff) (mtbii_min: $ ~s $) (mtbii_maj: $ p -> (s <-> c) $): $ p -> ~c $
+    = '(mtoi mtbii_min (biimprd mtbii_maj));
+
+theorem mtbiri(p s c: wff) (mtbiri_min: $ ~c $) (mtbiri_maj: $ p -> (s <-> c) $): $ p -> ~s $
+    = '(mtoi mtbiri_min (biimpd mtbiri_maj));
+
+theorem sylnib(p s c: wff) (sylnib_1: $ p -> ~s $) (sylnib_2: $ s <-> c $): $ p -> ~c $
+    = '(nsyl sylnib_1 (biimpri sylnib_2));
+
+theorem sylnibr(p s c: wff) (sylnib_1: $ p -> ~s $) (sylnib_2: $ c <-> s $): $ p -> ~c $
+    = '(sylnib sylnib_1 (bicomi sylnib_2));
+
+theorem sylnbi(p s c: wff) (sylnbi_1: $ p <-> s $) (sylnbi_2: $ ~s -> c $): $ ~p -> c $
+    = '(sylbi (notbii sylnbi_1) sylnbi_2);
+
+theorem sylnbir(p s c: wff) (sylnbi_1: $ s <-> p $) (sylnbi_2: $ ~s -> c $): $ ~p -> c $
+    = '(sylnbi (bicomi sylnbi_1) sylnbi_2);
+
+theorem xchnxbi(p s c: wff) (xchnxbi_1: $ ~p <-> s $) (xchnxbi_2: $ p <-> c $): $ ~c <-> s $
+    = '(bitr3i (notbii xchnxbi_2) xchnxbi_1);
+
+theorem xchnxbir(p s c: wff) (xchnxbir_1: $ ~p <-> s $) (xchnxbir_2: $ c <-> p $): $ ~c <-> s $
+    = '(xchnxbi xchnxbir_1 (bicomi xchnxbir_2));
+
+theorem xchbinx(p s c: wff) (xchbinx_1: $ p <-> ~s $) (xchbinx_2: $ s <-> c $): $ p <-> ~c $
+    = '(bitri xchbinx_1 (notbii xchbinx_2));
+
+theorem xchbinxr(p s c: wff) (xchbinxr_1: $ p <-> ~s $) (xchbinxr_2: $ c <-> s $): $ p <-> ~c $
+    = '(xchbinx xchbinxr_1 (bicomi xchbinxr_2));
+
+theorem imbi2i(p s c: wff) (imbi2i_1: $ p <-> s $): $ c -> p <-> c -> s $
+    = '(pm5_74i (a1i imbi2i_1));
+
+theorem bibi2i(p s c: wff) (bibi2i_1: $ p <-> s $): $ (c <-> p) <-> (c <-> s) $
+    = '(impbii (bitrdi id bibi2i_1) (bitr4di id bibi2i_1));
+
+theorem bibi1i(p s c: wff) (bibi2i_1: $ p <-> s $): $ (p <-> c) <-> (s <-> c) $
+    = '(_3bitri bicom (bibi2i bibi2i_1) bicom);
+
+theorem bibi12i(p s c h: wff) (bibi2i_1: $ p <-> s $) (bibi12i_2: $ c <-> h $): $ (p <-> c) <-> (s <-> h) $
+    = '(bitri (bibi2i bibi12i_2) (bibi1i bibi2i_1));
+
+theorem imbi2d(p s c h: wff) (imbid_1: $ p -> (s <-> c) $): $ p -> ((h -> s) <-> (h -> c)) $
+    = '(pm5_74d (a1d imbid_1));
+
+theorem imbi1d(p s c h: wff) (imbid_1: $ p -> (s <-> c) $): $ p -> ((s -> h) <-> (c -> h)) $
+    = '(impbid (imim1d (biimprd imbid_1)) (imim1d (biimpd imbid_1)));
+
+theorem bibi2d(p s c h: wff) (imbid_1: $ p -> (s <-> c) $): $ p -> ((h <-> s) <-> (h <-> c)) $
+    = '(pm5_74ri (
+        _3bitr4i (bibi2i (pm5_74i imbid_1)) pm5_74 pm5_74
+    ));
+
+theorem bibi1d(p s c h: wff) (imbid_1: $ p -> (s <-> c) $): $ p -> ((s <-> h) <-> (c <-> h)) $
+    = '(_3bitr4g (bibi2d imbid_1) bicom bicom);
+
+theorem imbi12d(p s c h t: wff) (imbi12d_1: $ p -> (s <-> c) $) (imbi12d_2: $ p -> (h <-> t) $): $ p -> ((s -> h) <-> (c -> t)) $
+    = '(bitrd (imbi1d imbi12d_1) (imbi2d imbi12d_2));
+
+theorem bibi12d(p s c h t: wff) (imbi12d_1: $ p -> (s <-> c) $) (imbi12d_2: $ p -> (h <-> t) $): $ p -> ((s <-> h) <-> (c <-> t)) $
+    = '(bitrd (bibi1d imbi12d_1) (bibi2d imbi12d_2));
+
+theorem imbi12(p s c h: wff): $ (p <-> s) -> (c <-> h) -> (p -> c <-> s -> h) $
+    = '(expi (imbi12d simplim simprim));
+
+theorem imbi1(p s c: wff): $ (p <-> s) -> (p -> c <-> s -> c) $
+    = '(imbi1d id);
+
+theorem imbi2(p s c: wff): $ (p <-> s) -> (c -> p <-> c -> s) $
+    = '(imbi2d id);
+
+theorem imbi1i(p s c: wff) (imbi1i_1: $ p <-> s $): $ p -> c <-> s -> c $
+    = '(ax_mp imbi1i_1 imbi1);
+
+theorem imbi12i(p s c h: wff) (imbi12i_1: $ p <-> s $) (imbi12i_2: $ c <-> h $): $ p -> c <-> s -> h $
+    = '(mp2 imbi12i_1 imbi12i_2 imbi12);
+
+theorem bibi1(p s c: wff): $ (p <-> s) -> ((p <-> c) <-> (s <-> c)) $
+    = '(bibi1d id);
+
+theorem bitr3(p s c: wff): $ (p <-> s) -> ((p <-> c) -> (s <-> c)) $
+    = '(biimpd bibi1);
+
+theorem con2bi(p s: wff): $ (p <-> ~s) <-> (s <-> ~p) $
+    = '(_3bitr2i notbi (bibi2i notnotb) bicom);
+
+theorem con2bid(p s: wff) (con2bid_1: $ p -> (s <-> ~c) $): $ p -> (c <-> ~s) $
+    = '(sylibr con2bid_1 con2bi);
+
+theorem con1bid(p s c: wff) (con1bid_1: $ p -> (~s <-> c) $): $ p -> (~c <-> s) $
+    = '(bicomd (con2bid (bicomd con1bid_1)));
+
+theorem con1bii(p s: wff) (con1bii_1: $ ~p <-> s $): $ ~s <-> p $
+    = '(bicomi (xchbinx notnotb con1bii_1));
+
+theorem con2bii(p s: wff) (con2bii_1: $ p <-> ~s $): $ s <-> ~p $
+    = '(xchbinxr notnotb con2bii_1);
+
+theorem con1b(p s: wff): $ ~p -> s <-> ~s -> p $
+    = '(impbii con1 con1);
+
+theorem con2b(p s: wff): $ p -> ~s <-> s -> ~p $
+    = '(impbii con2 con2);
+
+theorem biimt(p s: wff): $ p -> (s <-> (p -> s)) $
+    = '(impbid2 ax_1 pm2_27);
+
+theorem pm5_5(p s: wff): $ p -> ((p -> s) <-> s) $
+    = '(bicomd biimt);
+
+theorem a1bi(p s: wff) (a1bi_1: $ p $): $ s <-> p -> s $
+    = '(ax_mp a1bi_1 biimt);
+
+theorem mt2bi(p s: wff) (mt2bi_1: $ p $): $ ~s <-> s -> ~p $
+    = '(bitri (a1bi mt2bi_1) con2b);
+
+theorem mtt(p s: wff): $ ~p -> (~s <-> s -> p) $
+    = '(bitr4di biimt con34b);
+
+theorem imnot(p s: wff): $ ~s -> ((p -> s) <-> ~p) $
+    = '(bicomd mtt);
+
+theorem pm5_501(p s: wff): $ p -> (s <-> (p <-> s)) $
+    = '(impbid pm5_1im (com12 biimp));
+
+theorem ibib(p s: wff): $ p -> s <-> p -> (p <-> s) $
+    = '(pm5_74i pm5_501);
+
+theorem ibibr(p s: wff): $ p -> s <-> p -> (s <-> p) $
+    = '(pm5_74i (bitrdi pm5_501 bicom));
+
+theorem tbt(p s: wff) (tbt_1: $ p $): $ s <-> (s <-> p) $
+    = '(ax_mp tbt_1 (pm5_74ri ibibr));
+
+theorem nbn2(p s: wff): $ ~p -> (~s <-> (p <-> s)) $
+    = '(bitr4di pm5_501 notbi);
+
+theorem bibif(p s: wff): $ ~s -> (p <-> s <-> ~p) $
+    = '(bitr2di nbn2 bicom);
+
+theorem nbn(p s: wff) (nbn_1: $ ~p $): $ ~s <-> (s <-> p) $
+    = '(bicomi (ax_mp nbn_1 bibif));
+
+theorem nbn3(p s: wff) (nbn3_1: $ p $): $ ~s <-> (s <-> ~p) $
+    = '(nbn (notnoti nbn3_1));
+
+theorem pm5_21im(p s: wff): $ ~p -> ~s -> (p <-> s) $
+    = '(biimpd nbn2);
+
+theorem _2false(p s: wff) (_2false_1: $ ~p $) (_2false_2: $ ~s $): $ p <-> s $
+    = '(con4bii (_2th _2false_1 _2false_2));
+
+theorem _2falsed(p s c: wff) (_2falsed_1: $ p -> ~s $) (_2falsed_2: $ p -> ~c $): $ p -> (s <-> c) $
+    = '(con4bid (_2thd _2falsed_1 _2falsed_2));
+
+theorem pm5_21ni(p s c: wff) (pm5_21ni_1: $ p -> s $) (pm5_21ni_2: $ c -> s $): $ ~s -> (p <-> c) $
+    = '(_2falsed (con3i pm5_21ni_1) (con3i pm5_21ni_2));
+
+theorem pm5_21nii(p s c: wff) (pm5_21ni_1: $ p -> s $) (pm5_21ni_2: $ c -> s $) (pm5_21nii_3: $ s -> (p <-> c) $): $ p <-> c $
+    = '(pm2_61i pm5_21nii_3 (pm5_21ni pm5_21ni_1 pm5_21ni_2));
+
+theorem pm5_21ndd(p s c h: wff) (pm5_21ndd_1: $ p -> c -> s $) (pm5_21ndd_2: $ p -> h -> s $) (pm5_21ndd_3: $ p -> s -> (c <-> h) $): $ p -> (c <-> h) $
+    = '(pm2_61d pm5_21ndd_3
+        (syl6c (con3d pm5_21ndd_1) (con3d pm5_21ndd_2) pm5_21im)
+    );
+
+theorem bija(p s c: wff) (bija_1: $ p -> s -> c $) (bija_2: $ ~p -> ~s -> c $): $ (p <-> s) -> c $
+    = '(pm2_61d (syli biimpr bija_1) (syli (con3d biimp) bija_2));
+
+theorem pm5_18(p s: wff): $ (p <-> s) <-> ~(p <-> ~s) $
+    = '(pm2_61i
+        (bitr2d (con1bid pm5_501) pm5_501)
+        (bitr2d (con1bid nbn2) nbn2)
+    );
+
+theorem xor3(p s: wff): $ ~(p <-> s) <-> (p <-> ~s) $
+    = '(bicomi (con2bii pm5_18));
+
+theorem nbbn(p s: wff): $ (~p <-> s) <-> ~(p <-> s) $
+    = '(_3bitrri xor3 con2bi bicom);
+
+theorem biass(p s c: wff): $ (p <-> s <-> c) <-> (p <-> (s <-> c)) $
+    = '(pm2_61i
+        (bitr3d (bibi1d pm5_501) pm5_501)
+        (bitr3d (bitr3id nbbn (bibi1d nbn2)) nbn2)
+    );
+
+theorem biluk(p s c: wff): $ (p <-> s) <-> ((c <-> s) <-> (p <-> c)) $
+    = '(bitr4i (mpbi (bitri (bibi1i bicom) biass) biass) biass);
+
+theorem pm5_19(p: wff): $ ~(p <-> ~p) $
+    = '(mpbi biid pm5_18);
+
+theorem bi2_04(p s c: wff): $ p -> s -> c <-> s -> p -> c $
+    = '(impbii pm2_04 pm2_04);
+
+theorem pm5_4(p s: wff): $ p -> p -> s <-> p -> s $
+    = '(pm5_74i pm5_5);
+
+theorem imdi(p s c: wff): $ p -> s -> c <-> (p -> s) -> (p -> c) $
+    = '(impbii ax_2 pm2_86);
+
+theorem pm5_41(p s c: wff): $ (p -> s) -> (p -> c) <-> (p -> s -> c) $
+    = '(bicomi imdi);
+
+theorem imbibi(p s c: wff): $ (p -> s <-> c) -> (p -> (s <-> c)) $
+    = '(pm5_74rd (bitr3id pm5_4 imbi2));
+
+theorem pm4_8(p: wff): $ p -> ~p <-> ~p $
+    = '(impbii pm2_01 ax_1);
+
+theorem pm4_81(p: wff): $ ~p -> p <-> p $
+    = '(impbii pm2_18 pm2_24);
+
+theorem imim21b(p s c h: wff): $ (s -> p) -> (((p -> c) -> (s -> h)) <-> (s -> c -> h)) $
+    = '(bitrid bi2_04 (pm5_74d (imim2i (imbi1d pm5_5))));

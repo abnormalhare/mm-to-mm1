@@ -1,0 +1,12 @@
+import "1_2_9.mm1";
+
+-- 1_2_10 Weak Deduction Theorem --
+
+theorem elimh(p s c h t: wff) (elimh_1: $ (if-[c p s] <-> p) -> (t <-> c) $) (elimh_2: $ (if-[c p s] <-> s) -> (t <-> h) $) (elimh_3: $ h $): $ t $
+    = '(pm2_61i (ibir (syl ifptru elimh_1)) (mpbiri elimh_3 (syl ifpfal elimh_2)));
+
+theorem dedt(p s c h t: wff) (dedt_1: $ (if-[c p s] <-> p) -> (t <-> h) $) (dedt_2: $ t $): $ c -> h $
+    = '(syl ifptru (mpbii dedt_2 dedt_1));
+
+theorem con3ALT(p s: wff): $ (p -> s) -> (~s -> ~p) $
+    = '(dedt (imbi1d (notbid id)) (con3i (elimh imbi2 imbi2 id)));

@@ -1,0 +1,83 @@
+import "1_3_10.mm1";
+
+-------- NEW CATEGORY --------
+
+-- 1_3_11 - Derive the Lukasiewicz axioms from the Russell-Bernays Axioms --
+
+theorem rb_bijust(p s: wff): $ (p <-> s) <-> ~(~(~p \/ s) \/ ~(~s \/ p)) $
+    = '(_3bitri dfbi1 (notbii (imbi12i imor (notbii imor))) (notbii pm4_62));
+
+theorem rb_imdf(p s: wff): $ ~(~(~(p -> s) \/ (~p \/ s)) \/ ~(~(~p \/ s) \/ (p -> s))) $
+    = '(mpbi imor rb_bijust);
+
+theorem anmp(p s: wff)  (anmp_min: $ p $) (anmp_maj: $ ~p \/ s $): $ s $
+    = '(ax_mp anmp_min (imorri anmp_maj));
+
+theorem rb_ax1(p s c: wff): $ ~(~s \/ c) \/ (~(p \/ s) \/ (p \/ c)) $
+    = '(imori (_3imtr3i orim2 imor imor));
+
+theorem rb_ax2(p s: wff): $ ~(p \/ s) \/ (s \/ p) $
+    = '(orri (con1i (con3i pm1_4)));
+
+theorem rb_ax3(p s: wff): $ ~p \/ (s \/ p) $
+    = '(orri (con1i pm2_46));
+
+theorem rb_ax4(p: wff): $ ~(p \/ p) \/ p $
+    = '(orri (con1i (con3i pm1_2)));
+
+theorem rbsyl(p s c: wff)  (rbsyl_1: $ ~s \/ c $) (rbsyl_2: $ p \/ s $): $ p \/ c $
+    = '(anmp rbsyl_2 (anmp rbsyl_1 rb_ax1));
+
+theorem rblem1(p s c h: wff)  (rblem1_1: $ ~p \/ s $) (rblem1_2: $ ~c \/ h $): $ ~(p \/ c) \/ (s \/ h) $
+    = '(rbsyl (anmp rblem1_2 rb_ax1) (rbsyl rb_ax2 (rbsyl (anmp rblem1_1 rb_ax1) rb_ax2)));
+
+theorem rblem2(p s c: wff): $ ~(c \/ p) \/ (c \/ (p \/ s)) $
+    = '(anmp (rbsyl rb_ax2 rb_ax3) rb_ax1);
+
+theorem rblem3(p s c: wff): $ ~(c \/ p) \/ (c \/ s \/ p) $
+    = '(rbsyl rb_ax2 (rbsyl rblem2 rb_ax2));
+
+theorem rblem4(p s c h t e: wff)  (rblem4_1: $ ~p \/ h $) (rblem4_2: $ ~s \/ t $) (rblem4_3: $ ~c \/ e $): $ ~(p \/ s \/ c) \/ (e \/ t \/ h) $
+    = '(rbsyl
+        (rblem1 (rblem1 rblem4_3 rblem4_2) rblem4_1)
+        (rbsyl
+            (rbsyl rb_ax2 (rbsyl (anmp rb_ax2 rb_ax1) rb_ax2))
+            (rbsyl rb_ax4 (rblem1 (rbsyl rb_ax2 rblem2) (anmp rb_ax3 rblem2)))
+        )
+    );
+
+theorem rblem5(p s: wff): $ ~(~~p \/ s) \/ (~~s \/ p) $
+    = '(rbsyl rb_ax2 (rblem1
+        (anmp (rbsyl rb_ax4 rb_ax3) (rblem1 (anmp (rbsyl rb_ax4 rb_ax3) rb_ax2) (rbsyl rb_ax4 rb_ax3)))
+        (anmp (rbsyl rb_ax4 rb_ax3) rb_ax2)
+    ));
+
+theorem rblem6(p s: wff)  (rblem6_1: $ ~(~(~p \/ s) \/ ~(~s \/ p)) $): $ ~p \/ s $
+    = '(anmp rblem6_1 (anmp (anmp (anmp (anmp (rbsyl rb_ax4 rb_ax3) rb_ax2) rblem3) rb_ax2) rblem5));
+
+theorem rblem7(p s: wff)  (rblem7_1: $ ~(~(~p \/ s) \/ ~(~s \/ p)) $): $ ~s \/ p $
+    = '(anmp rblem7_1 (anmp rb_ax3 rblem5));
+
+theorem re1axmp(p s: wff)  (re1axmp_min: $ p $) (re1axmp_max: $ p -> s $): $ s $
+    = '(anmp re1axmp_min (anmp re1axmp_max (rblem6 rb_imdf)));
+
+theorem re2luk1(p s c: wff): $ (p -> s) -> (s -> c) -> (p -> c) $
+    = '(anmp
+        (rbsyl
+            (rblem7 rb_imdf)
+            (rbsyl
+                (rbsyl
+                    (rblem1 (anmp (rblem6 rb_imdf) (rbsyl rb_ax2 (rblem1 (rbsyl rb_ax4 rb_ax3) (anmp (rbsyl rb_ax4 rb_ax3) rb_ax2)))) (rblem7 rb_imdf))
+                    (anmp rb_ax1 (rbsyl rb_ax2 (rbsyl (rblem4 (rbsyl rb_ax4 rb_ax3) (rbsyl rb_ax4 rb_ax3) (rbsyl rb_ax4 rb_ax3)) rb_ax2)))
+                )
+                (rblem6 rb_imdf)
+            )
+        )
+        (rblem7 rb_imdf)
+    );
+
+theorem re2luk2(p: wff): $ (~p -> p) -> p $
+    = '(anmp (rbsyl (rbsyl rb_ax4 (rblem1 (anmp (rbsyl rb_ax4 rb_ax3) (rblem1 (anmp (rbsyl rb_ax4 rb_ax3) rb_ax2) (rbsyl rb_ax4 rb_ax3))) (rbsyl rb_ax4 rb_ax3))) (rblem6 rb_imdf)) (rblem7 rb_imdf));
+
+theorem re2luk3(p s: wff): $ p -> ~p -> s $
+    = '(anmp (rbsyl (rblem7 rb_imdf) (anmp (anmp (rbsyl rb_ax4 rb_ax3) rb_ax2) rblem2)) (rblem7 rb_imdf));

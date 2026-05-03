@@ -1,0 +1,5 @@
+delimiter $ ( [ { ~ $ $ } ] ) $;
+
+-- wff order: (p s c h t e z g r m l k: wff)
+
+strict provable sort wff;

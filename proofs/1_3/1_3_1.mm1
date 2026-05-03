@@ -1,0 +1,72 @@
+import "../1_2/1_2_17.mm1";
+
+-------- Other axiomatizations related to classical prop calc --------
+
+-- 1_3_1 - Minimp Implicational Calc --
+
+theorem minimp(p s c h t: wff): $ p -> (s -> c) -> ((h -> s) -> (c -> t)) -> (s -> t) $
+    = '(a1i (com12 (a2d jarr)));
+
+-- this doesnt really work because of how big everything is in this function. shortcutting
+theorem minimp_syllsimp(p s c: wff): $ ((p -> s) -> c) -> (s -> c) $
+    = 'jarr;
+
+theorem minimp_ax1(p s: wff): $ p -> (s -> p) $
+    = '(ax_mp (! minimp_syllsimp p) minimp_syllsimp);
+
+-- minimp_syllsimp would have been worse
+theorem minimp_ax2c(p s c: wff): $ (p -> s) -> (p -> (s -> c)) -> (p -> c) $
+    = '(mp2
+        (ax_mp (! minimp p p p p p) minimp)
+        (ax_mp (mp2
+            minimp
+            (ax_mp (mp2
+                minimp
+                (mp2 minimp (mp2
+                    minimp
+                    (! minimp $ ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) $ p p p p)
+                    (! minimp
+                        $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> ((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p)))) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p)))) -> (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))))) -> (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))))))) $
+                        $ ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) $
+                        $ ((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) $
+                        p
+                    )
+                ) (ax_mp
+                    (! minimp
+                        $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                        $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                        $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                        $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                        $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                    ) minimp))
+                (! minimp
+                    $ ((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p)) -> ((((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p)) -> ((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p))) -> ((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p))))) $
+                    $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                    p
+                    $ (((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) $
+                )
+            ) minimp_syllsimp)
+            (! minimp
+                $ (p -> (s -> c)) -> (((p -> (s -> c)) -> (p -> (s -> c))) -> ((((p -> (s -> c)) -> (p -> (s -> c))) -> ((p -> (s -> c)) -> (p -> (s -> c)))) -> ((p -> (s -> c)) -> (p -> (s -> c))))) $
+                $ p -> s -> c $
+                $ ((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) $
+                $ p -> s -> c $
+            )
+        ) minimp_syllsimp)
+        (mp2 (mp2
+            minimp
+            (ax_mp (! minimp $ p -> s $ $ p -> s $ $ p -> s $ $ p -> s $ $ p -> s $) minimp)
+            (! minimp
+                $ (((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))) -> ((((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))) -> ((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c)))) -> (((((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))) -> ((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c)))) -> (((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))) -> ((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))))) -> (((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))) -> ((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))))))) $
+                $ ((p -> s) -> (((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c))) $
+                $ ((((p -> s) -> (p -> s)) -> ((((((p -> p) -> (((p -> p) -> (p -> p)) -> (p -> p))) -> p) -> (s -> c)) -> (p -> c)) -> ((p -> (s -> c)) -> (p -> c)))) -> ((p -> s) -> ((p -> (s -> c)) -> (p -> c)))) $
+                $ (p -> (s -> c)) -> (p -> c) $
+            )
+        ) minimp_syllsimp minimp_syllsimp)
+    );
+
+theorem minimp_ax2(p s c: wff): $ (p -> s -> c) -> (p -> s) -> (p -> c) $
+    = '(mp2 minimp_ax2c (ax_mp minimp_ax2c minimp_syllsimp) (ax_mp minimp_ax2c minimp_syllsimp));
+
+theorem minimp_pm2_43(p s: wff): $ (p -> p -> s) -> p -> s $
+    = '(mp2 minimp_ax2 (ax_mp minimp_ax1 minimp_ax2) minimp_ax2);

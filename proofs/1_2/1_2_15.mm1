@@ -1,0 +1,88 @@
+import "1_2_14.mm1";
+
+-- 1_2_15 - True and False Constants --
+
+-- 1. Universal quanitifier
+
+pure sort setvar;
+
+-- 2. Equality predicate
+
+term wal{x: setvar} (p: wff): wff;
+notation wal(x p) = ($A{$:1500) x p ($}$:0);
+
+strict sort class;
+
+term cv: setvar > class;
+coercion cv: setvar > class;
+
+term wceq(A B: class): wff;
+infixl wceq: $=$ prec 200;
+
+-- 3. The True Constant
+
+def wtru: wff = $ (A{x cv x = cv x}) -> (A{x cv x = cv x}) $;
+prefix wtru: $T.$ prec max;
+
+theorem trujust{x y: setvar}: $ (A{x cv x = cv x}) -> (A{x cv x = cv x}) <-> (A{y cv y = cv y}) -> (A{y cv y = cv y}) $
+    = 'monothetic;
+
+theorem df_tru{x: setvar}: $ T. <-> (A{x cv x = cv x}) -> (A{x cv x = cv x}) $
+    = 'biid;
+
+theorem tru: $ T. $
+    = '(mpbir id (! df_tru x));
+
+theorem dftru2(p: wff): $ T. <-> p -> p $
+    = '(_2th tru id);
+
+theorem trut(p: wff): $ p <-> T. -> p $
+    = '(a1bi tru);
+
+theorem mptru(p: wff) (mptru_1: $ T. -> p $): $ p $
+    = '(ax_mp tru mptru_1);
+
+theorem tbtru(p: wff): $ p <-> (p <-> T.) $
+    = '(tbt tru);
+
+theorem bitru(p: wff) (bitru_1: $ p $): $ p <-> T. $
+    = '(_2th bitru_1 tru);
+
+theorem trud(p: wff): $ p -> T. $
+    = '(a1i tru);
+
+theorem truan(p: wff): $ (T. ^ p) <-> p $
+    = '(bicomi (biantrur tru));
+
+-- 4. The False Constant
+
+def wfal: wff = $ ~T. $;
+prefix wfal: $F.$ prec max;
+theorem df_fal: $ F. <-> ~T. $ = 'biid;
+
+theorem fal: $ ~F. $
+    = '(mtbir (notnoti tru) df_fal);
+
+theorem nbfal(p: wff): $ ~p <-> (p <-> F.) $
+    = '(nbn fal);
+
+theorem bifal(p: wff) (bifal_1: $ ~p $): $ p <-> F. $
+    = '(_2false bifal_1 fal);
+
+theorem falim(p: wff): $ F. -> p $
+    = '(pm2_21i fal);
+
+theorem falimd(p s: wff): $ (p ^ F.) -> s $
+    = '(adantl falim);
+
+theorem dfnot(p: wff): $ ~p <-> (p -> F.) $
+    = '(ax_mp fal mtt);
+
+theorem inegd(p s: wff) (inegd_1: $ (p ^ s) -> F. $): $ p -> ~s $
+    = '(sylibr (ex inegd_1) dfnot);
+
+theorem efald(p s: wff) (efald_1: $ (p ^ ~s) -> F. $): $ p -> s $
+    = '(notnotrd (inegd efald_1));
+
+theorem pm2_21fal(p s: wff) (pm2_21fal_1: $ p -> s $) (pm2_21fal_2: $ p -> ~s $): $ p -> F. $
+    = '(pm2_21dd pm2_21fal_1 pm2_21fal_2);

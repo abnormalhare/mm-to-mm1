@@ -1,0 +1,280 @@
+import "1_2_3.mm1";
+
+-- 1.2.4 - Logical Negation --
+
+theorem con4(p s: wff): $ (~p -> ~s) -> (s -> p) $ = 'ax_3;
+
+theorem con4i(p s: wff) (con4i_1: $ ~p -> ~s $): $ s -> p $
+    = '(ax_mp con4i_1 con4);
+
+theorem con4d(p s c: wff) (con4d_1: $ p -> ~s -> ~c $): $ p -> c -> s $
+    = '(syl con4d_1 con4);
+
+theorem mt4(p s: wff) (mt4_1: $ p $) (mt4_2: $ ~s -> ~p $): $ s $
+    = '(ax_mp mt4_1 (con4i mt4_2));
+
+theorem mt4d(p s c: wff) (mt4d_1: $ p -> s $) (mt4d_2: $ p -> ~c -> ~s $): $ p -> c $
+    = '(mpd mt4d_1 (con4d mt4d_2));
+
+theorem mt4i(p s c: wff) (mt4i_1: $ c $) (mt4i_2: $ p -> ~s -> ~c $): $ p -> s $
+    = '(mt4d (a1i mt4i_1) mt4i_2);
+
+theorem pm2_21i(p s: wff) (pm2_21i_1: $ ~p $): $ p -> s $
+    = '(con4i (a1i pm2_21i_1));
+
+theorem pm2_24ii(p s: wff) (pm2_24ii_1: $ p $) (pm2_24ii_2: $ ~p $): $ s $
+    = '(ax_mp pm2_24ii_1 (pm2_21i pm2_24ii_2));
+
+theorem pm2_21d(p s c: wff) (pm2_21d_1: $ p -> ~s $): $ p -> s -> c $
+    = '(con4d (a1d pm2_21d_1));
+
+theorem pm2_21ddALT(p s c: wff) (pm2_21ddALT_1: $ p -> s $) (pm2_21ddALT_2: $ p -> ~s $): $ p -> c $
+    = '(mpd pm2_21ddALT_1 (pm2_21d pm2_21ddALT_2));
+
+theorem pm2_21(p s: wff): $ ~p -> p -> s $
+    = '(pm2_21d id);
+
+theorem pm2_24(p s: wff): $ p -> ~p -> s $
+    = '(com12 pm2_21);
+
+theorem jarl(p s c: wff): $ ((p -> s) -> c) -> (~p -> c) $
+    = '(imim1i pm2_21);
+
+theorem jarli(p s c: wff) (jarli_1: $ (p -> s) -> c $): $ ~p -> c $
+    = '(syl pm2_21 jarli_1);
+
+theorem pm2_18d(p s: wff) (pm2_18d_1: $ p -> ~s -> s $): $ p -> s $
+    = '(mt4d id (sylcom pm2_18d_1 pm2_21));
+
+theorem pm2_18(p: wff): $ (~p -> p) -> p $
+    = '(pm2_18d id);
+
+theorem pm2_18i(p: wff) (pm2_18i_1: $ ~p -> p $): $ p $
+    = '(ax_mp pm2_18i_1 pm2_18);
+
+theorem notnotr(p: wff): $ ~~p -> p $
+    = '(jarli pm2_18);
+
+theorem notnotri(p: wff) (notnotri_1: $ ~~p $): $ p $
+    = '(mt4 notnotri_1 (pm2_21i notnotri_1));
+
+theorem notnotriALT(p: wff) (notnotri_1: $ ~~p $): $ p $
+    = '(pm2_18i (pm2_21i notnotri_1));
+
+theorem notnotrd(p s: wff) (notnotrd_1: $ p -> ~~s $): $ p -> s $
+    = '(syl notnotrd_1 notnotr);
+
+theorem con2d(p s c: wff) (con2d_1: $ p -> s -> ~c $): $ p -> c -> ~s $
+    = '(con4d (syl5 notnotr con2d_1));
+
+theorem con2(p s: wff): $ (p -> ~s) -> (s -> ~p) $
+    = '(con2d id);
+
+theorem mt2d(p s c: wff) (mt2d_1: $ p -> c $) (mt2d_2: $ p -> s -> ~c $): $ p -> ~s $
+    = '(mpd mt2d_1 (con2d mt2d_2));
+
+theorem mt2i(p s c: wff) (mt2i_1: $ c $) (mt2i_2: $ p -> s -> ~c $): $ p -> ~s $
+    = '(mt2d (a1i mt2i_1) mt2i_2);
+
+theorem nsyl3(p s c: wff) (nsyl3_1: $ p -> ~s $) (nsyl3_2: $ c -> s $): $ c -> ~p $
+    = '(mt2d nsyl3_2 (a1i nsyl3_1));
+
+theorem con2i(p s: wff) (con2i_a: $ p -> ~s $): $ s -> ~p $
+    = '(nsyl3 con2i_a id);
+
+theorem nsyl(p s c: wff) (nsyl_1: $ p -> ~s $) (nsyl_2: $ c -> s $): $ p -> ~c $
+    = '(con2i (nsyl3 nsyl_1 nsyl_2));
+
+theorem nsyl2(p s c: wff) (nsyl2_1: $ p -> ~s $) (nsyl2_2: $ ~c -> s $): $ p -> c $
+    = '(con4i (nsyl3 nsyl2_1 nsyl2_2));
+
+theorem notnot(p: wff): $ p -> ~~p $
+    = '(con2i id);
+
+theorem notnoti(p: wff) (notnoti_1: $ p $): $ ~~p $
+    = '(ax_mp notnoti_1 notnot);
+
+theorem notnotd(p s: wff) (notnotd_1: $ p -> s $): $ p -> ~~s $
+    = '(syl notnotd_1 notnot);
+
+theorem con1d(p s c: wff) (con1d_1: $ p -> ~s -> c $): $ p -> ~c -> s $
+    = '(con4d (syl6 con1d_1 notnot));
+
+theorem con1(p s: wff): $ (~p -> s) -> (~s -> p) $
+    = '(con1d id);
+
+theorem con1i(p s: wff) (con1i_1: $ ~p -> s $): $ ~s -> p $
+    = '(nsyl2 id con1i_1);
+
+theorem mt3d(p s c: wff) (mt3d_1: $ p -> ~c $) (mt3d_2: $ p -> ~s -> c $): $ p -> s $
+    = '(mpd mt3d_1 (con1d mt3d_2));
+
+theorem mt3i(p s c: wff) (mt3i_1: $ ~c $) (mt3i_2: $ p -> ~s -> c $): $ p -> s $
+    = '(mt3d (a1i mt3i_1) mt3i_2);
+
+theorem pm2_24i(p s: wff) (pm2_24i_1: $ p $): $ ~p -> s $
+    = '(con1i (a1i pm2_24i_1));
+
+theorem pm2_24d(p s c: wff) (pm2_24d_1: $ p -> s $): $ p -> ~s -> c $
+    = '(con1d (a1d pm2_24d_1));
+
+theorem con3d(p s c: wff) (con3d_1: $ p -> s -> c $): $ p -> ~c -> ~s $
+    = '(con1d (syl5 notnotr con3d_1));
+
+theorem con3(p s: wff): $ (p -> s) -> (~s -> ~p) $
+    = '(con3d id);
+
+theorem con3i(p s: wff) (con3i_a: $ p -> s $): $ ~s -> ~p $
+    = '(nsyl id con3i_a);
+
+theorem con3rr3(p s c: wff) (con3rr3_1: $ p -> s -> c $): $ ~c -> p -> ~s $
+    = '(com12 (con3d con3rr3_1));
+
+theorem nsyld(p s c t: wff) (nsyld_1: $ p -> s -> ~c $) (nsyld_2: $ p -> t -> c $): $ p -> s -> ~t $
+    = '(syld nsyld_1 (con3d nsyld_2));
+
+theorem nsyli(p s c h: wff) (nsyli_1: $ p -> s -> c $) (nsyli_2: $ h -> ~c $): $ p -> h -> ~s $
+    = '(syl5 nsyli_2 (con3d nsyli_1));
+
+theorem nsyl4(p s c: wff) (nsyl4_1: $ p -> s $) (nsyl4_2: $ ~p -> c $): $ ~c -> s $
+    = '(syl (con1i nsyl4_2) nsyl4_1);
+
+theorem nsyl5(p s c: wff) (nsyl4_1: $ p -> s $) (nsyl4_2: $ ~p -> c $): $ ~s -> c $
+    = '(con1i (nsyl4 nsyl4_1 nsyl4_2));
+
+theorem pm3_2im(p s: wff): $ p -> s -> ~(p -> ~s) $
+    = '(con2d pm2_27);
+
+theorem jc(p s c: wff) (jc_1: $ p -> s $) (jc_2: $ p -> c $): $ p -> ~(s -> ~c) $
+    = '(sylc jc_1 jc_2 pm3_2im);
+
+theorem jcn(p s: wff): $ p -> ~s -> ~(p -> s) $
+    = '(con3d pm2_27);
+
+theorem jcnd(p s c: wff) (jcnd_1: $ p -> s $) (jcnd_2: $ p -> ~c $): $ p -> ~(s -> c) $
+    = '(sylc jcnd_1 jcnd_2 jcn);
+
+theorem impi(p s c: wff) (impi_1: $ p -> s -> c $): $ ~(p -> ~s) -> c $
+    = '(con1i (con3rr3 impi_1));
+
+theorem expi(p s c: wff) (expi_1: $ ~(p -> ~s) -> c $): $ p -> s -> c $
+    = '(syl6 pm3_2im expi_1);
+
+theorem simprim(p s: wff): $ ~(p -> ~s) -> s $
+    = '(impi idd);
+
+theorem simplim(p s: wff): $ ~(p -> s) -> p $
+    = '(con1i pm2_21);
+
+theorem pm2_5g(p s c: wff): $ ~(p -> s) -> (~p -> c) $
+    = '(pm2_24d simplim);
+
+theorem pm2_5(p s: wff): $ ~(p -> s) -> (~p -> s) $ = 'pm2_5g;
+
+theorem conax1(p s: wff): $ ~(p -> s) -> ~s $
+    = '(con3i ax_1);
+
+theorem conax1k(p s c: wff): $ ~(p -> s) -> (c -> ~s) $
+    = '(a1d conax1);
+
+theorem pm2_51(p s: wff): $ ~(p -> s) -> (p -> ~s) $
+    = 'conax1k;
+
+theorem pm2_52(p s: wff): $ ~(p -> s) -> (~p -> ~s) $
+    = 'conax1k;
+
+theorem pm2_521g(p s c: wff): $ ~(p -> s) -> (s -> c) $
+    = '(pm2_21d conax1);
+
+theorem pm2_521g2(p s c: wff): $ ~(p -> s) -> (c -> p) $
+    = '(a1d simplim);
+
+theorem pm2_521(p s: wff): $ ~(p -> s) -> (s -> p) $
+    = 'pm2_521g;
+
+theorem expt(p s c: wff): $ (~(p -> ~s) -> c) -> (p -> s -> c) $
+    = '(com12 (imim1d pm3_2im));
+
+theorem impt(p s c: wff): $ (p -> s -> c) -> (~(p -> ~s) -> c) $
+    = '(mpdi simprim (imim1i simplim));
+
+theorem pm2_61d(p s c: wff) (pm2_61d_1: $ p -> s -> c $) (pm2_61d_2: $ p -> ~s -> c $): $ p -> c $
+    = '(pm2_18d (syld (con1d pm2_61d_2) pm2_61d_1));
+
+theorem pm2_61d1(p s c: wff) (pm2_61d1_1: $ p -> s -> c $) (pm2_61d1_2: $ ~s -> c $): $ p -> c $
+    = '(pm2_61d pm2_61d1_1 (a1i pm2_61d1_2));
+
+theorem pm2_61d2(p s c: wff) (pm2_61d2_1: $ p -> ~s -> c $) (pm2_61d2_2: $ s -> c $): $ p -> c $
+    = '(pm2_61d (a1i pm2_61d2_2) pm2_61d2_1);
+
+theorem pm2_61i(p s: wff) (pm2_61i_1: $ p -> s $) (pm2_61i_2: $ ~p -> s $): $ s $
+    = '(pm2_18i (nsyl4 pm2_61i_1 pm2_61i_2));
+
+theorem pm2_61ii(p s c: wff) (pm2_61ii_1: $ ~p -> ~s -> c $) (pm2_61ii_2: $ p -> c $) (pm2_61ii_3: $ s -> c $): $ c $
+    = '(pm2_61i pm2_61ii_2 (pm2_61d2 pm2_61ii_1 pm2_61ii_3));
+
+theorem pm2_61nii(p s c: wff) (pm2_61nii_1: $ p -> s -> c $) (pm2_61nii_2: $ ~p -> c $) (pm2_61nii_3: $ ~s -> c $): $ c $
+    = '(pm2_61i (pm2_61d1 pm2_61nii_1 pm2_61nii_3) pm2_61nii_2);
+
+theorem pm2_61iii(p s c h: wff) (pm2_61iii_1: $ ~p -> ~s -> ~c -> h $) (pm2_61iii_2: $ p -> h $) (pm2_61iii_3: $ s -> h $) (pm2_61iii_4: $ c -> h $): $ h $
+    = '(pm2_61i pm2_61iii_4 (pm2_61ii pm2_61iii_1 (a1d pm2_61iii_2) (a1d pm2_61iii_3)));
+
+theorem ja(p s c: wff) (ja_1: $ ~p -> c $) (ja_2: $ s -> c $): $ (p -> s) -> c $
+    = '(pm2_61d1 (imim2i ja_2) ja_1);
+
+theorem jad(p s c h: wff) (jad_1: $ p -> ~s -> h $) (jad_2: $ p -> c -> h $): $ p -> (s -> c) -> h $
+    = '(com12 (ja (com12 jad_1) (com12 jad_2)));
+
+theorem pm2_01(p: wff): $ (p -> ~p) -> ~p $
+    = '(ja id id);
+
+theorem pm2_01i(p: wff) (pm2_01i_1: $ p -> ~p $): $ ~p $
+    = '(ax_mp pm2_01i_1 pm2_01);
+
+theorem pm2_01d(p s: wff) (pm2_01d_1: $ p -> s -> ~s $): $ p -> ~s $
+    = '(pm2_61d1 pm2_01d_1 id);
+
+theorem pm2_6(p s: wff): $ (~p -> s) -> (p -> s) -> s $
+    = '(jad id idd);
+
+theorem pm2_61(p s: wff): $ (p -> s) -> (~p -> s) -> s $
+    = '(com12 pm2_6);
+
+theorem pm2_65(p s: wff): $ (p -> s) -> (p -> ~s) -> ~p $
+    = '(jad idd con3);
+
+theorem pm2_65i(p s: wff) (pm2_65i_1: $ p -> s $) (pm2_65i_2: $ p -> ~s $): $ ~p $
+    = '(pm2_61i (con2i pm2_65i_2) (con3i pm2_65i_1));
+
+theorem pm2_21dd(p s c: wff) (pm2_21dd_1: $ p -> s $) (pm2_21dd_2: $ p -> ~s $): $ p -> c $
+    = '(pm2_21i (pm2_65i pm2_21dd_1 pm2_21dd_2));
+
+theorem pm2_65d(p s c: wff) (pm2_65d_1: $ p -> s -> c $) (pm2_65d_2: $ p -> s -> ~c $): $ p -> ~s $
+    = '(pm2_01d (nsyld pm2_65d_2 pm2_65d_1));
+
+theorem mto(p s: wff) (mto_1: $ ~s $) (mto_2: $ p -> s $): $ ~p $
+    = '(pm2_65i mto_2 (a1i mto_1));
+
+theorem mtod(p s c: wff) (mtod_1: $ p -> ~c $) (mtod_2: $ p -> s -> c $): $ p -> ~s $
+    = '(pm2_65d mtod_2 (a1d mtod_1));
+
+theorem mtoi(p s c: wff) (mtoi_1: $ ~c $) (mtoi_2: $ p -> s -> c $): $ p -> ~s $
+    = '(mtod (a1i mtoi_1) mtoi_2);
+
+theorem mt2(p s: wff) (mt2_1: $ s $) (mt2_2: $ p -> ~s $): $ ~p $
+    = '(pm2_65i (a1i mt2_1) mt2_2);
+
+theorem mt3(p s: wff) (mt3_1: $ ~s $) (mt3_2: $ ~p -> s $): $ p $
+    = '(notnotri (mto mt3_1 mt3_2));
+
+theorem peirce(p s: wff): $ ((p -> s) -> p) -> p $
+    = '(ja simplim id);
+
+theorem looinv(p s: wff): $ ((p -> s) -> s) -> ((s -> p) -> p) $
+    = '(syl6 imim1 peirce);
+
+theorem bijust0(p: wff): $ ~((p -> p) -> ~(p -> p)) $
+    = '(mt2 id pm2_01);
+
+theorem bijust(p s: wff): $ ~((~((p -> s) -> ~(s -> p)) -> ~((p -> s) -> ~(s -> p))) -> ~(~((p -> s) -> ~(s -> p)) -> ~((p -> s) -> ~(s -> p)))) $
+    = 'bijust0;

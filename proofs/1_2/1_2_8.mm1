@@ -1,0 +1,340 @@
+import "1_2_7.mm1";
+
+-------- NEW CATEGORY --------
+
+-- 1_2_8 - Mixed Connectives --
+
+theorem jaao(p s c h t: wff) (jaao_1: $ p -> s -> c $) (jaao_2: $ h -> t -> c $): $ (p ^ h) -> (s \/ t) -> c $
+    = '(jaod (adantr jaao_1) (adantl jaao_2));
+
+theorem jaoa(p s c h t: wff) (jaoa_1: $ p -> s -> c $) (jaoa_2: $ h -> t -> c $): $ (p \/ h) -> (s ^ t) -> c $
+    = '(jaoi (adantrd jaoa_1) (adantld jaoa_2));
+
+theorem jaoian(p s c h: wff) (jaoian_1: $ (p ^ s) -> c $) (jaoian_2: $ (h ^ s) -> c $): $ ((p \/ h) ^ s) -> c $
+    = '(imp (jaoi (ex jaoian_1) (ex jaoian_2)));
+
+theorem jaodan(p s c h: wff) (jaodan_1: $ (p ^ s) -> c $) (jaodan_2: $ (p ^ h) -> c $): $ (p ^ (s \/ h)) -> c $
+    = '(imp (jaod (ex jaodan_1) (ex jaodan_2)));
+
+theorem mpjaodan(p s c h: wff) (jaodan_1: $ (p ^ s) -> c $) (jaodan_2: $ (p ^ h) -> c $) (jaodan_3: $ p -> (s \/ h) $): $ p -> c $
+    = '(mpdan jaodan_3 (jaodan jaodan_1 jaodan_2));
+
+theorem pm3_44(p s c: wff): $ ((s -> p) ^ (c -> p)) -> ((s \/ c) -> p) $
+    = '(jaao id id);
+
+theorem jao(p s c: wff): $ (p -> s) -> (c -> s) -> ((p \/ c) -> s) $
+    = '(ex pm3_44);
+
+theorem jaob(p s c: wff): $ ((p \/ c) -> s) <-> ((p -> s) ^ (c -> s)) $
+    = '(impbii (jca pm2_67_2 (imim1i olc)) pm3_44);
+
+theorem pm4_77(p s c: wff): $ ((s -> p) ^ (c -> p)) <-> ((s \/ c) -> p) $
+    = '(bicomi jaob);
+
+theorem pm3_48(p s c h: wff): $ ((p -> s) ^ (c -> h)) -> ((p \/ c) -> (s \/ h)) $
+    = '(jaao (imim2i orc) (imim2i olc));
+
+theorem orim12d(p s c h t: wff) (orim12d_1: $ p -> s -> c $) (orim12d_2: $ p -> h -> t $): $ p -> (s \/ h) -> (c \/ t) $
+    = '(syl2anc orim12d_1 orim12d_2 pm3_48);
+
+theorem orim1d(p s c h: wff) (orim1d_1: $ p -> s -> c $): $ p -> (s \/ h) -> (c \/ h) $
+    = '(orim12d orim1d_1 idd);
+
+theorem orim2d(p s c h: wff) (orim2d_1: $ p -> s -> c $): $ p -> (h \/ s) -> (h \/ c) $
+    = '(orim12d idd orim2d_1);
+
+theorem orim2(p s c: wff): $ (s -> c) -> (p \/ s) -> (p \/ c) $
+    = '(orim2d id);
+
+theorem pm2_38(p s c: wff): $ (s -> c) -> (s \/ p) -> (c \/ p) $
+    = '(orim1d id);
+
+theorem pm2_36(p s c: wff): $ (s -> c) -> (p \/ s) -> (c \/ p) $
+    = '(syl5 pm1_4 pm2_38);
+
+theorem pm2_37(p s c: wff): $ (s -> c) -> (s \/ p) -> (p \/ c) $
+    = '(syl6 pm2_38 pm1_4);
+
+theorem pm2_81(p s c h: wff): $ (s -> c -> h) -> (p \/ s) -> (p \/ c) -> (p \/ h) $
+    = '(syl6 orim2 pm2_76);
+
+theorem pm2_8(p s c: wff): $ (p \/ s) -> (~s \/ c) -> (p \/ c) $
+    = '(orim1d (con1d pm2_53));
+
+theorem pm2_73(p s c: wff): $ (p -> s) -> (p \/ s \/ c) -> (s \/ c) $
+    = '(orim1d pm2_621);
+
+theorem pm2_74(p s c: wff): $ (s -> p) -> (p \/ s \/ c) -> (p \/ c) $
+    = '(orim1d (ja orel2 ax_1));
+
+theorem pm2_82(p s c h: wff): $ (p \/ s \/ c) -> (p \/ ~c \/ h) -> (p \/ s \/ h) $
+    = '(orim1d (jao1i (orim2d pm2_24)));
+
+theorem pm4_39(p s c h: wff): $ ((p <-> c) ^ (s <-> h)) -> ((p \/ s) <-> (c \/ h)) $
+    = '(orbi12d simpl simpr);
+
+theorem animorl(p s c: wff): $ (p ^ s) -> (p \/ c) $
+    = '(orcd simpl);
+
+theorem animorr(p s c: wff): $ (p ^ s) -> (c \/ s) $
+    = '(olcd simpr);
+
+theorem animorlr(p s c: wff): $ (p ^ s) -> (c \/ p) $
+    = '(olcd simpl);
+
+theorem animorrl(p s c: wff): $ (p ^ s) -> (s \/ c) $
+    = '(orcd simpr);
+
+theorem ianor(p s: wff): $ ~(p ^ s) <-> (~p \/ ~s) $
+    = '(bitr3i imnan pm4_62);
+
+theorem anor(p s: wff): $ (p ^ s) <-> ~(~p \/ ~s) $
+    = '(xchbinx notnotb ianor);
+
+theorem ioran(p s: wff): $ ~(p \/ s) <-> (~p ^ ~s) $
+    = '(xchnxbi pm4_65 pm4_64);
+
+theorem pm4_52(p s: wff): $ (p ^ ~s) <-> ~(~p \/ s) $
+    = '(xchbinx annim imor);
+
+theorem pm4_53(p s: wff): $ ~(p ^ ~s) <-> (~p \/ s) $
+    = '(bicomi (con2bii pm4_52));
+
+theorem pm4_54(p s: wff): $ (~p ^ s) <-> ~(p \/ ~s) $
+    = '(xchbinx df_an pm4_66);
+
+theorem pm4_55(p s: wff): $ ~(~p ^ s) <-> (p \/ ~s) $
+    = '(bicomi (con2bii pm4_54));
+
+theorem pm4_56(p s: wff): $ (~p ^ ~s) <-> ~(p \/ s) $
+    = '(bicomi ioran);
+
+theorem oran(p s: wff): $ (p \/ s) <-> ~(~p ^ ~s) $
+    = '(con2bii pm4_56);
+
+theorem pm4_57(p s: wff): $ ~(~p ^ ~s) <-> (p \/ s) $
+    = '(bicomi oran);
+
+theorem pm3_1(p s: wff): $ (p ^ s) -> ~(~p \/ ~s) $
+    = '(biimpi anor);
+
+theorem pm3_11(p s: wff): $ ~(~p \/ ~s) -> (p ^ s) $
+    = '(biimpri anor);
+
+theorem pm3_12(p s: wff): $ (~p \/ ~s) \/ (p ^ s) $
+    = '(orri pm3_11);
+
+theorem pm3_13(p s: wff): $ ~(p ^ s) -> (~p \/ ~s) $
+    = '(con1i pm3_11);
+
+theorem pm3_14(p s: wff): $ (~p \/ ~s) -> ~(p ^ s) $
+    = '(con2i pm3_1);
+
+theorem pm4_44(p s: wff): $ p <-> (p \/ (p ^ s)) $
+    = '(impbii orc (jaoi id simpl));
+
+theorem pm4_45(p s: wff): $ p <-> (p ^ (p \/ s)) $
+    = '(pm4_71i orc);
+
+theorem orabs(p s: wff): $ p <-> ((p \/ s) ^ p) $
+    = '(pm4_71ri orc);
+
+theorem oranabs(p s: wff): $ ((p \/ ~s) ^ s) <-> (p ^ s) $
+    = '(pm5_32ri (bitr2di biortn orcom));
+
+theorem pm5_61(p s: wff): $ ((p \/ s) ^ ~s) <-> (p ^ ~s) $
+    = '(pm5_32ri (impbid1 orel2 orc));
+
+theorem pm5_6(p s c: wff): $ ((p ^ ~s) -> c) <-> (p -> (s \/ c)) $
+    = '(bitr4i impexp (imbi2i df_or));
+
+theorem orcanai(p s c: wff) (orcanai_1: $ p -> (s \/ c) $): $ (p ^ ~s) -> c $
+    = '(imp (ord orcanai_1));
+
+theorem pm4_79(p s c: wff): $ ((s -> p) \/ (c -> p)) <-> ((s ^ c) -> p) $
+    = '(impbii (jaoa id id) (orrd (syl5 simplim pm3_3)));
+
+theorem pm5_53(p s c h: wff): $ ((p \/ s \/ c) -> h) <-> ((p -> h) ^ (s -> h) ^ (c -> h)) $
+    = '(bianbi jaob jaob);
+
+theorem ordi(p s c: wff): $ (p \/ (s ^ c)) <-> ((p \/ s) ^ (p \/ c)) $
+    = '(_3bitr4i jcab df_or (anbi12i df_or df_or));
+
+theorem ordir(p s c: wff): $ ((p ^ s) \/ c) <-> ((p \/ c) ^ (s \/ c)) $
+    = '(_3bitr4i ordi orcom (anbi12i orcom orcom));
+
+theorem andi(p s c: wff): $ (p ^ (s \/ c)) <-> ((p ^ s) \/ (p ^ c)) $
+    = '(impbii (jaodan orc olc) (jaoi (anim2i orc) (anim2i olc)));
+
+theorem andir(p s c: wff): $ ((p \/ s) ^ c) <-> ((p ^ c) \/ (s ^ c)) $
+    = '(_3bitr4i andi ancom (orbi12i ancom ancom));
+
+theorem orddi(p s c h: wff): $ ((p ^ s) \/ (c ^ h)) <-> (((p \/ c) ^ (p \/ h)) ^ ((s \/ c) ^ (s \/ h))) $
+    = '(bitri ordir (anbi12i ordi ordi));
+
+theorem anddi(p s c h: wff): $ ((p \/ s) ^ (c \/ h)) <-> (((p ^ c) \/ (p ^ h)) \/ ((s ^ c) \/ (s ^ h))) $
+    = '(bitri andir (orbi12i andi andi));
+
+theorem pm5_17(p s: wff): $ ((p \/ s) ^ ~(p ^ s)) <-> (p <-> ~s) $
+    = '(_3bitrri bicom dfbi2 (anbi12i (bitr2i orcom df_or) imnan));
+
+theorem pm5_15(p s: wff): $ (p <-> s) \/ (p <-> ~s) $
+    = '(orri (biimpi xor3));
+
+theorem pm5_16(p s: wff): $ ~((p <-> s) ^ (p <-> ~s)) $
+    = '(mpbi (biimpi pm5_18) imnan);
+
+theorem xor(p s: wff): $ ~(p <-> s) <-> ((p ^ ~s) \/ (s ^ ~p)) $
+    = '(con1bii (_3bitr4ri (anbi12i iman iman) dfbi2 ioran));
+
+theorem nbi2(p s: wff): $ ~(p <-> s) <-> ((p \/ s) ^ ~(p ^ s)) $
+    = '(bitr4i xor3 pm5_17);
+
+theorem xordi(p s c: wff): $ (p ^ ~(s <-> c)) <-> ~((p ^ s) <-> (p ^ c)) $
+    = '(xchbinx annim pm5_32);
+
+theorem pm5_54(p s: wff): $ ((p ^ s) <-> p) \/ ((p ^ s) <-> s) $
+    = '(orri (pm5_21ni (adantl (bicomd iba)) (bicomd iba)));
+
+theorem pm5_62(p s: wff): $ ((p ^ s) \/ ~s) <-> (p \/ ~s) $
+    = '(mpbiran2 exmid ordir);
+
+theorem pm5_63(p s: wff): $ (p \/ s) <-> (p \/ (~p ^ s)) $
+    = '(bicomi (mpbiran exmid ordi));
+
+theorem niabn(p s c: wff) (niabn_1: $ p $): $ ~s -> ((c ^ s) <-> ~p) $
+    = '(pm5_21ni simpr (pm2_24i niabn_1));
+
+theorem ninba(p s c: wff) (ninba_1: $ p $): $ ~s -> (~p <-> (c ^ s)) $
+    = '(bicomd (niabn ninba_1));
+
+theorem pm4_43(p s: wff): $ p <-> ((p \/ s) ^ (p \/ ~s)) $
+    = '(bitri (biorfri pm3_24) ordi);
+
+theorem pm4_82(p s: wff): $ ((p -> s) ^ (p -> ~s)) <-> ~p $
+    = '(impbii (imp pm2_65) (jca pm2_21 pm2_21));
+
+theorem pm4_83(p s: wff): $ ((p -> s) ^ (~p -> s)) <-> s $
+    = '(bitr2i (a1bi exmid) jaob);
+
+theorem pclem6(p s: wff): $ (p <-> (s ^ ~p)) -> ~s $
+    = '(con2i (sylib ibar nbbn));
+
+theorem bigolden(p s: wff): $ ((p ^ s) <-> p) <-> (s <-> (p \/ s)) $
+    = '(_3bitr3ri pm4_71 pm4_72 bicom);
+
+theorem pm5_71(p s c: wff): $ (s -> ~c) -> (((p \/ s) ^ c) <-> (p ^ c)) $
+    = '(ja (anbi1d (impbid1 orel2 orc)) (pm5_32rd pm2_21));
+
+theorem pm5_75(p s c: wff): $ ((c -> ~s) ^ (p <-> (s \/ c))) -> ((p ^ ~s) <-> c) $
+    = '(sylan9bbr (bitrdi anbi1 (pm5_32ri (bicomd biorf))) (rbaib abai));
+
+theorem ecase2d(p s c h t: wff) (ecase2d_1: $ p -> s $) (ecase2d_2: $ p -> ~(s ^ c) $) (ecase2d_3: $ p -> ~(s ^ h) $) (ecase2d_4: $ p -> (t \/ (c \/ h)) $): $ p -> t $
+    = '(notnotrd (mtord (mpnanrd ecase2d_1 ecase2d_2) (mpnanrd ecase2d_1 ecase2d_3) (ord ecase2d_4)));
+
+theorem ecase3(p s c: wff) (ecase3_1: $ p -> c $) (ecase3_2: $ s -> c $) (ecase3_3: $ ~(p \/ s) -> c $): $ c $
+    = '(pm2_61i (jaoi ecase3_1 ecase3_2) ecase3_3);
+
+theorem ecase(p s c: wff) (ecase_1: $ ~p -> c $) (ecase_2: $ ~s -> c $) (ecase_3: $ (p ^ s) -> c $): $ c $
+    = '(pm2_61nii (ex ecase_3) ecase_1 ecase_2);
+
+theorem ecase3d(p s c h: wff) (ecase3d_1: $ p -> s -> h $) (ecase3d_2: $ p -> c -> h $) (ecase3d_3: $ p -> ~(s \/ c) -> h $): $ p -> h $
+    = '(pm2_61d (jaod ecase3d_1 ecase3d_2) ecase3d_3);
+
+theorem ecased(p s c h: wff) (ecased_1: $ p -> ~s -> h $) (ecased_2: $ p -> ~c -> h $) (ecased_3: $ p -> (s ^ c) -> h $): $ p -> h $
+    = '(ecase3d ecased_1 ecased_2 (syl5 pm3_11 ecased_3));
+
+theorem ecase3ad(p s c h: wff) (ecase3ad_1: $ p -> s -> h $) (ecase3ad_2: $ p -> c -> h $) (ecase3ad_3: $ p -> (~s ^ ~c) -> h $): $ p -> h $
+    = '(pm2_61ddan (imp ecase3ad_1) (imp ecase3ad_2) (imp ecase3ad_3));
+
+theorem ccase(p s c h t: wff) (ccase_1: $ (p ^ s) -> t $) (ccase_2: $ (c ^ s) -> t $) (ccase_3: $ (p ^ h) -> t $) (ccase_4: $ (c ^ h) -> t $): $ ((p \/ c) ^ (s \/ h)) -> t $
+    = '(jaodan (jaoian ccase_1 ccase_2) (jaoian ccase_3 ccase_4));
+
+theorem ccased(p s c h t e: wff) (ccased_1: $ p -> (s ^ c) -> e $) (ccased_2: $ p -> (h ^ c) -> e $) (ccased_3: $ p -> (s ^ t) -> e $) (ccased_4: $ p -> (h ^ t) -> e $): $ p -> ((s \/ h) ^ (c \/ t)) -> e $
+    = '(com12 (ccase (com12 ccased_1) (com12 ccased_2) (com12 ccased_3) (com12 ccased_4)));
+
+theorem ccase2(p s c h t: wff) (ccase2_1: $ (p ^ s) -> t $) (ccase2_2: $ c -> t $) (ccase2_3: $ h -> t $): $ ((p \/ c) ^ (s \/ h)) -> t $
+    = '(ccase ccase2_1 (adantr ccase2_2) (adantl ccase2_3) (adantl ccase2_3));
+
+
+theorem _4cases(p s c: wff) (_4cases_1: $ (p ^ s) -> c $) (_4cases_2: $ (p ^ ~s) -> c $) (_4cases_3: $ (~p ^ s) -> c $) (_4cases_4: $ (~p ^ ~s) -> c $): $ c $
+    = '(pm2_61i (pm2_61ian _4cases_1 _4cases_3) (pm2_61ian _4cases_2 _4cases_4));
+
+theorem _4casesdan(p s c h: wff) (_4casesdan_1: $ (p ^ (s ^ c)) -> h $) (_4casesdan_2: $ (p ^ (s ^ ~c)) -> h $) (_4casesdan_3: $ (p ^ (~s ^ c)) -> h $) (_4casesdan_4: $ (p ^ (~s ^ ~c)) -> h $): $ p -> h $
+    = '(_4cases (expcom _4casesdan_1) (expcom _4casesdan_2) (expcom _4casesdan_3) (expcom _4casesdan_4));
+
+theorem cases(p s c h: wff) (cases_1: $ p -> (s <-> c) $) (cases_2: $ ~p -> (s <-> h) $): $ s <-> ((p ^ c) \/ (~p ^ h)) $
+    = '(_3bitri (biantrur exmid) andir (orbi12i (pm5_32i cases_1) (pm5_32i cases_2)));
+
+theorem dedlem0a(p s c: wff): $ p -> (s <-> (c -> p) -> (s ^ p)) $
+    = '(bitrd iba (jarri biimt));
+
+theorem dedlem0b(p s: wff): $ ~p -> (s <-> (s -> p) -> (c ^ p)) $
+    = '(impbid (com23 (imim2d pm2_21)) (com12 (con1d (imim12i pm2_21 simpr))));
+
+theorem dedlema(p s c: wff): $ p -> (s <-> ((s ^ p) \/ (c ^ ~p))) $
+    = '(impbid (expcom orc) (jaod (a1i simpl) (adantld pm2_24)));
+
+theorem dedlemb(p s c: wff): $ ~p -> (c <-> ((s ^ p) \/ (c ^ ~p))) $
+    = '(impbid (expcom olc) (jaod (adantld pm2_21) (a1i simpl)));
+
+theorem cases2(p s c: wff): $ ((p ^ s) \/ (~p ^ c)) <-> ((p -> s) ^ (~p -> c)) $
+    = '(_3bitr4ri pm4_83 (anbi12i (pm5_74i dedlema) (pm5_74i dedlemb)) (orbi12i ancom ancom));
+
+theorem cases2ALT(p s c: wff): $ ((p ^ s) \/ (~p ^ c)) <-> ((p -> s) ^ (~p -> c)) $
+    = '(impbii
+        (jaoi (jca pm3_4 (adantr pm2_24)) (jca (adantr pm2_21) pm3_4))
+        (pm2_61ian (adantrr (orcd (imdistani pm2_27))) (adantrl (olcd (imdistani pm2_27))))
+    );
+
+theorem dfbi3(p s: wff): $ (p <-> s) <-> ((p ^ s) \/ (~p ^ ~s)) $
+    = '(_3bitr4i (anbi2i con34b) dfbi2 cases2);
+
+theorem pm5_24(p s: wff): $ ~((p ^ s) \/ (~p ^ ~s)) <-> ((p ^ ~s) \/ (s ^ ~p)) $
+    = '(xchnxbi xor dfbi3);
+
+theorem _4exmid(p s: wff): $ ((p ^ s) \/ (~p ^ ~s)) \/ ((p ^ ~s) \/ (s ^ ~p)) $
+    = '(orri (biimpi pm5_24));
+
+theorem consensus(p s c: wff): $ ((p ^ s) \/ (~p ^ c) \/ (s ^ c)) <-> ((p ^ s) \/ (~p ^ c)) $
+    = '(impbii (jaoi id (pm2_61ian (adantrr orc) (adantrl olc))) orc);
+
+theorem pm4_42(p s: wff): $ p <-> ((p ^ s) \/ (p ^ ~s)) $
+    = '(pm2_61i dedlema dedlemb);
+
+theorem prlem1(p s c h t: wff) (prlem1_1: $ p -> (e <-> c) $) (prlem1_2: $ s -> ~h $): $ p -> s -> ((s ^ c) \/ (h ^ t)) -> e $
+    = '(ex (jaao (adantld (biimprd prlem1_1)) (adantrd (pm2_21d prlem1_2))));
+
+theorem prlem2(p s c h: wff): $ ((p ^ s) \/ (c ^ h)) <-> ((p \/ c) ^ ((p ^ s) \/ (c ^ h))) $
+    = '(pm4_71ri (orim12i simpl simpl));
+
+theorem oplem1(p s c h t: wff) (oplem1_1: $ p -> (s \/ c) $) (oplem1_2: $ p -> (h \/ t) $) (oplem1_3: $ s <-> h $) (oplem1_4: $ c -> (h <-> t) $): $ p -> s $
+    = '(sylibr
+        (pm2_18d (syl6
+            (jcad
+                (biimtrrid (notbii oplem1_3) (ord oplem1_1))
+                (ord oplem1_2)
+            )
+            (biimpar oplem1_4)
+        ))
+        oplem1_3
+    );
+
+theorem dn1(p s c h: wff): $ ~(~(~(p \/ s) \/ c) \/ ~(p \/ ~(~c \/ ~(c \/ h)))) <-> c $
+    = '(_3bitrri
+        (_3bitri (biorfri (mpbi pm2_45 imnan)) orcom ordir)
+        (anbi2i (orbi2i (bitri pm4_45 anor)))
+        anor
+    );
+
+theorem bianir(p s: wff): $ (p ^ (s <-> p)) -> s $
+    = '(impcom biimpr);
+
+theorem jaoi2(p s c: wff) (jaoi2_1: $ (p \/ (~p ^ c)) -> s $): $ (p \/ c) -> s $
+    = '(sylbi pm5_63 jaoi2_1);
+
+theorem jaoi3(p s c: wff) (jaoi3_1: $ p -> s $) (jaoi3_2: $ (~p ^ c) -> s $): $ (p \/ c) -> s $
+    = '(jaoi2 (jaoi jaoi3_1 jaoi3_2));
+
+theorem ornld(p h t: wff): $ p -> (((p -> (h \/ t)) ^ ~h) -> t) $
+    = '(expimpd (ord pm3_35));

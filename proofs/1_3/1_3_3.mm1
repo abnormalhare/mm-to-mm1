@@ -1,0 +1,60 @@
+import "1_3_2.mm1";
+
+-- 1_3_3 - Derive the Lukasiewicz axioms from Meredith's sole axiom --
+
+theorem meredith(p s c h t: wff): $ ((((p -> s) -> (~c -> ~h)) -> c) -> t) -> ((t -> p) -> (h -> p)) $
+    = '(ja (a1d (com12 (con1d (com13 (imim12i pm2_21 con4))))) (imim1d ax_1));
+
+theorem merlem1(p s c t: wff): $ ((c -> (~p -> s)) -> t) -> (p -> t) $
+    = '(ax_mp (ax_mp meredith meredith) meredith);
+
+theorem merlem2(p _s c h: wff): $ ((p -> p) -> c) -> (h -> c) $
+    = '(ax_mp merlem1 (! meredith _ _s));
+
+theorem merlem3(p s c: wff): $ ((s -> c) -> p) -> (c -> p) $
+    = '(ax_mp (ax_mp (ax_mp (! merlem2 _ c) (! merlem2 _ c)) (! meredith _ p s)) (! meredith _ p));
+
+theorem merlem4(p h t: wff): $ t -> ((t -> p) -> (h -> p)) $
+    = '(ax_mp (! meredith _ p p) merlem3);
+
+theorem merlem5(p s: wff): $ (p -> s) -> (~~p -> s) $
+    = '(ax_mp (! meredith s s s s s) (ax_mp (! meredith _ s s) (ax_mp (ax_mp merlem1 merlem4) meredith)));
+
+theorem merlem6(p s c h: wff): $ c -> (((s -> c) -> p) -> (h -> p)) $
+    = '(ax_mp merlem4 merlem3);
+
+theorem merlem7(p s c h t: wff): $ p -> ((s -> c) -> h) -> ((c -> t) -> (~h -> ~s)) -> h $
+    = '(ax_mp merlem4 (ax_mp (ax_mp merlem6 meredith) meredith));
+
+theorem merlem8(_p s c h t: wff): $ ((s -> c) -> h) -> ((c -> t) -> (~h -> ~s)) -> h $
+    = '(ax_mp (! meredith _p _p _p _p _p) merlem7);
+
+theorem merlem9(p s c h t e: wff): $ ((p -> s) -> (c -> h -> s -> t)) -> (e -> c -> h -> s -> t) $
+    = '(ax_mp (ax_mp (ax_mp merlem6 (! merlem8 p)) meredith) meredith);
+
+theorem merlem10(p s h: wff): $ (p -> p -> s) -> (h -> p -> s) $
+    = '(ax_mp (! meredith p p p p p) (ax_mp (! meredith _ p p) merlem9));
+
+theorem merlem11(p s: wff): $ (p -> p -> s) -> (p -> s) $
+    = '(ax_mp (! meredith p p p p p) (ax_mp merlem10 merlem10));
+
+theorem merlem12(p c h: wff): $ ((h -> (~~c -> c)) -> p) -> p $
+    = '(ax_mp (ax_mp (ax_mp merlem5 (! merlem2 c c)) merlem4) merlem11);
+
+theorem merlem13(p s c h: wff): $ (p -> s) -> (((h -> (~~c -> c)) -> ~~p) -> s) $
+    = '(ax_mp
+        (ax_mp (ax_mp (ax_mp
+            (! merlem12 $ ~ ((h -> (~~c -> c)) -> ~~p) $ c h)
+            (ax_mp (ax_mp (ax_mp merlem12 merlem5) merlem6) (! meredith _ s))
+        ) merlem6) merlem11)
+        (! meredith _ s)
+    );
+
+theorem luk_1(p s c: wff): $ (p -> s) -> (s -> c) -> (p -> c) $
+    = '(ax_mp (! meredith _ c) (ax_mp (ax_mp merlem13 merlem13) (! meredith _ p)));
+
+theorem luk_2(p: wff): $ (~p -> p) -> p $
+    = '(ax_mp (ax_mp (ax_mp (ax_mp merlem5 merlem4) merlem11) meredith) merlem11);
+
+theorem luk_3(p s: wff): $ p -> ~p -> s $
+    = '(ax_mp merlem11 merlem1);

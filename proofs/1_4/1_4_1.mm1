@@ -1,0 +1,53 @@
+import "../1_3/1_3_12.mm1";
+
+-------- Predicate calculus with equality: Tarski's system S2 --------
+
+-- 1_4_1 - Universal quantifier; define "exists" and "not free" --
+
+-- 1. Existential quantifier
+
+def wex{x: setvar} (p: wff x): wff = $ ~A{x ~p} $;
+notation wex(x p) = ($E{$:1500) x p ($}$:0);
+theorem df_ex{x: setvar} (p: wff x): $ E{x p} <-> ~A{x ~p} $ = 'biid;
+
+theorem alnex{x: setvar} (p: wff x): $ A{x ~p} <-> ~E{x p} $
+    = '(con2bii df_ex);
+
+theorem eximal{x: setvar} (p s: wff): $ E{x p} -> s <-> ~s -> A{x ~p} $
+    = '(bitri (imbi1i df_ex) con1b);
+
+-- 2. Nonfreeness predicate
+
+def wnf{x: setvar} (p: wff x): wff = $ E{x p} -> A{x p} $;
+notation wnf(x p) = ($F{$:1500) x p ($}$:0);
+theorem df_nf{x: setvar} (p: wff x): $ F{x p} <-> (E{x p} -> A{x p}) $ = 'biid;
+
+theorem nf2{x: setvar} (p: wff x): $ F{x p} <-> (A{x p} \/ ~E{x p}) $
+    = '(_3bitri df_nf imor orcom);
+
+theorem nf3{x: setvar} (p: wff x): $ F{x p} <-> (A{x p} \/ A{x ~p}) $
+    = '(bitr4i nf2 (orbi2i alnex));
+
+theorem nf4{x: setvar} (p: wff x): $ F{x p} <-> (~A{x p} -> A{x ~p}) $
+    = '(bitri nf3 df_or);
+
+theorem nfi{x: setvar} (p: wff x) (nfi_1: $ E{x p} -> A{x p} $): $ F{x p} $
+    = '(mpbir nfi_1 df_nf);
+
+theorem nfri{x: setvar} (p: wff x) (nfri_1: $ F{x p} $): $ E{x p} -> A{x p} $
+    = '(mpbi nfri_1 df_nf);
+
+theorem nfd{x: setvar} (p s: wff x) (nfd_1: $ p -> (E{x s} -> A{x s}) $): $ p -> F{x s} $
+    = '(sylibr nfd_1 df_nf);
+
+theorem nfrd{x: setvar} (p s: wff x) (nfrd_1: $ p -> F{x s} $): $ p -> (E{x s} -> A{x s}) $
+    = '(sylib nfrd_1 df_nf);
+
+theorem nftht{x: setvar} (p: wff x): $ A{x p} -> F{x p} $
+    = '(nfd ax_1);
+
+theorem nfntht{x: setvar} (p: wff x): $ ~E{x p} -> F{x p} $
+    = '(nfd pm2_21);
+
+theorem nfntht2{x: setvar} (p: wff x): $ A{x ~p} -> F{x p} $
+    = '(sylbi alnex nfntht);

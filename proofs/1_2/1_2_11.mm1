@@ -1,0 +1,37 @@
+import "1_2_10.mm1";
+
+-- 1.2.11 is intrinsic to the system MM0 uses.
+-- however there are some unique theorems some future theorems require.
+-- will be added as needed
+
+theorem _3ioran(p s c: wff): $ ~(p \/ s \/ c) <-> (~p ^ ~s ^ ~c) $
+    = '(_3bitr4i (anbi1i ioran) (xchnxbir ioran df_or) df_an);
+
+theorem _3anan12(p s c: wff): $ p ^ s ^ c <-> (s ^ (p ^ c)) $
+    = '(bitri anass an12);
+
+theorem _3ancoma(p s c: wff): $ (p ^ s ^ c) <-> (s ^ p ^ c) $
+    = '(bitr4i _3anan12 anass);
+
+theorem _3anbi123i(p s c h t e: wff) (bi3_1: $ p <-> s $) (bi3_2: $ c <-> h $) (bi3_3: $ t <-> e $): $ (p ^ c ^ t) <-> (s ^ h ^ e) $
+    = '(_3bitr4i (anbi12i (anbi12i bi3_1 bi3_2) bi3_3) biid biid);
+
+theorem _3anbi3i(p s c h: wff) (_3anbi1i_1: $ p <-> s $): $ (c ^ h ^ p) <-> (c ^ h ^ s) $
+    = '(_3anbi123i biid biid _3anbi1i_1);
+
+theorem syl3anc(p s c h t: wff) (syl3anc_1: $ p -> s $) (syl3anc_2: $ p -> c $) (syl3anc_3: $ p -> h $) (syl3anc_4: $ (s ^ c ^ h) -> t $): $ p -> t $
+    = '(syl (jca31 syl3anc_1 syl3anc_2 syl3anc_3) syl3anc_4);
+
+theorem _3ad2ant3(p s c h: wff) (_3ad2ant_1: $ p -> c $): $ (s ^ h ^ p) -> c $
+    = '(adantll (adantl _3ad2ant_1));
+
+theorem simp3(p s c: wff): $ (p ^ s ^ c) -> c $ = '(_3ad2ant3 id);
+
+theorem _3impb(p s c h: wff) (_3impb_1: $ (p ^ (s ^ c)) -> h $): $ (p ^ s ^ c) -> h $
+    = '(imp31 (exp32 _3impb_1));
+
+theorem _3adant3(p s c h: wff) (_3adant_1: $ (p ^ s) -> c $): $ (p ^ s ^ h) -> c $
+    = '(_3impb (adantrr _3adant_1));
+
+theorem syl31anc(p s c h t e: wff) (syl3anc_1: $ p -> s $) (syl3anc_2: $ p -> c $) (syl3anc_3: $ p -> h $) (syl3Xanc_4: $ p -> t $) (syl31anc_5: $ (s ^ c ^ h ^ t) -> e $): $ p -> e $
+    = '(syl2anc (sylibr (jca31 syl3anc_1 syl3anc_2 syl3anc_3) df_an) syl3Xanc_4 syl31anc_5);

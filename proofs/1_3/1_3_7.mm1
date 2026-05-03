@@ -1,0 +1,17 @@
+import "1_3_6.mm1";
+
+-------- NEW CATEGORY --------
+
+-- 1_3_7 - Derive Nicod's Axiom from Lukasiewicz's First Sheffer Stroke Axiom --
+
+theorem lukshef_ax1(p s c h: wff): $ (p ⊼ (c ⊼ s)) ⊼ ((h ⊼ (h ⊼ h)) ⊼ ((h ⊼ c) ⊼ ((p ⊼ h) ⊼ (p ⊼ h)))) $
+    = 'nic_ax;
+
+theorem lukshefth1(p s c h t: wff): $ (((t ⊼ s) ⊼ ((p ⊼ t) ⊼ (p ⊼ t))) ⊼ (h ⊼ (h ⊼ h))) ⊼ (p ⊼ (s ⊼ c)) $
+    = '(nic_mp lukshef_ax1 (nic_mp (nic_mp lukshef_ax1 lukshef_ax1) lukshef_ax1));
+
+theorem lukshefth2(h t: wff): $ (t ⊼ h) ⊼ ((h ⊼ t) ⊼ (h ⊼ t)) $
+    = '(nic_mp (nic_mp (nic_mp (! lukshef_ax1 h h h h) (! lukshef_ax1 _ _ _ h)) (nic_mp (! lukshefth1 _ _ _ _ h) (nic_mp (! lukshef_ax1 _ _ _ h) lukshef_ax1))) lukshef_ax1);
+
+theorem renicax(p s c h t: wff): $ (p ⊼ (c ⊼ s)) ⊼ ((t ⊼ (t ⊼ t)) ⊼ ((h ⊼ c) ⊼ ((p ⊼ h) ⊼ (p ⊼ h)))) $
+    = '(nic_mp (nic_mp (nic_mp lukshefth1 lukshefth2) (nic_mp lukshefth2 lukshef_ax1)) lukshefth2);

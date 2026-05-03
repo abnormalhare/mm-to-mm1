@@ -1,0 +1,36 @@
+import "1_3_3.mm1";
+
+-- 1.3.4 - Derive the standard axioms from the Lukasiewicz axioms --
+
+theorem luklem1(p s c: wff)  (luklem1_1: $ p -> s $) (luklem1_2: $ s -> c $): $ p -> c $
+    = '(ax_mp luklem1_2 (ax_mp luklem1_1 (! luk_1 _ _ c)));
+
+theorem luklem2(p s c h: wff): $ (p -> ~s) -> ((p -> c) -> h) -> (s -> h) $
+    = '(luklem1 (luklem1 luk_1 (ax_mp luk_3 luk_1)) luk_1);
+
+theorem luklem3(p s c h: wff): $ p -> ((~p -> s) -> c) -> (h -> c) $
+    = '(luklem1 luk_3 luklem2);
+
+theorem luklem4(p s: wff): $ (((~p -> p) -> p) -> s) -> s $
+    = '(luklem1 (ax_mp (ax_mp luk_2 (ax_mp luk_2 luklem3)) luk_1) luk_2);
+
+theorem luklem5(p s: wff): $ p -> s -> p $
+    = '(luklem1 luklem3 luklem4);
+
+theorem luklem6(p s: wff): $ (p -> p -> s) -> p -> s $
+    = '(luklem1 luk_1 (ax_mp (ax_mp (ax_mp (luklem1 luklem5 (luklem1 luklem2 luklem4)) luk_1) luk_1) luklem4));
+
+theorem luklem7(p s c: wff): $ (p -> s -> c) -> (s -> p -> c) $
+    = '(luklem1 luk_1 (ax_mp (luklem1 (luklem1 luklem5 luk_1) luklem6) luk_1));
+
+theorem luklem8(p s c: wff): $ (p -> s) -> (c -> p) -> (c -> s) $
+    = '(ax_mp luk_1 luklem7);
+
+theorem ax1(p s: wff): $ p -> s -> p $
+    = 'luklem5;
+
+theorem ax2(p s c: wff): $ (p -> s -> c) -> (p -> s) -> (p -> c) $
+    = '(luklem1 luklem7 (luklem1 luklem8 (ax_mp luklem6 luklem8)));
+
+theorem ax3(p s: wff): $ (~p -> ~s) -> (s -> p) $
+    = '(luklem1 luklem2 luklem4);

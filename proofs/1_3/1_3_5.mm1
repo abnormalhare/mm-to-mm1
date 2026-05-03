@@ -1,0 +1,28 @@
+import "1_3_4.mm1";
+
+-- 1_3_5 - Derive Nicod's axiom from the standard axioms --
+
+theorem nic_dfim(p s: wff): $ ((p ⊼ (s ⊼ s)) ⊼ (p -> s)) ⊼ (((p ⊼ (s ⊼ s)) ⊼ (p ⊼ (s ⊼ s))) ⊼ ((p -> s) ⊼ (p -> s))) $
+    = '(mpbi (bicomi nanim) nanbi);
+
+theorem nic_dfneg(p: wff): $ (p ⊼ p ⊼ ~p) ⊼ (((p ⊼ p) ⊼ (p ⊼ p)) ⊼ (~p ⊼ ~p)) $
+    = '(mpbi (bicomi nannot) nanbi);
+
+theorem nic_mp(p s c: wff)  (nic_jmin: $ p $) (nic_jmaj: $ p ⊼ (c ⊼ s) $): $ s $
+    = '(ax_mp nic_jmin (simprd (mpbi nic_jmaj nannan)));
+
+theorem nic_mpALT(p s c: wff)  (nic_jmin: $ p $) (nic_jmaj: $ p ⊼ (c ⊼ s) $): $ s $
+    = '(ax_mp nic_jmin (simprd (mpbir (mpbi nic_jmaj (xchbinx df_nan (anbi2i df_nan))) iman)));
+
+theorem nic_ax(p s c h t: wff): $ (p ⊼ (c ⊼ s)) ⊼ ((t ⊼ (t ⊼ t)) ⊼ ((h ⊼ c) ⊼ ((p ⊼ h) ⊼ (p ⊼ h)))) $
+    = '(mpbir (jctil
+        (_3syl
+            (biimpi nannan)
+            (imim2i simpl)
+            (sylib (biimtrrid
+                (bitr4i imnan df_nan)
+                (imbitrrdi (imim2d con3) (_3bitr4ri imnan con2b df_nan))
+            ) nanim)
+        )
+        (mpbir (biimpi pm4_24) nannan)
+    ) nannan);
