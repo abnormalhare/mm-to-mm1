@@ -1,0 +1,24 @@
+import "1_4_6.mm1";
+
+-- 1_4_7 - Axiom scheme ax-7 (Equality) --
+
+axiom ax_7(x y z: setvar): $ x =s y -> x =s z -> y =s z $;
+
+theorem ax7v{x: setvar} (y: setvar) (z: setvar x): $ x =s y -> x =s z -> y =s z $ = 'ax_7;
+theorem ax7v1{x: setvar} (y z: setvar): $ x =s y -> x =s z -> y =s z $ = 'ax7v;
+theorem ax7v2{x: setvar} {y: setvar} (z: setvar x): $ x =s y -> x =s z -> y =s z $ = 'ax7v;
+
+theorem equid(x: setvar): $ x =s x $
+    = '(exlimiiv (pm2_43i ax7v1) (! ax6ev y));
+
+theorem nfequid{y: setvar} (x: setvar y): $ F{y x =s x} $
+    = '(nfth equid);
+
+theorem equcomiv{x: setvar} {y: setvar}: $ x =s y -> y =s x $
+    = '(mpi equid ax7v2);
+
+theorem ax6evr{x: setvar} {y: setvar}: $ E{x y =s x} $
+    = '(eximii ax6ev equcomiv);
+
+theorem ax7{x y z .t: setvar}: $ x =s y -> x =s z -> y =s z $
+    = '(ex (exlimiiv (syl2and ax7v2 ax7v2 (a1i (imp ax7v1))) (! ax6evr t)));

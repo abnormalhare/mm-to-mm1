@@ -96,3 +96,30 @@ theorem _19_37v{x: setvar} (p: wff) (s: wff x): $ E{x p -> s} <-> (p -> E{x s}) 
 theorem _19_44v{x: setvar} (p: wff x) (s: wff): $ E{x p \/ s} <-> (E{x p} \/ s) $
     = '(bitri _19_43 (orbi2i _19_9v));
 
+theorem _19_45v{x: setvar} (p: wff) (s: wff x): $ E{x p \/ s} <-> (p \/ E{x s}) $
+    = '(bitri _19_43 (orbi1i _19_9v));
+
+theorem equs4v{x: setvar} (y: setvar) (p: wff x): $ A{x x =s y -> p} -> E{x x =s y ^ p} $
+    = '(mpi ax6ev exintr);
+
+theorem alequexv{x: setvar} (y: setvar) (p: wff x): $ A{x x =s y -> p} -> E{x p} $
+    = '(mpi ax6ev exim);
+
+theorem exsbim{x: setvar} {y: setvar} (p: wff x): $ E{y A{x x =s y -> p}} -> E{x p} $
+    = '(exlimiv alequexv);
+
+theorem equsv{x: setvar} (y: setvar) (p: wff): $ A{x x =s y -> p} <-> p $
+    = '(bitr4i _19_23v (a1bi ax6ev));
+
+theorem equsalvw{x: setvar} (y: setvar) (p: wff x) (s: wff) (equsalvw_1: $ x =s y -> (p <-> s) $): $ A{x x =s y -> p} <-> s $
+    = '(bitri (albii (pm5_74i equsalvw_1)) equsv);
+
+theorem equsexvw{x: setvar} (y: setvar) (p: wff x) (s: wff) (equsalvw_1: $ x =s y -> (p <-> s) $): $ E{x x =s y ^ p} <-> s $
+    = '(con4bii (bitr3i alinexa (equsalvw (notbid equsalvw_1))));
+
+theorem cbvaliw{x: setvar} {y: setvar} (p s: wff x y)
+    (cbvaliw_1: $ A{x p} -> A{y A{x p}} $) (cbvaliw_2: $ ~s -> A{x ~s} $) (cbvaliw_3: $ x =s y -> p -> s $): $ A{x p} -> A{y s} $
+    = '(alrimih cbvaliw_1 (spimw cbvaliw_2 cbvaliw_3));
+
+theorem cbvalivw{x: setvar} {y: setvar} (p: wff x) (s: wff y) (cbvalivw_1: $ x =s y -> p -> s $): $ A{x p} -> A{y s} $
+    = '(alrimiv (spimvw cbvalivw_1));
