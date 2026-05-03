@@ -42,3 +42,57 @@ theorem spnfw{x: setvar} (p: wff x) (spnfw_1: $ ~p -> A{x ~p} $): $ A{x p} -> p 
 theorem spfalw{x: setvar} (p: wff x) (spfalw_1: $ ~p $): $ A{x p} -> p $
     = '(spnfw (hbth spfalw_1));
 
+theorem spvw{x: setvar} (p: wff): $ A{x p} -> p $
+    = '(spnfw ax_5);
+
+theorem _19_3v{x: setvar} (p: wff): $ A{x p} <-> p $
+    = '(impbii spvw ax_5);
+
+theorem _19_8v{x: setvar} (p: wff): $ p -> E{x p} $
+    = '(_19_8w ax_5);
+
+theorem _19_9v{x: setvar} (p: wff): $ E{x p} <-> p $
+    = '(impbii ax5e _19_8v);
+
+theorem spimevw{x: setvar} (y: setvar) (p: wff) (s: wff x) (spimevw_1: $ x =s y -> p -> s $): $ p -> E{x s} $
+    = '(spimew ax_5 spimevw_1);
+
+theorem spimvw{x: setvar} (y: setvar) (p: wff x) (s: wff) (spimvw_1: $ x =s y -> p -> s $): $ A{x p} -> s $
+    = '(spimw ax_5 spimvw_1);
+
+theorem spsv{x: setvar} (p: wff x) (s: wff) (spsv_1: $ p -> s $): $ A{x p} -> s $
+    = '(spimvw (! a1i $ p -> s $ $ x =s y $ spsv_1));
+
+theorem spvv{x: setvar} (y: setvar) (p: wff x) (s: wff) (spvv_1: $ x =s y -> (p <-> s) $): $ A{x p} -> s $
+    = '(spimvw (biimpd spvv_1));
+
+theorem chvarvv{x: setvar} (y: setvar) (p: wff x) (s: wff) (chvarvv_1: $ x =s y -> (p <-> s) $) (chvarvv_2: $ p $): $ s $
+    = '(mpg (spvv chvarvv_1) chvarvv_2);
+
+theorem _19_39{x: setvar} (p s: wff x): $ (E{x p} -> E{x s}) -> E{x p -> s} $
+    = '(sylibr (imim1i _19_2) _19_35);
+
+theorem _19_24{x: setvar} (p s: wff x): $ (A{x p} -> A{x s}) -> E{x p -> s} $
+    = '(sylibr (imim2i _19_2) _19_35);
+
+theorem _19_34{x: setvar} (p s: wff x): $ (A{x p} \/ E{x s}) -> E{x p \/ s} $
+    = '(sylibr (orim1i _19_2) _19_43);
+
+theorem _19_36v{x: setvar} (p: wff x) (s: wff): $ E{x p -> s} <-> (A{x p} -> s) $
+    = '(bitri _19_35 (imbi2i _19_9v));
+
+theorem _19_12vvv{x: setvar} {y: setvar} (p: wff x) (s: wff y): $ E{x A{y p -> s}} <-> A{y E{x p -> s}} $
+    = '(_3bitri (exbii _19_21v) _19_36v (bitr2i (albii _19_36v) _19_21v));
+
+theorem _19_27v{x: setvar} (p: wff x) (s: wff): $ A{x p ^ s} <-> (A{x p} ^ s) $
+    = '(bitri _19_26 (anbi2i _19_3v));
+
+theorem _19_28v{x: setvar} (p: wff) (s: wff x): $ A{x p ^ s} <-> (p ^ A{x s}) $
+    = '(bianbi _19_26 _19_3v);
+
+theorem _19_37v{x: setvar} (p: wff) (s: wff x): $ E{x p -> s} <-> (p -> E{x s}) $
+    = '(bitri _19_35 (imbi1i _19_3v));
+
+theorem _19_44v{x: setvar} (p: wff x) (s: wff): $ E{x p \/ s} <-> (E{x p} \/ s) $
+    = '(bitri _19_43 (orbi2i _19_9v));
+
