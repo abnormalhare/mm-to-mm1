@@ -6,7 +6,7 @@ axiom ax_7(x y z: setvar): $ x =s y -> x =s z -> y =s z $;
 
 theorem ax7v{x: setvar} (y: setvar) (z: setvar x): $ x =s y -> x =s z -> y =s z $ = 'ax_7;
 theorem ax7v1{x: setvar} (y z: setvar): $ x =s y -> x =s z -> y =s z $ = 'ax7v;
-theorem ax7v2{x: setvar} {y: setvar} (z: setvar x): $ x =s y -> x =s z -> y =s z $ = 'ax7v;
+theorem ax7v2{y: setvar} (x z: setvar): $ x =s y -> x =s z -> y =s z $ = 'ax_7; -- only way that this works...
 
 theorem equid(x: setvar): $ x =s x $
     = '(exlimiiv (pm2_43i ax7v1) (! ax6ev y));
@@ -14,11 +14,146 @@ theorem equid(x: setvar): $ x =s x $
 theorem nfequid{y: setvar} (x: setvar y): $ F{y x =s x} $
     = '(nfth equid);
 
-theorem equcomiv{x: setvar} {y: setvar}: $ x =s y -> y =s x $
-    = '(mpi equid ax7v2);
+theorem equcomiv{x: setvar} (y: setvar): $ x =s y -> y =s x $
+    = '(mpi equid ax7v);
 
-theorem ax6evr{x: setvar} {y: setvar}: $ E{x y =s x} $
+theorem ax6evr{x: setvar} (y: setvar): $ E{x y =s x} $
     = '(eximii ax6ev equcomiv);
 
-theorem ax7{x y z .t: setvar}: $ x =s y -> x =s z -> y =s z $
-    = '(ex (exlimiiv (syl2and ax7v2 ax7v2 (a1i (imp ax7v1))) (! ax6evr t)));
+theorem ax7{x: setvar} (y z: setvar x) {.t: setvar}: $ x =s y -> x =s z -> y =s z $
+    = '(ex (exlimiiv (syl2and ax7v2 ax7v2 (a1i (imp (! ax7v1 t)))) ax6evr)); -- not going to be used. its unfortunate the incompatibility of the system.
+
+theorem equcomi(x y: setvar): $ x =s y -> y =s x $
+    = '(mpi equid ax_7);
+
+theorem equcom(x y: setvar): $ x =s y <-> y =s x $
+    = '(impbii equcomi equcomi);
+
+theorem equcomd(p: wff) (x y: setvar) (equcomd_1: $ p -> x =s y $): $ p -> y =s x $
+    = '(sylib equcomd_1 equcom);
+
+theorem equcoms(p: wff) (x y: setvar) (equcoms_1: $ x =s y -> p $): $ y =s x -> p $
+    = '(syl equcomi equcoms_1);
+
+theorem equtr(x y z: setvar): $ x =s y -> y =s z -> x =s z $
+    = '(equcoms ax_7);
+
+theorem equtrr(x y z: setvar): $ x =s y -> z =s x -> z =s y $
+    = '(com12 equtr);
+
+theorem equeuclr(x y z: setvar): $ x =s z -> y =s z -> y =s x $
+    = '(equcoms equtrr);
+
+theorem equeucl(x y z: setvar): $ x =s z -> y =s z -> x =s y $
+    = '(com12 equeuclr);
+
+theorem equequ1(x y z: setvar): $ x =s y -> (x =s z <-> y =s z) $
+    = '(impbid ax_7 equtr);
+
+theorem equequ2(x y z: setvar): $ x =s y -> (z =s x <-> z =s y) $
+    = '(impbid equtrr equeuclr);
+
+theorem equtr2(x y z: setvar): $ (x =s z ^ y =s z) -> x =s y $
+    = '(imp equeucl);
+
+theorem stdpc6{x: setvar}: $ A{x x =s x} $
+    = '(ax_gen equid);
+
+theorem equvinv{z: setvar} (x y: setvar): $ x =s y <-> E{z (z =s x ^ z =s y)} $
+    = '(bicomi (equsexvw equequ1));
+
+theorem equvinva{z: setvar} (x y: setvar): $ x =s y -> E{z (x =s z ^ y =s z)} $
+    = '(mpi ax6evr (eximdv (ancrd equtr)));
+
+theorem equvelv{z: setvar} (x y: setvar): $ A{z (z =s x -> z =s y)} <-> x =s y $
+    = '(equsalvw equequ1);
+
+theorem ax13b(p: wff) (x y z: setvar): $ (~(x =s y) -> y =s z -> p) <-> (~(x =s y) -> ~(x =s z) -> y =s z -> p) $
+    = '(pm5_74i (impbid2 ax_1 (syl6 (imim1d (con3rr3 equeuclr)) pm2_43)));
+
+theorem spfw{x y: setvar} (p s: wff x y) (spfw_1: $ ~s -> A{x ~s} $) (spfw_2: $ A{x p} -> A{y A{x p}} $) (spfw_3: $ ~p -> A{y ~p} $) (spfw_4: $ x =s y -> (p <-> s) $): $ A{x p} -> p $
+    = '(syl (cbvaliw spfw_2 spfw_1 (biimpd spfw_4)) (spimw spfw_3 (equcoms (biimprd spfw_4))));
+
+theorem spw{x y: setvar} (p: wff x) (s: wff y) (spw_1: $ x =s y -> (p <-> s) $): $ A{x p} -> p $
+    = '(spfw ax_5 ax_5 ax_5 spw_1);
+
+theorem cbvalw{x y: setvar} (p s: wff x y)
+        (cbvalw_1: $ A{x p} -> A{y A{x p}} $)
+        (cbvalw_2: $ ~s -> A{x ~s} $)
+        (cbvalw_3: $ A{y s} -> A{x A{y s}} $)
+        (cbvalw_4: $ ~p -> A{y ~p} $)
+        (cbvalw_5: $ x =s y -> (p <-> s) $)
+            : $ A{x p} <-> A{y s} $
+    = '(impbii (cbvaliw cbvalw_1 cbvalw_2 (biimpd cbvalw_5)) (cbvaliw cbvalw_3 cbvalw_4 (equcoms (biimprd cbvalw_5))));
+
+theorem cbvalvw{x y: setvar} (p: wff x) (s: wff y) (cbvalvw_1: $ x =s y -> (p <-> s) $): $ A{x p} <-> A{y s} $
+    = '(cbvalw ax_5 ax_5 ax_5 ax_5 cbvalvw_1);
+
+theorem cbvexvw{x y: setvar} (p: wff x) (s: wff y) (cbvalvw_1: $ x =s y -> (p <-> s) $): $ E{x p} <-> E{y s} $
+    = '(_3bitr4i (notbii (cbvalvw (notbid cbvalvw_1))) df_ex df_ex);
+
+theorem cbvaldvaw{x y: setvar} (p: wff) (s: wff x) (c: wff y) (cbvaldvaw_1: $ (p ^ (x =s y)) -> (s <-> c) $): $ p -> (A{x s} <-> A{y c}) $
+    = '(pm5_74ri (_3bitr3i (cbvalvw (pm5_74da (ancoms cbvaldvaw_1))) _19_21v _19_21v));
+
+theorem cbvexdvaw{x y: setvar} (p: wff) (s: wff x) (c: wff y) (cbvaldvaw_1: $ (p ^ (x =s y)) -> (s <-> c) $): $ p -> (E{x s} <-> E{y c}) $
+    = '(con4bid (_3bitr3g (cbvaldvaw (notbid cbvaldvaw_1)) alnex alnex));
+
+theorem cbval2vw{x y z w: setvar} (p: wff x y) (s: wff z w) (cbval2vw_1: $ (x =s z ^ y =s w) -> (p <-> s) $): $ A{x A{y p}} <-> A{z A{w s}} $
+    = '(cbvalvw (cbvaldvaw cbval2vw_1));
+
+theorem cbvex2vw{x y z w: setvar} (p: wff x y) (s: wff z w) (cbval2vw_1: $ (x =s z ^ y =s w) -> (p <-> s) $): $ E{x E{y p}} <-> E{z E{w s}} $
+    = '(cbvexvw (cbvexdvaw cbval2vw_1));
+
+theorem cbvex4vw{x y z w v u f g: setvar} (p: wff x y z w f g) (s: wff z w v u) (c: wff x y v u f g)
+        (cbvex4vw_1: $ (x =s v ^ y =s u) -> (p <-> s) $)
+        (cbvex4vw_2: $ (z =s f ^ w =s g) -> (s <-> c) $)
+            : $ E{x E{y E{z E{w p}}}} <-> E{v E{u E{f E{g c}}}} $
+    = '(bitri (cbvex2vw (_2exbidv cbvex4vw_1)) (_2exbii (cbvex2vw cbvex4vw_2)));
+
+--! cannot allow x/z substitution
+theorem alcomimw{x y z: setvar} (p: wff x y) (s: wff x z) (alcomimw_1: $ y =s z -> (p <-> s) $): $ A{x A{y p}} -> A{y A{x p}} $
+    = '(_3syl (alimi (biimpi (cbvalvw alcomimw_1))) ax_5 (_2alimi (spimvw (equcoms (biimprd alcomimw_1)))));
+
+--! cannot allow y/z substitution
+theorem excomimw{x y z: setvar} (p: wff x y) (s: wff y z) (excomimw_1: $ x =s z -> (p <-> s) $): $ E{x E{y p}} -> E{y E{x p}} $
+    = '(_3imtr4i (con3i (alcomimw (notbid excomimw_1))) _2exnaln _2exnaln);
+
+--! cannot allow x/z y/w substitution
+theorem alcomw{x y z w: setvar} (p: wff x y) (s: wff y z w) (c: wff x z w) (alcomw_1: $ x =s w -> (p <-> s) $) (alcomw_2: $ y =s z -> (p <-> c) $): $ A{x A{y p}} <-> A{y A{x p}} $
+    = '(impbii (alcomimw alcomw_2) (alcomimw alcomw_1));
+
+--! cannot allow x/z y/w substitution
+theorem excomw{x y z w: setvar} (p: wff x y) (s: wff y z w) (c: wff x z w) (excomw_1: $ x =s w -> (p <-> s) $) (excomw_2: $ y =s z -> (p <-> c) $): $ E{x E{y p}} <-> E{y E{x p}} $
+    = '(impbii (excomimw excomw_1) (excomimw excomw_2));
+
+theorem hbn1fw{x y: setvar} (p s: wff x y)
+        (hbn1fw_1: $ A{x p} -> A{y A{x p}} $)
+        (hbn1fw_2: $ ~s -> A{x ~s} $)
+        (hbn1fw_3: $ A{y s} -> A{x A{y s}} $)
+        (hbn1fw_4: $ ~p -> A{y ~p} $)
+        (hbn1fw_5: $ ~A{y s} -> A{x ~A{y s}} $)
+        (hbn1fw_6: $ x =s y -> (p <-> s) $)
+            : $ ~A{x p} -> A{x ~A{x p}} $
+    = '(hbxfrbi (notbii (cbvalw hbn1fw_1 hbn1fw_2 hbn1fw_3 hbn1fw_4 hbn1fw_6)) hbn1fw_5);
+
+theorem hbn1w{x y: setvar} (p: wff x) (s: wff y) (hbn1w_1: $ x =s y -> (p <-> s) $): $ ~A{x p} -> A{x ~A{x p}} $
+    = '(hbn1fw ax_5 ax_5 ax_5 ax_5 ax_5 hbn1w_1);
+
+theorem hba1w{x y: setvar} (p: wff x) (s: wff y) (hbn1w_1: $ x =s y -> (p <-> s) $): $ A{x p} -> A{x A{x p}} $
+    = '(_3syl
+        (con2i (spw (! a1i _ $ x =s y $ (notbii (cbvalvw hbn1w_1)))))
+        (hbn1w (! a1i _ $ x =s y $ (notbii (cbvalvw hbn1w_1))))
+        (alimi (con1i (hbn1w hbn1w_1)))
+    );
+
+theorem hbe1w{x y: setvar} (p: wff x) (s: wff y) (hbn1w_1: $ x =s y -> (p <-> s) $): $ E{x p} -> A{x E{x p}} $
+    = '(hbxfrbi df_ex (hbn1w (notbid hbn1w_1)));
+
+theorem hbalw{x y z: setvar} (p: wff x y) (s: wff y z) (hbalw_1: $ x =s z -> (p <-> s) $) (hbalw_2: $ p -> A{x p} $): $ A{y p} -> A{x A{y p}} $
+    = '(syl (alimi hbalw_2) (alcomimw hbalw_1));
+
+theorem _19_8aw{x y: setvar} (p: wff x) (s: wff y) (_19_8aw_1: $ x =s y -> (p <-> s) $): $ p -> E{x p} $
+    = '(con4i (sylbir alnex (spw (notbid _19_8aw_1))));
+
+theorem exexw{x y: setvar} (p: wff x) (s: wff y) (exexw_1: $ x =s y -> (p <-> s) $): $ E{x p} <-> E{x E{x p}} $
+    = '(_3bitr4i (notbii (impbii (hba1w (notbid exexw_1)) (alimi (spw (notbid exexw_1))))) df_ex _2exnaln);
